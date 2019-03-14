@@ -19,3 +19,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 Route::resource('/users', 'UsersController');
+Route::resource('/user/{id}', 'UserDetailsController');
+Route::post('/user/save-or-update', 'UserDetailsController@create');

@@ -7,8 +7,8 @@
                 <p style="color: white;font-size: 20px">Users</p>
             </div>
             <div class="col-md-1">
-                <button class="btn btn-default btn-sm pull-right" style="margin-top: 5px">
-                    <b>Create</b>&nbsp;<i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                <a href="/user/0" class="btn btn-default btn-sm pull-right" style="margin-top: 5px">
+                    <b>Create</b>&nbsp;<i class="fa fa-plus-circle" aria-hidden="true"></i></a>
             </div>
         </div>
         <table class="table table-striped table-hover " style="border: 1px solid lightgray;">
