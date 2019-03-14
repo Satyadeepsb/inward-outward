@@ -18,9 +18,8 @@
     <link href="/css/app.css" rel="stylesheet">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-datepicker.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
-
-
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
@@ -95,14 +94,15 @@
                     <div class="col-md-2" style="padding: 0">
                         <div class="list-group">
                             <a href="/applications" class="list-group-item">Applications</a>
-                            <a href="{{route('users.index')}}" class="{{ Request::path() ==  'super/users' ? 'list-group-item active' : 'list-group-item' }}">Users</a>
-                           {{-- <a href="#" class="list-group-item">Designation</a>
-                            <a href="#" class="list-group-item">Document </a>
-                            <a href="#" class="list-group-item">District</a>
-                            <a href="#" class="list-group-item">Taluka</a>
-                            <a href="#" class="list-group-item">Action</a>
-                            <a href="#" class="list-group-item">Department</a>
-                            <a href="#" class="list-group-item">Location</a>--}}
+                            <a href="{{route('users.index')}}"
+                               class="{{ Request::path() ==  'super/users' ? 'list-group-item active' : 'list-group-item' }}">Users</a>
+                            {{-- <a href="#" class="list-group-item">Designation</a>
+                             <a href="#" class="list-group-item">Document </a>
+                             <a href="#" class="list-group-item">District</a>
+                             <a href="#" class="list-group-item">Taluka</a>
+                             <a href="#" class="list-group-item">Action</a>
+                             <a href="#" class="list-group-item">Department</a>
+                             <a href="#" class="list-group-item">Location</a>--}}
                         </div>
                     </div>
                     <div class="col-md-10" style="margin-top:0px;padding: 0">
@@ -123,6 +123,11 @@
 
 <!-- Scripts -->
 <script src="/js/app.js"></script>
+
+<!-- Bootstrap datepicker JS and CSS -->
+<script src="/js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" href="/css/bootstrap-datepicker.css"/>
 <script src="/js/modal.js"></script>
+
 </body>
 </html>

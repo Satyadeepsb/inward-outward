@@ -26,6 +26,21 @@
                                     @endif
                                 </div>
                             </div>
+                           {{-- <div class="form-group">
+                                <input type="text"  class="form-control" id="myDatePickerId" />
+                            </div>--}}
+                            <div class="form-group required">
+                                <label for="myDatePickerId" class="col-md-4 control-label">Date</label>
+                                <div class="col-md-6">
+                                <div class="input-group datepick">
+                                    <input type="text" class="form-control" placeholder="Select Date"
+                                           name="myDatePickerId" id="myDatePickerId" required readonly>
+                                    <div class="input-group-addon datepick" style="cursor: pointer">
+                                        <i class="fa fa-calendar" aria-hidden="true" id="cal2"></i>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
                             <div class="form-group{{ $errors->has('mobile') ? ' has-error' : '' }}">
                                 <label for="mobile" class="col-md-4 control-label">Mobile</label>
 
@@ -65,7 +80,7 @@
                             <div class="form-group">
                                 <label for="role" class="col-md-4 control-label">Role</label>
                                 <div class="col-md-6">
-                                    <select class="form-control" id="role" name="role" >
+                                    <select class="form-control" id="role" name="role">
                                         <option value="">Select User Role</option>
                                         <option value="USER">User</option>
                                         <option value="PA_USER">PA User</option>
