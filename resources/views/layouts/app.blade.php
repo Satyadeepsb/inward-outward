@@ -95,7 +95,7 @@
                     <div class="col-md-2" style="padding: 0">
                         <div class="list-group">
                             <a href="/applications" class="list-group-item">Applications</a>
-                            <a href="/users" class="{{ Request::path() ==  'users' ? 'list-group-item active' : 'list-group-item' }}">Users</a>
+                            <a href="{{route('users.index')}}" class="{{ Request::path() ==  'super/users' ? 'list-group-item active' : 'list-group-item' }}">Users</a>
                            {{-- <a href="#" class="list-group-item">Designation</a>
                             <a href="#" class="list-group-item">Document </a>
                             <a href="#" class="list-group-item">District</a>
@@ -112,62 +112,7 @@
             </div>
         @else
             <div class="row-fluid">
-                <div class="col-md-offset-1 col-md-10">
-                    <table class="table table-striped table-hover ">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Column heading</th>
-                            <th>Column heading</th>
-                            <th>Column heading</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Column content</td>
-                            <td>Column content</td>
-                            <td>Column content</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Column content</td>
-                            <td>Column content</td>
-                            <td>Column content</td>
-                        </tr>
-                        <tr class="info">
-                            <td>3</td>
-                            <td>Column content</td>
-                            <td>Column content</td>
-                            <td>Column content</td>
-                        </tr>
-                        <tr class="success">
-                            <td>4</td>
-                            <td>Column content</td>
-                            <td>Column content</td>
-                            <td>Column content</td>
-                        </tr>
-                        <tr class="danger">
-                            <td>5</td>
-                            <td>Column content</td>
-                            <td>Column content</td>
-                            <td>Column content</td>
-                        </tr>
-                        <tr class="warning">
-                            <td>6</td>
-                            <td>Column content</td>
-                            <td>Column content</td>
-                            <td>Column content</td>
-                        </tr>
-                        <tr class="active">
-                            <td>7</td>
-                            <td>Column content</td>
-                            <td>Column content</td>
-                            <td>Column content</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+                @yield('content')
             </div>
         @endif
 

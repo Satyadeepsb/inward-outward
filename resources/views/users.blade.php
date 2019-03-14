@@ -56,7 +56,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h3 class="modal-title text-center">Delete confirmation</h3>
                 </div>
-                <form action="{{route('users.destroy','etst')}}" method="post">
+                <form action="{{route('users.destroy','test')}}" method="post">
                     {{method_field('delete')}}
                     {{csrf_field()}}
                 <div class="modal-body">
