@@ -9,6 +9,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Inward-Outward Management</title>
+    <meta name="author" content="Stark Technologies"/>
+    <meta name="description" content="Inward Outward Management Software">
+    <meta name="author" content="Satyadeep Basugade"/>
+    <meta name="author" content="Sagar Kanse"/>
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
