@@ -127,6 +127,42 @@
 <!-- Bootstrap datepicker JS and CSS -->
 <script src="/js/bootstrap-datepicker.js"></script>
 <link rel="stylesheet" href="/css/bootstrap-datepicker.css"/>
+
+{{--Another way of includeing JS/CSS files--}}
+<link rel="stylesheet" href="{{asset('css/toastr.min.css')}}"/>
+<script src="{{asset('js/toastr.min.js')}}"></script>
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+    @if(Session::has('success'))
+    toastr.success("{{Session::get('success')}}");
+    @endif
+    @if(Session::has('error'))
+    toastr.error("{{Session::get('error')}}");
+    @endif
+    @if(Session::has('warning'))
+    toastr.warning("{{Session::get('warning')}}");
+    @endif
+    @if(Session::has('info'))
+    toastr.info("{{Session::get('info')}}");
+    @endif
+</script>
+
 <script src="/js/modal.js"></script>
 
 </body>

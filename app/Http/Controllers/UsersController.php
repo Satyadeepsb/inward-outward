@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class UsersController extends Controller
 {
@@ -83,7 +84,8 @@ class UsersController extends Controller
     {
         $userId= $request->user_id;
         $user = User::findOrFail($userId);
-        $user->delete();
+       $user->delete();
+        Session::flash('success','User Deleted Successfully.');
         return back();
     }
 }
