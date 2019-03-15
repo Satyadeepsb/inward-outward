@@ -123,15 +123,15 @@
 </div>
 
 <!-- Scripts -->
-<script src="{{asset('js/app.js')}}"></script>
+<script src="/js/app.js"></script>
 
 <!-- Bootstrap datepicker JS and CSS -->
-<script src="{{asset('js/bootstrap-datepicker.js')}}"></script>
+<script src="/js/bootstrap-datepicker.js"></script>
 
 
 {{--Another way of includeing JS/CSS files--}}
-<link rel="stylesheet" href="{{asset('css/toastr.min.css')}}"/>
-<script src="{{asset('js/toastr.min.js')}}"></script>
+<link rel="stylesheet" href="/css/toastr.min.css"/>
+<script src="js/toastr.min.js"></script>
 <script>
     toastr.options = {
         "closeButton": true,
