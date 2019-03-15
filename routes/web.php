@@ -19,7 +19,15 @@ Auth::routes();
 
 
 Route::get('/home', 'HomeController@index');
-
+Route::resource('/applications', 'ApplicationController@index');
+Route::get('/application/create', [
+    'uses'=>'ApplicationController@create',
+    'as'=>'application.create'
+]);
+Route::post('/application/createNew', [
+    'uses'=>'ApplicationController@createNew',
+    'as'=>'application.createNew'
+]);
 Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware\SuperUserMiddleware']],
     function (){
     Route::post('/user/save-or-update', 'UserDetailsController@create');
