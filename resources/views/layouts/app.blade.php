@@ -131,7 +131,7 @@
 
 {{--Another way of includeing JS/CSS files--}}
 <link rel="stylesheet" href="/css/toastr.min.css"/>
-<script src="js/toastr.min.js"></script>
+<script src="/js/toastr.min.js"></script>
 <script>
     toastr.options = {
         "closeButton": true,
