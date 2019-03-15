@@ -94,9 +94,9 @@
                     <div class="col-md-2" style="padding: 0">
                         <div class="list-group">
                             <a href="/applications"
-                               class="{{ (Request::path() ==  'applications' || Request::path() ==  'home') ? 'list-group-item active' : 'list-group-item' }}">Applications</a>
+                               class="{{ (str_contains(Request::path(), 'application') || str_contains(Request::path(), 'home')) ? 'list-group-item active' : 'list-group-item' }}">Applications</a>
                             <a href="{{route('users.index')}}"
-                               class="{{ Request::path() ==  'super/users' ? 'list-group-item active' : 'list-group-item' }}">Users</a>
+                               class="{{ (str_contains(Request::path(), 'super') || str_contains(Request::path(), 'user')) ? 'list-group-item active' : 'list-group-item' }}">Users</a>
                             {{-- <a href="#" class="list-group-item">Designation</a>
                              <a href="#" class="list-group-item">Document </a>
                              <a href="#" class="list-group-item">District</a>
