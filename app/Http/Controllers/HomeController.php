@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Application;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,11 +25,13 @@ class HomeController extends Controller
     public function index()
     {
         $role = Auth()->user()->role;
-        if($role == 'SUPERUSER'){
+        $applications = Application::all();
+        return view('user_applications')->with('applications',$applications);
+        /*if($role == 'SUPERUSER'){
             return view('home');
         } else {
-            return view('user_home');
-        }
+
+        }*/
 
     }
 }

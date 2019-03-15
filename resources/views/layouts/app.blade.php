@@ -18,7 +18,7 @@
     <link href="/css/app.css" rel="stylesheet">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/css/bootstrap-datepicker.css" rel="stylesheet">
+    <link href="/css/bootstrap-datepicker.css" rel="stylesheet"/>
     <link href="/css/style.css" rel="stylesheet">
     <!-- Scripts -->
     <script>
@@ -93,7 +93,8 @@
                 <div class="col-md-offset-1 col-md-10">
                     <div class="col-md-2" style="padding: 0">
                         <div class="list-group">
-                            <a href="/applications" class="list-group-item">Applications</a>
+                            <a href="/applications"
+                               class="{{ (Request::path() ==  'applications' || Request::path() ==  'home') ? 'list-group-item active' : 'list-group-item' }}">Applications</a>
                             <a href="{{route('users.index')}}"
                                class="{{ Request::path() ==  'super/users' ? 'list-group-item active' : 'list-group-item' }}">Users</a>
                             {{-- <a href="#" class="list-group-item">Designation</a>
@@ -126,7 +127,7 @@
 
 <!-- Bootstrap datepicker JS and CSS -->
 <script src="/js/bootstrap-datepicker.js"></script>
-<link rel="stylesheet" href="/css/bootstrap-datepicker.css"/>
+
 
 {{--Another way of includeing JS/CSS files--}}
 <link rel="stylesheet" href="{{asset('css/toastr.min.css')}}"/>

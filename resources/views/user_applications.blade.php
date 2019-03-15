@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="col-md-10 col-md-offset-1" style="margin-top: 0px;padding-top: 0px">
+    <div class="{{Auth::user()->hasRole('SUPERUSER') ? 'col-md-12':'col-md-10 col-md-offset-1' }}"
+         style="margin-top: 0px;padding-top: 0px">
         <div class="col-md-12 tile-highlight text-center" style="margin-bottom: 5px">
             <div class="col-md-11">
                 <p style="color: white;font-size: 20px">Applications</p>
@@ -24,29 +25,37 @@
                 <th></th>
             </tr>
             </thead>
-            <tbody>
-            @foreach($applications as $application)
+            @if(count($applications) > 0)
+                <tbody>
+                @foreach($applications as $application)
+                    <tr>
+                        <td>{{$application->inward_no }}</td>
+                        <td>{{$application->name }}</td>
+                        <td>{{$application->status }}</td>
+                        <td>{{$application->date }}</td>
+                        <td>{{$application->documents }}</td>
+                        <td>
+                            <a class="btn btn-primary btn-sm pull-right">
+                                Edit
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td>
+                            {{--<button class="btn btn-danger btn-sm pull-right"
+                                    data-toggle="modal" data-target="#deleteUser" data-userid="{{$user->id}}">
+                                Delete <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>--}}
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+                @else
+                <tbody>
                 <tr>
-                    <td>{{$application->inward_no }}</td>
-                    <td>{{$application->name }}</td>
-                    <td>{{$application->status }}</td>
-                    <td>{{$application->date }}</td>
-                    <td>{{$application->documents }}</td>
-                    <td>
-                        <a class="btn btn-primary btn-sm pull-right">
-                            Edit
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        </a>
-                    </td>
-                    <td>
-                        {{--<button class="btn btn-danger btn-sm pull-right"
-                                data-toggle="modal" data-target="#deleteUser" data-userid="{{$user->id}}">
-                            Delete <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button>--}}
-                    </td>
+                    <td colspan="6" style="text-align: center"><b style="color: red">No Records Found.</b></td>
                 </tr>
-            @endforeach
-            </tbody>
+                </tbody>
+            @endif
         </table>
     </div>
 

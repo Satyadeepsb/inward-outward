@@ -85,7 +85,7 @@ class UsersController extends Controller
     {
         $userId= $request->user_id;
         $user = User::findOrFail($userId);
-       $user->delete();
+        $user->delete();
         Session::flash('success','User Deleted Successfully.');
         return back();
     }

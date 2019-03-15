@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-
+use Illuminate\Mail\Mailer;
+use Session;
 class UserDetailsController extends Controller
 {
     /**
@@ -50,20 +51,23 @@ class UserDetailsController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,$id)
+    public function store(Request $request,$id, Mailer $mailer)
     {
         $user = $request->all();
-            $newUser = User::create([
-                'name' => $user['name'],
-                'email' => $user['email'],
-                'mobile' => $user['mobile'],
-                'role' => $user['role'],
-                'location' => $user['location'],
-                'address' => $user['address'],
-                'designation' => $user['designation'],
-                'password' => bcrypt($user['password'])
-            ]);
-            $newUser->save();
+        $newUser = User::create([
+            'name' => $user['name'],
+            'email' => $user['email'],
+            'mobile' => $user['mobile'],
+            'role' => $user['role'],
+            'location' => $user['location'],
+            'address' => $user['address'],
+            'designation' => $user['designation'],
+            'password' => bcrypt($user['password'])
+        ]);
+        $newUser->save();
+        $mailer->
+        to($newUser->email)->
+        send(new \App\Mail\RegisterMail($newUser->email,$user['password'],'http://localhost:8000/login',$newUser->name));
         Session::flash('success','User created Successfully.');
         return redirect()->action('UsersController@index');
 

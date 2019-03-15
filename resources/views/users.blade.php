@@ -4,7 +4,7 @@
     <div class="col-md-12" style="margin-top: 0px;padding-top: 0px">
         <div class="col-md-12 tile-highlight text-center" style="margin-bottom: 5px">
             <div class="col-md-11">
-                <p style="color: white;font-size: 20px">Users</p>
+                <p style="color: white;font-size: 20px;">Users</p>
             </div>
             <div class="col-md-1">
                 <a href="/super/user/0"
@@ -24,10 +24,11 @@
                 <th></th>
             </tr>
             </thead>
+            @if(count($users) > 0)
             <tbody>
             @foreach($users as $user)
             <tr>
-                <td>{{$user->id }}</td>
+                <td style="font-family : 'Century-Gothic'">{{$user->id }}</td>
                 <td>{{$user->name }}</td>
                 <td>{{$user->email }}</td>
                 <td>{{$user->role }}</td>
@@ -46,6 +47,13 @@
             </tr>
             @endforeach
             </tbody>
+                @else
+                <tbody>
+                <tr>
+                    <td colspan="6" style="text-align: center"><b style="color: red">No Records Found.</b></td>
+                </tr>
+                </tbody>
+                @endif
         </table>
     </div>
 

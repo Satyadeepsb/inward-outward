@@ -24,7 +24,7 @@ class CreateApplicationsTable extends Migration
             $table->string('documents');
             $table->string('status');
             $table->date('date');
-            $table->smallInteger('user_id');
+            $table->bigInteger('user_id');
             $table->timestamps();
         });
     }
