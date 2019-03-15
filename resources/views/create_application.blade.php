@@ -78,6 +78,24 @@
                                    placeholder="Enter Taluka">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="documents" class="col-md-4 control-label">Documents</label>
+                        <div class="col-md-6">
+                            {{--<select multiple id="Documents" name="Documents" class="form-control">
+                                @foreach($documents as $document)
+                                    <option value="{{$document->name}}">{{$document->name}}</option>
+                                @endforeach
+                            </select>--}}
+                            <select name="documents[]" multiple id="documents" name="documents" class="form-control">
+                                @foreach($documents as $key => $value)
+                                    <option value="{{$value->name}}">
+                                        {{$value->name}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
 
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">

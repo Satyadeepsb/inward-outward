@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Application;
+use App\Document;
 use Illuminate\Http\Request;
 use Session;
 
@@ -26,12 +27,19 @@ class ApplicationController extends Controller
      */
     public function create()
     {
-        return view('create_application');
+        $documents = Document::all();
+        return view('create_application')->with('documents', $documents);
     }
 
     public function createNew(Request $request)
     {
         $requestObj = $request->all();
+        $docString = "";
+        if(count($requestObj['documents']) > 0){
+            foreach ($requestObj['documents'] as $doc) {
+                $docString =  $doc."," .  $docString;
+            }
+        }
         $application = Application::create([
             'name' => $requestObj['name'],
             'inward_no' => $requestObj['inward_no'],
@@ -40,14 +48,13 @@ class ApplicationController extends Controller
             'district' => $requestObj['district'],
             'taluka' => $requestObj['taluka'],
             'status' => 'CREATED',
-            'documents' => '7/12 utara',
+            'documents' => rtrim($docString,",") ,
             'date' =>$todayDate = date("Y-m-d"),
             'user_id' => 2,
         ]);
         $application->save();
         Session::flash('success','Application created Successfully.');
         return redirect()->back();
-        //return view('create_application');
     }
     /**
      * Store a newly created resource in storage.
