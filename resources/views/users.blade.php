@@ -7,7 +7,7 @@
                 <p style="color: white;font-size: 20px">Users</p>
             </div>
             <div class="col-md-1">
-                <a href="/user/0"
+                <a href="/super/user/0"
                    class="btn btn-default btn-sm pull-right"
                    style="margin-top: 5px">
                     <b>Create</b>&nbsp;<i class="fa fa-plus-circle" aria-hidden="true"></i></a>
@@ -32,10 +32,10 @@
                 <td>{{$user->email }}</td>
                 <td>{{$user->role }}</td>
                 <td>
-                    <button class="btn btn-primary btn-sm pull-right">
+                    <a href="{{route('users.edit',['id'=>$user->id])}}" class="btn btn-primary btn-sm pull-right">
                         Edit
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    </button>
+                    </a>
                 </td>
                 <td>
                     <button class="btn btn-danger btn-sm pull-right"

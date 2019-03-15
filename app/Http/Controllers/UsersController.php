@@ -26,7 +26,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        return view('user_details');
     }
 
     /**
@@ -59,7 +59,8 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+        return view('edit_user')->with('user',$user);
     }
 
     /**

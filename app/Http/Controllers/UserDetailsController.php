@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 
 class UserDetailsController extends Controller
 {
@@ -11,9 +12,15 @@ class UserDetailsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        return view('user_details');
+        if($id == 0) {
+            return view('user_details');
+        }else{
+            print($id);
+            $user = User::find($id);
+            return view('user_details')->with('user',$user);
+        }
     }
 
     /**
@@ -21,26 +28,51 @@ class UserDetailsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(array $data)
     {
-        dd($request->all());
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'mobile' => $data['mobile'],
+            'role' => $data['role'],
+            'location' => $data['location'],
+            'address' => $data['address'],
+            'designation' => $data['designation'],
+            'password' => bcrypt($data['password']),
+        ]);
+
+        // return redirect()->route('users');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$id)
     {
-        //
+        $user = $request->all();
+            $newUser = User::create([
+                'name' => $user['name'],
+                'email' => $user['email'],
+                'mobile' => $user['mobile'],
+                'role' => $user['role'],
+                'location' => $user['location'],
+                'address' => $user['address'],
+                'designation' => $user['designation'],
+                'password' => bcrypt($user['password'])
+            ]);
+            $newUser->save();
+        Session::flash('success','User created Successfully.');
+        return redirect()->action('UsersController@index');
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -51,7 +83,7 @@ class UserDetailsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -62,19 +94,31 @@ class UserDetailsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$id)
     {
-        //
+        $newUser = $request->all();
+        $user = User::find($id);
+        $user->name = $newUser['name'];
+        $user->email = $newUser['email'];
+        $user->mobile = $newUser['mobile'];
+        $user->role = $newUser['role'];
+        $user->location = $newUser['location'];
+        $user->address = $newUser['address'];
+        $user->designation = $newUser['designation'];
+        $user->update();
+        Session::flash('success','User Updated Successfully.');
+        return redirect()->action('UsersController@index');
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

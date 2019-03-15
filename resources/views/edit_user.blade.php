@@ -3,9 +3,9 @@
 @section('content')
     <div class="col-md-12">
         <div class="panel panel-default">
-            <div class="panel-heading">Create User</div>
+            <div class="panel-heading">Update User</div>
             <div class="panel-body">
-                <form class="form-horizontal" role="form" method="POST" action="{{route('user.save',['id'=>0])}}">
+                <form class="form-horizontal" role="form" method="POST" action="{{route('user.update',['id'=>$user->id])}}">
                     {{ csrf_field() }}
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                         <label for="name" class="col-md-4 control-label">Name</label>
@@ -13,7 +13,7 @@
                         <div class="col-md-6">
                             <input id="name" type="text"
                                    class="form-control" name="name"
-                                   value="{{ old('name') }}"
+                                   value="{{ $user->name }}"
                                    placeholder="Enter Name"
                                    required autofocus>
 
@@ -30,7 +30,7 @@
                         <div class="col-md-6">
                             <input id="mobile" type="text"
                                    class="form-control" name="mobile"
-                                   value="{{ old('mobile') }}"
+                                   value="{{ $user->mobile }}"
                                    placeholder="Enter Mobile"
                                    required autofocus>
 
@@ -49,7 +49,7 @@
                             <input id="email" type="email"
                                    class="form-control"
                                    name="email"
-                                   value="{{ old('email') }}"
+                                   value="{{ $user->email }}"
                                    placeholder="Enter Email"
                                    required>
 
@@ -61,25 +61,26 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="role" class="col-md-4 control-label">Role</label>
+                        <label for="role" class="col-md-4 control-label">Role *{{$user->role}}</label>
                         <div class="col-md-6">
-                            <select class="form-control" id="role" name="role" >
+                            <select class="form-control" id="role" name="role" value="{{ $user->role }}">
                                 <option value="">Select User Role</option>
-                                <option value="USER">User</option>
-                                <option value="PA_USER">PA User</option>
-                                <option value="CLERK">Clerk</option>
-                                <option value="DEPARTMENT_USER">Department User</option>
+                                <option value="USER" {{ ($user->role == 'USER') ? 'selected="selected"' : '' }}>User</option>
+                                <option value="PA_USER"  {{ ($user->role == 'PA_USER') ? 'selected="selected"' : '' }}>PA User</option>
+                                <option value="CLERK"  {{ ($user->role == 'CLERK') ? 'selected="selected"' : '' }}>Clerk</option>
+                                <option value="DEPARTMENT_USER"  {{ ($user->role == 'DEPARTMENT_USER') ? 'selected="selected"' : '' }}>Department User</option>
                             </select>
                         </div>
                     </div>
 
-                    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                   {{-- <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                         <label for="password" class="col-md-4 control-label">Password</label>
 
                         <div class="col-md-6">
                             <input id="password" type="password"
                                    class="form-control" name="password"
                                    placeholder="Enter Password"
+                                   value="{{ $user->password }}"
                                    required>
 
                             @if ($errors->has('password'))
@@ -88,14 +89,14 @@
                                     </span>
                             @endif
                         </div>
-                    </div>
+                    </div>--}}
                     <div class="form-group">
                         <label for="location" class="col-md-4 control-label">Location</label>
                         <div class="col-md-6">
                             <input id="location" type="text"
                                    class="form-control"
                                    name="location"
-                                   value="{{ old('location') }}"
+                                   value="{{ $user->location }}"
                                    placeholder="Enter Location">
                         </div>
                     </div>
@@ -106,7 +107,7 @@
                             <input id="address" type="text"
                                    class="form-control"
                                    name="address"
-                                   value="{{ old('address') }}"
+                                   value="{{ $user->address }}"
                                    placeholder="Enter Address">
                         </div>
                     </div>
@@ -116,7 +117,7 @@
                             <input id="designation" type="text"
                                    class="form-control"
                                    name="designation"
-                                   value="{{ old('designation') }}"
+                                   value="{{ $user->designation }}"
                                    placeholder="Enter Designation">
                         </div>
                     </div>
@@ -132,11 +133,11 @@
 
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
-                            <a href="{{route('users.index')}}" class="btn btn-warning">
+                            <a class="btn btn-warning" href="{{route('users.index')}}">
                                 Cancel
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                Create User
+                                Update User
                             </button>
                         </div>
                     </div>
@@ -144,6 +145,4 @@
             </div>
         </div>
     </div>
-
-
 @endsection

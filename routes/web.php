@@ -25,4 +25,12 @@ Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware
     Route::post('/user/save-or-update', 'UserDetailsController@create');
     Route::resource('/users', 'UsersController');
     Route::resource('/user/{id}', 'UserDetailsController');
+    Route::post('/user/save/{id}', [
+            'uses'=> 'UserDetailsController@store',
+            'as'=>'user.save'
+        ]);
+    Route::post('/user/update/{id}', [
+            'uses'=> 'UserDetailsController@update',
+            'as'=>'user.update'
+        ]);
 });
