@@ -23,3 +23,10 @@ table, td,. table{
     background: #b9151b;
     color: white !important;
 }*/
+.form-group.required .control-label:after {
+    content: "*";
+    position: absolute;
+    margin-top: 4px;
+    padding-left: 5px;
+    color: black;
+}

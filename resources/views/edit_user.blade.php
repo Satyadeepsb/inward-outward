@@ -7,7 +7,7 @@
             <div class="panel-body">
                 <form class="form-horizontal" role="form" method="POST" action="{{route('user.update',['id'=>$user->id])}}">
                     {{ csrf_field() }}
-                    <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                    <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} required">
                         <label for="name" class="col-md-4 control-label">Name</label>
 
                         <div class="col-md-6">
@@ -24,11 +24,11 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group{{ $errors->has('mobile') ? ' has-error' : '' }}">
+                    <div class="form-group{{ $errors->has('mobile') ? ' has-error' : '' }} required">
                         <label for="mobile" class="col-md-4 control-label">Mobile</label>
 
                         <div class="col-md-6">
-                            <input id="mobile" type="text"
+                            <input id="mobile" type="number"
                                    class="form-control" name="mobile"
                                    value="{{ $user->mobile }}"
                                    placeholder="Enter Mobile"
@@ -42,7 +42,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                    <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} required">
                         <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
                         <div class="col-md-6">
@@ -60,10 +60,10 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="role" class="col-md-4 control-label">Role *{{$user->role}}</label>
+                    <div class="form-group required">
+                        <label for="role" class="col-md-4 control-label">Role</label>
                         <div class="col-md-6">
-                            <select class="form-control" id="role" name="role" value="{{ $user->role }}">
+                            <select class="form-control" id="role" name="role" value="{{ $user->role }}" required>
                                 <option value="">Select User Role</option>
                                 <option value="USER" {{ ($user->role == 'USER') ? 'selected="selected"' : '' }}>User</option>
                                 <option value="PA_USER"  {{ ($user->role == 'PA_USER') ? 'selected="selected"' : '' }}>PA User</option>
