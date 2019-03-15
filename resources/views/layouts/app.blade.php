@@ -15,11 +15,11 @@
     <meta name="author" content="Sagar Kanse"/>
 
     <!-- Styles -->
-    <link href="{{asset('css/app.css')}}" rel="stylesheet">
-    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{asset('css/font-awesome.min.css')}}" rel="stylesheet">
-    <link href="{{asset('css/bootstrap-datepicker.css')}}" rel="stylesheet"/>
-    <link href="{{asset('css/style.css')}}" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-datepicker.css" rel="stylesheet"/>
+    <link href="/css/style.css" rel="stylesheet">
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
@@ -164,7 +164,7 @@
     @endif
 </script>
 
-<script src="{{asset('js/modal.js')}}"></script>
+<script src="/js/modal.js"></script>
 
 </body>
 </html>
