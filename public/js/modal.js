@@ -20,3 +20,15 @@ $('#cal2').click(function(){
 function openDatePicker() {
     $('#myDatePickerId').datepicker();
 }
+function transferComplete(data) {
+    console.log(data.currentTarget.response);
+}
+var form = document.getElementById('uploadForm');
+var request = new XMLHttpRequest();
+form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var formData = new FormData(form);
+    request.open('post', '/application/createNew');
+    request.addEventListener('load', transferComplete);
+    request.send(formData);
+});

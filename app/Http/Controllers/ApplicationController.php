@@ -6,6 +6,7 @@ use App\Application;
 use App\Document;
 use Illuminate\Http\Request;
 use Session;
+use Storage;
 
 class ApplicationController extends Controller
 {
@@ -34,27 +35,41 @@ class ApplicationController extends Controller
     public function createNew(Request $request)
     {
         $requestObj = $request->all();
-        $docString = "";
-        if(count($requestObj['documents']) > 0){
-            foreach ($requestObj['documents'] as $doc) {
-                $docString =  $doc."," .  $docString;
-            }
-        }
-        $application = Application::create([
-            'name' => $requestObj['name'],
-            'inward_no' => $requestObj['inward_no'],
-            'mobile' => $requestObj['mobile'],
-            'address' => $requestObj['address'],
-            'district' => $requestObj['district'],
-            'taluka' => $requestObj['taluka'],
-            'status' => 'CREATED',
-            'documents' => rtrim($docString,",") ,
-            'date' =>$todayDate = date("Y-m-d"),
-            'user_id' => 2,
-        ]);
-        $application->save();
-        Session::flash('success','Application created Successfully.');
-        return redirect()->back();
+        /*print_r($requestObj);
+        $files = $request->file('file');
+        print_r($files);
+        if(!empty($files)) {
+            foreach ($files as $file) :
+                $fileName = time() . $file->getClientOriginalName();
+                print_r('File Name ');
+                print_r($fileName);
+                // To Save File In Public/Uploaded Folder
+               $file->move(public_path('/uploaded'), $fileName);
+                // To Save File In Storage/App Folder
+               // Storage::put($fileName, file_get_contents($file));
+            endforeach;
+        }*/
+           $docString = "";
+           if(count($requestObj['documents']) > 0){
+               foreach ($requestObj['documents'] as $doc) {
+                   $docString =  $doc."," .  $docString;
+               }
+           }
+           $application = Application::create([
+               'name' => $requestObj['name'],
+               'inward_no' => $requestObj['inward_no'],
+               'mobile' => $requestObj['mobile'],
+               'address' => $requestObj['address'],
+               'district' => $requestObj['district'],
+               'taluka' => $requestObj['taluka'],
+               'status' => 'CREATED',
+               'documents' => rtrim($docString,",") ,
+               'date' =>$todayDate = date("Y-m-d"),
+               'user_id' => 2,
+           ]);
+           $application->save();
+           Session::flash('success','Application created Successfully.');
+           return redirect()->back();
     }
     /**
      * Store a newly created resource in storage.
