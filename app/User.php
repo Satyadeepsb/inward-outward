@@ -28,7 +28,6 @@ class User extends Authenticatable
     ];
     public function hasRole($role)
     {
-        echo `sssad`;
         return $this->role == $role;
     }
 }

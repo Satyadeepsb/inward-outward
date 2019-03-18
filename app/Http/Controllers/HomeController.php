@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Application;
 use Illuminate\Http\Request;
-
+use DB;
 class HomeController extends Controller
 {
     /**
@@ -26,7 +26,14 @@ class HomeController extends Controller
     {
         $role = Auth()->user()->role;
         $applications = Application::all();
-        return view('user_applications')->with('applications',$applications);
+        foreach ($applications as $application):
+            $application['selected'] = true;
+            $application->myField = 'true';
+        endforeach;
+        $actions = DB::table('actions')
+            ->where('user_type', $role)
+            ->get();
+        return view('user_applications')->with('applications', $applications)->with('actions', $actions);
         /*if($role == 'SUPERUSER'){
             return view('home');
         } else {

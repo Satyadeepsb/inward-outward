@@ -18,7 +18,14 @@ class ApplicationController extends Controller
     public function index()
     {
         $applications = Application::all();
-        return view('user_applications')->with('applications',$applications);
+        foreach ($applications as $application):
+            $application['selected'] = true;
+            $application->myField = 'true';
+        endforeach;
+        $actions = DB::table('actions')
+            ->where('user_type', Auth::user()->role)
+            ->get();
+        return view('user_applications')->with('applications', $applications)->with('actions', $actions);
     }
 
     /**
@@ -49,27 +56,27 @@ class ApplicationController extends Controller
                // Storage::put($fileName, file_get_contents($file));
             endforeach;
         }*/
-           $docString = "";
-           if(count($requestObj['documents']) > 0){
-               foreach ($requestObj['documents'] as $doc) {
-                   $docString =  $doc."," .  $docString;
-               }
-           }
-           $application = Application::create([
-               'name' => $requestObj['name'],
-               'inward_no' => $requestObj['inward_no'],
-               'mobile' => $requestObj['mobile'],
-               'address' => $requestObj['address'],
-               'district' => $requestObj['district'],
-               'taluka' => $requestObj['taluka'],
-               'status' => 'CREATED',
-               'documents' => rtrim($docString,",") ,
-               'date' =>$todayDate = date("Y-m-d"),
-               'user_id' => 2,
-           ]);
-           $application->save();
-           Session::flash('success','Application created Successfully.');
-           return redirect()->back();
+        $docString = "";
+        if(count($requestObj['documents']) > 0){
+            foreach ($requestObj['documents'] as $doc) {
+                $docString =  $doc."," .  $docString;
+            }
+        }
+        $application = Application::create([
+            'name' => $requestObj['name'],
+            'inward_no' => $requestObj['inward_no'],
+            'mobile' => $requestObj['mobile'],
+            'address' => $requestObj['address'],
+            'district' => $requestObj['district'],
+            'taluka' => $requestObj['taluka'],
+            'status' => 'CREATED',
+            'documents' => rtrim($docString,",") ,
+            'date' =>$todayDate = date("Y-m-d"),
+            'user_id' => 2,
+        ]);
+        $application->save();
+        Session::flash('success','Application created Successfully.');
+        return redirect()->back();
     }
     /**
      * Store a newly created resource in storage.

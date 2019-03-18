@@ -30,3 +30,16 @@ table, td,. table{
     padding-left: 5px;
     color: black;
 }
+
+@media (min-width: 768px) {
+    .modal-xl {
+        width: 65%;
+        max-width:1200px;
+    }
+
+}
+@media (min-width: 992px) {
+    .modal-lg {
+        width: 900px;
+    }
+}
