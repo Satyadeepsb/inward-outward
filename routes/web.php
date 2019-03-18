@@ -28,6 +28,10 @@ Route::post('/application/createNew', [
     'uses'=>'ApplicationController@createNew',
     'as'=>'application.createNew'
 ]);
+Route::post('/application/remark', [
+    'uses'=>'ApplicationController@remark',
+    'as'=>'application.remark'
+]);
 Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware\SuperUserMiddleware']],
     function (){
     Route::post('/user/save-or-update', 'UserDetailsController@create');

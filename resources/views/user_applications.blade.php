@@ -15,26 +15,11 @@
             </div>
             @if((Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER')) && count($actions) > 0)
                 <div class="col-md-1">
-                    <ul style="list-style: none" class="pull-right" >
-                        <li class="dropdown">
-                            <a class="btn btn-warning btn-sm dropdown-toggle"
-                               style="margin-top: 5px"
-                               data-toggle="dropdown" href="#">
-                                Bulk Action
-                                <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                @foreach($actions as $action)
-                                    <li>
-                                        <a  data-toggle="modal" data-target="#editModal"
-                                            data-action="{{$action->action}}" style="cursor: pointer">
-                                            {{$action->action}}
-                                        </a>
-                                    </li>
-                                @endforeach
-
-                            </ul>
-                        </li>
-                    </ul>
+                    <button
+                            class="btn btn-warning btn-sm pull-right bulk-action"
+                            style="margin-top: 5px">
+                        <b>Bulk Action</b>
+                    </button>
                 </div>
             @endif
         </div>
@@ -42,14 +27,14 @@
             <thead>
             <tr style="text-align: center;">
                 @if(Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER'))
-                    <th>Select</th>
+                    <th style="text-align: center;"><input type="checkbox" id="select-all"></th>
                 @endif
                 <th>Inward No</th>
                 <th>Application Name</th>
                 <th>Status</th>
                 <th>Date</th>
                 <th>Documents</th>
-                <th></th>
+                <th>Reference No</th>
                 @if(Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER'))
                     <th></th>
                 @endif
@@ -60,40 +45,24 @@
                 @foreach($applications as $application)
                     <tr>
                         @if(Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER'))
-                        <td style="text-align: center;">
-                            <input type="checkbox" name="{{$application->id}}" value="{{$application->selected}}">
-                        </td>
+                            <td style="text-align: center;">
+                                <input type="checkbox" name="{{$application->id}}" class="sub_chk"
+                                       data-id="{{$application->id}}">
+                            </td>
                         @endif
                         <td>{{$application->inward_no }}</td>
                         <td>{{$application->name }}</td>
                         <td>{{$application->status }}</td>
                         <td>{{$application->date }}</td>
                         <td>{{$application->documents }}</td>
-                        <td>
-                            <a class="btn btn-info btn-sm pull-right">
-                                View
-                                <i class="fa fa-eye" aria-hidden="true"></i>
-                            </a>
-                        </td>
+                        <td>{{$application->reference_no }}</td>
                         @if(Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER'))
                             <td>
-                                <ul style="list-style: none" class="pull-right">
-                                    <li class="dropdown">
-                                        <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
-                                            Action
-                                            <span class="caret"></span></a>
-                                        <ul class="dropdown-menu">
-                                                @foreach($actions as $action)
-                                                <li>
-                                                <a  data-toggle="modal" data-target="#editModal"
-                                                    data-application="{{$application}}" data-action="{{$action->action}}" style="cursor: pointer">
-                                                    {{$action->action}}
-                                                </a>
-                                            </li>
-                                            @endforeach
-                                        </ul>
-                                    </li>
-                                </ul>
+                                <button data-toggle="modal" data-target="#editModal"
+                                        data-application="{{$application}}" style="cursor: pointer"
+                                        class="btn btn-warning btn-sm pull-right">
+                                    <b>Action</b>
+                                </button>
                             </td>
                         @endif
                     </tr>
@@ -113,54 +82,121 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                     <h3 class="modal-title text-center">Application Information</h3>
+                </div>
+                <form action="{{route('application.remark')}}" method="post">
+                    {{csrf_field()}}
+                    <div class="modal-body">
+                        <div class="col-md-12">
+                            <div class="col-md-offset-2">
+                                <input type="hidden" name="action" id="action" value="">
+                                <div class="form-group">
+                                    <label for="name" class="col-md-4 control-label"> Inward Number</label>
+                                    <div class="col-md-6">
+                                        <label for="name" class="col-md-8 control-label" id="inward_id_display"> </label>
+                                        <input type="text" name="inward_id" id="inward_id"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name" class="col-md-4 control-label">Application Name</label>
+                                    <div class="col-md-6">
+                                        <label for="name" class="col-md-8 control-label" id="application_name_display"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name" class="col-md-4 control-label" >Status</label>
+                                    <div class="col-md-6">
+                                        <label for="name" id="status_display" class="col-md-8 control-label"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name" class="col-md-4 control-label"> Date</label>
+                                    <div class="col-md-6">
+                                        <label for="name" class="col-md-8 control-label" id="date_display"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name" class="col-md-4 control-label"> Documents</label>
+                                    <div class="col-md-6">
+                                        <label for="name"
+                                               class="col-md-8 control-label" id="documents_display"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="action" class="col-md-4 control-label"> Action</label>
+                                    <div class="col-md-6">
+                                        <select multiple class="form-control" id="action" name="action" required>
+                                            @foreach($actions as $action)
+                                                <option value="{{$action->action}}">{{$action->action}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="department" class="col-md-4 control-label"> Department</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" id="department" name="department" required>
+                                            @foreach($departments as $department)
+                                                <option value="{{$department->name}}">{{$department->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name" class="col-md-4 control-label"> Remark</label>
+                                    <div class="col-md-6">
+                                        <input type="text" name="remark" id="remark" class="form-control"
+                                               placeholder="Enter Remark"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="user_id" class="col-md-4 control-label"> User</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" id="user_id" name="user_id">
+                                            @foreach($users as $user)
+                                                <option value="{{$user->id}}">{{$user->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="text-align: center !important;">
+                        <button type="button" class="btn btn-md btn-warning" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-md btn-success">Save</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="bulkModal">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title text-center">Bulk Action</h3>
                 </div>
                 <form action="{{route('users.destroy','test')}}" method="post">
                     {{method_field('delete')}}
                     {{csrf_field()}}
                     <div class="modal-body">
                         <div class="col-md-12">
-                          <div class="col-md-offset-2">
-                              <form class="form-horizontal" role="form" method="POST" action="{{route('application.createNew')}}">
-                                  {{ csrf_field() }}
-                                  <input type="hidden" name="action" id="action" value="">
-                                  <div class="form-group">
-                                      <label for="name" class="col-md-4 control-label"> Inward Number</label>
-                                      <div class="col-md-6">
-                                          <label for="name" class="col-md-8 control-label">{{$application->id}} </label>
-                                      </div>
-                                  </div>
-                                  <div class="form-group">
-                                      <label for="name" class="col-md-4 control-label">Application Name</label>
-                                      <div class="col-md-6">
-                                          <label for="name" class="col-md-8 control-label">{{$application->name}}</label>
-                                      </div>
-                                  </div>
-                                  <div class="form-group">
-                                      <label for="name" class="col-md-4 control-label">Status</label>
-                                      <div class="col-md-6">
-                                          <label for="name" class="col-md-8 control-label">{{$application->status}}</label>
-                                      </div>
-                                  </div>
-                                  <div class="form-group">
-                                      <label for="name" class="col-md-4 control-label"> Date</label>
-                                      <div class="col-md-6">
-                                          <label for="name" class="col-md-8 control-label">{{$application->date}}</label>
-                                      </div>
-                                  </div>
-                                  <div class="form-group">
-                                      <label for="name" class="col-md-4 control-label"> Documents</label>
-                                      <div class="col-md-6">
-                                          <label for="name" class="col-md-8 control-label">{{$application->documents}}</label>
-                                      </div>
-                                  </div>
-                              </form>
-                          </div>
+                            <div class="col-md-offset-2">
+                                <form class="form-horizontal" role="form" method="POST"
+                                      action="{{route('application.createNew')}}">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="action" id="action" value="">
+                                    <input name="appIds[]" type="text" id="appIds" />
+                                </form>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer" style="text-align: center !important;">
-                        <button type="button" class="btn btn-md btn-warning"  data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-md btn-warning" data-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-md btn-success">Save</button>
                     </div>
                 </form>

@@ -25,6 +25,7 @@ class CreateApplicationsTable extends Migration
             $table->string('status');
             $table->date('date');
             $table->bigInteger('user_id');
+            $table->string('reference_no');
             $table->timestamps();
         });
     }

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Application;
+use App\User;
 use Illuminate\Http\Request;
 use DB;
+use App\Department;
 class HomeController extends Controller
 {
     /**
@@ -25,6 +27,9 @@ class HomeController extends Controller
     public function index()
     {
         $role = Auth()->user()->role;
+        if($role =='SUPERUSER'){
+            $role='PA_USER';
+        }
         $applications = Application::all();
         foreach ($applications as $application):
             $application['selected'] = true;
@@ -33,7 +38,9 @@ class HomeController extends Controller
         $actions = DB::table('actions')
             ->where('user_type', $role)
             ->get();
-        return view('user_applications')->with('applications', $applications)->with('actions', $actions);
+        $departments = Department::all();
+        $users= User::all();
+        return view('user_applications')->with('applications', $applications)->with('actions', $actions)->with('departments', $departments)->with('users', $users);
         /*if($role == 'SUPERUSER'){
             return view('home');
         } else {

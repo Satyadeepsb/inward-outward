@@ -22,16 +22,25 @@
                 </form>--}}
                  <form class="form-horizontal" role="form" method="POST" action="{{route('application.createNew')}}">
                      {{ csrf_field() }}
-                     <div class="form-group">
+                     <div class="form-group required">
                          <label for="name" class="col-md-4 control-label"> Inward Number</label>
                          <div class="col-md-6">
-                             <input id="inward_no" type="text"
+                             <input id="inward_no" type="text" readonly
                                     class="form-control" name="inward_no"
+                                    value="{{$data['inward_id']}}"
                                     placeholder="Enter Inward Number"
                                     required autofocus>
                          </div>
                      </div>
-                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                     <div class="form-group">
+                         <label for="reference_no" class="col-md-4 control-label"> Reference Number</label>
+                         <div class="col-md-6">
+                             <input id="reference_no" type="text"
+                                    class="form-control" name="reference_no"
+                                    placeholder="Enter Reference Number">
+                         </div>
+                     </div>
+                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} required">
                          <label for="name" class="col-md-4 control-label">Application Name</label>
 
                          <div class="col-md-6">
@@ -47,7 +56,19 @@
                              @endif
                          </div>
                      </div>
-                     <div class="form-group{{ $errors->has('mobile') ? ' has-error' : '' }}">
+                     <div class="form-group ">
+                         <label for="date" class="col-md-4 control-label">Date</label>
+                         <div class="col-md-6">
+                             <div class="input-group datepick">
+                                 <input type="text" class="form-control" placeholder="Select Date"
+                                        name="date" id="date" value="{{$data['todayDate']}}" readonly>
+                                 <div class="input-group-addon datepick" style="cursor: pointer">
+                                     <i class="fa fa-calendar" aria-hidden="true" id="cal2"></i>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="form-group{{ $errors->has('mobile') ? ' has-error' : '' }} required">
                          <label for="mobile" class="col-md-4 control-label">Mobile</label>
 
                          <div class="col-md-6">
@@ -77,29 +98,29 @@
                      <div class="form-group">
                          <label for="designation" class="col-md-4 control-label">District</label>
                          <div class="col-md-6">
-                             <input id="district" type="text"
-                                    class="form-control"
-                                    name="district"
-                                    placeholder="Enter District">
+                             <select name="district" id="district" class="form-control">
+                                 @foreach($data['districts'] as $district)
+                                     <option value="{{$district->name}}">{{$district->name}}</option>
+                                 @endforeach
+                             </select>
                          </div>
                      </div>
                      <div class="form-group">
                          <label for="designation" class="col-md-4 control-label">Taluka</label>
                          <div class="col-md-6">
-                             <input id="taluka" type="text"
-                                    class="form-control"
-                                    name="taluka"
-                                    placeholder="Enter Taluka">
+                             <select name="taluka" id="taluka" class="form-control">
+                                 @foreach($data['talukas'] as $taluka)
+                                     <option value="{{$taluka->name}}">{{$taluka->name}}</option>
+                                 @endforeach
+                             </select>
                          </div>
                      </div>
                      <div class="form-group">
                          <label for="documents" class="col-md-4 control-label">Documents</label>
                          <div class="col-md-6">
                              <select name="documents[]" multiple id="documents" name="documents" class="form-control">
-                                 @foreach($documents as $key => $value)
-                                     <option value="{{$value->name}}">
-                                         {{$value->name}}
-                                     </option>
+                                 @foreach($data['documents'] as $key => $value)
+                                     <option value="{{$value->name}}">{{$value->name}}</option>
                                  @endforeach
                              </select>
                          </div>
