@@ -28,9 +28,14 @@ Route::post('/application/createNew', [
     'uses'=>'ApplicationController@createNew',
     'as'=>'application.createNew'
 ]);
+
 Route::post('/application/remark', [
     'uses'=>'ApplicationController@remark',
     'as'=>'application.remark'
+]);
+Route::post('/application/remark-multiple', [
+    'uses'=>'ApplicationController@remarkMultiple',
+    'as'=>'application.remarkMultiple'
 ]);
 Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware\SuperUserMiddleware']],
     function (){

@@ -4,19 +4,19 @@
     <div class="{{Auth::user()->hasRole('SUPERUSER') ? 'col-md-12':'col-md-10 col-md-offset-1' }}"
          style="margin-top: 0px;padding-top: 0px">
         <div class="col-md-12 tile-highlight text-center" style="margin-bottom: 5px">
-            <div class="{{(((Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER')) && count($actions) > 0))? 'col-md-10':'col-md-11' }}">
+            <div class="{{(((Auth::user()->hasRole('PA_USER')) && count($actions) > 0))? 'col-md-10':'col-md-11' }}">
                 <p style="color: white;font-size: 20px">Applications</p>
             </div>
             <div class="col-md-1">
                 <a href="{{route('application.create')}}"
-                   class="btn btn-default btn-sm"
-                   style="margin-top: 5px;padding-left: 5px">
+                   class="btn btn-default btn-sm pull-right"
+                   style="margin-top: 5px;">
                     <b>Create</b>&nbsp;<i class="fa fa-plus-circle" aria-hidden="true"></i></a>
             </div>
-            @if((Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER')) && count($actions) > 0)
+            @if((Auth::user()->hasRole('PA_USER')) && count($actions) > 0)
                 <div class="col-md-1">
-                    <button class="btn btn-warning btn-sm bulk-action"
-                            style="margin-top: 5px;margin-right: 10px">
+                    <button class="btn btn-warning btn-sm pull-right bulk-action"
+                            style="margin-top: 5px;">
                         <b>Bulk Action</b>
                     </button>
                 </div>
@@ -25,7 +25,7 @@
         <table class="table table-striped table-hover " style="border: 1px solid lightgray;">
             <thead>
             <tr style="text-align: center;">
-                @if(Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER'))
+                @if((Auth::user()->hasRole('PA_USER')  && count($applications) > 0))
                     <th style="text-align: center;"><input type="checkbox" id="select-all"></th>
                 @endif
                 <th>Inward No</th>
@@ -34,7 +34,7 @@
                 <th>Date</th>
                 <th>Documents</th>
                 <th>Reference No</th>
-                @if(Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER'))
+                @if(Auth::user()->hasRole('PA_USER'))
                     <th></th>
                 @endif
             </tr>
@@ -43,7 +43,7 @@
                 <tbody>
                 @foreach($applications as $application)
                     <tr>
-                        @if(Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER'))
+                        @if(Auth::user()->hasRole('PA_USER'))
                             <td style="text-align: center;">
                                 <input type="checkbox" name="{{$application->id}}" class="sub_chk"
                                        data-id="{{$application->id}}">
@@ -55,7 +55,7 @@
                         <td>{{$application->date }}</td>
                         <td>{{$application->documents }}</td>
                         <td>{{$application->reference_no }}</td>
-                        @if(Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER'))
+                        @if(Auth::user()->hasRole('PA_USER'))
                             <td>
                                 <button data-toggle="modal" data-target="#editModal"
                                         data-application="{{$application}}" style="cursor: pointer"
@@ -70,7 +70,7 @@
             @else
                 <tbody>
                 <tr>
-                    <td colspan="6" style="text-align: center"><b style="color: red">No Records Found.</b></td>
+                    <td colspan="8" style="text-align: center"><b style="color: red">No Records Found.</b></td>
                 </tr>
                 </tbody>
             @endif
@@ -96,7 +96,7 @@
                                     <div class="col-md-6">
                                         <label for="name" class="col-md-8 control-label"
                                                id="inward_id_display"> </label>
-                                        <input type="text" name="inward_id" id="inward_id"/>
+                                        <input type="text" name="inward_id" id="inward_id" hidden/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -126,13 +126,21 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="action" class="col-md-4 control-label"> Action</label>
+                                    <label for="actions" class="col-md-4 control-label"> Action</label>
                                     <div class="col-md-6">
-                                        <select multiple class="form-control" id="action" name="action" required>
+                                        <select multiple class="form-control" id="actions" name="actions[]" required>
                                             @foreach($actions as $action)
                                                 <option value="{{$action->action}}">{{$action->action}}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="name" class="col-md-4 control-label"> Remark</label>
+                                    <div class="col-md-6">
+                                        <input type="text" name="remark" id="remark" class="form-control"
+                                               placeholder="Enter Remark" required/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -146,16 +154,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="name" class="col-md-4 control-label"> Remark</label>
+                                    <label for="officer" class="col-md-4 control-label"> Officer</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="remark" id="remark" class="form-control"
-                                               placeholder="Enter Remark"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="user_id" class="col-md-4 control-label"> User</label>
-                                    <div class="col-md-6">
-                                        <select class="form-control" id="user_id" name="user_id">
+                                        <select class="form-control" id="officer" name="officer" required>
                                             @foreach($users as $user)
                                                 <option value="{{$user->id}}">{{$user->name}}</option>
                                             @endforeach
@@ -166,8 +167,8 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="text-align: center !important;">
-                        <button type="button" class="btn btn-md btn-warning" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-md btn-success">Save</button>
+                            <button type="button" class="btn btn-md btn-warning" data-dismiss="modal" style="margin-top: 10px">Cancel</button>
+                            <button type="submit" class="btn btn-md btn-success" style="margin-top: 10px"> Save</button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->
@@ -181,29 +182,37 @@
                                 aria-hidden="true">&times;</span></button>
                     <h3 class="modal-title text-center">Bulk Action</h3>
                 </div>
-                <form action="{{route('application.remark')}}" method="post">
+                <form action="{{route('application.remarkMultiple')}}" method="post">
                     {{csrf_field()}}
                     <div class="modal-body">
                         <div class="col-md-12">
                             <div class="col-md-offset-2">
                                 {{ csrf_field() }}
-                                {{--<input name="appIds[]" type="text" id="appIds"/>--}}
-                                <div class="form-group">
-                                    <label for="application_ids" class="col-md-4 control-label"> Selected Applications</label>
+                                <input name="appIds[]" type="text" id="appIds" hidden/>
+                                {{--<div class="form-group">
+                                    <label for="application_ids" class="col-md-4 control-label"></label>
                                     <div class="col-md-6">
-                                        <label for="name" class="control-label"
-                                               id="inward_ids_display"> </label>
-                                        <input name="appIds[]" type="text" id="appIds"/>
+                                      --}}{{--  <label for="name" class="control-label"
+                                               id="inward_ids_display"> </label>--}}{{--
+                                        <input name="appIds[]" type="text" id="appIds" hidden/>
                                     </div>
-                                </div>
+                                </div>--}}
                                 <div class="form-group">
-                                    <label for="action" class="col-md-4 control-label"> Action</label>
+                                    <label for="actions" class="col-md-4 control-label"> Action</label>
                                     <div class="col-md-6">
-                                        <select multiple class="form-control" id="action" name="action" required>
+                                        <select multiple class="form-control" id="actions" name="actions[]" required>
                                             @foreach($actions as $action)
                                                 <option value="{{$action->action}}">{{$action->action}}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="name" class="col-md-4 control-label"> Remark</label>
+                                    <div class="col-md-6">
+                                        <input type="text" name="remark" id="remark" class="form-control"
+                                               placeholder="Enter Remark" required/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -217,16 +226,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="name" class="col-md-4 control-label"> Remark</label>
+                                    <label for="officer" class="col-md-4 control-label"> Officer</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="remark" id="remark" class="form-control"
-                                               placeholder="Enter Remark"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="user_id" class="col-md-4 control-label"> User</label>
-                                    <div class="col-md-6">
-                                        <select class="form-control" id="user_id" name="user_id">
+                                        <select class="form-control" id="officer" name="officer" required>
                                             @foreach($users as $user)
                                                 <option value="{{$user->id}}">{{$user->name}}</option>
                                             @endforeach
@@ -237,8 +239,8 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="text-align: center !important;">
-                        <button type="button" class="btn btn-md btn-warning" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-md btn-success">Save</button>
+                            <button type="button" class="btn btn-md btn-warning" data-dismiss="modal" style="margin-top: 10px">Cancel</button>
+                            <button type="submit" class="btn btn-md btn-success" style="margin-top: 10px">Save</button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->

@@ -24,10 +24,19 @@ class ApplicationController extends Controller
     public function index()
     {
         $role = Auth()->user()->role;
+        $applications =[];
+        if($role=='PA_USER'){
+            $applications = Application::where('status', 'CREATED')->get();
+        } elseif ($role=='CLERK'){
+            $applications = Application::where('status', 'PA_USER UPDATED')->get();
+        } elseif ($role=='DEPARTMENT_USER'){
+            $applications = Application::where('status', 'CLERK UPDATED')->get();
+        } elseif ($role =='SUPERUSER'){
+            $applications = Application::all();
+        }
         if($role =='SUPERUSER'){
             $role='PA_USER';
         }
-        $applications = Application::all();
         foreach ($applications as $application):
             $application['selected'] = true;
             $application->myField = 'true';
@@ -123,21 +132,60 @@ class ApplicationController extends Controller
         if($role == 'SUPERUSER'){
             $role = 'PA_USER';
         }
-
+        $actionString = "";
+        if(count($request['actions']) > 0){
+            foreach ($request['actions'] as $action) {
+                $actionString =  $action."," .  $actionString;
+            }
+        }
         $application_remark = Application_Remark::create([
             'remark' => $request['remark'],
             'inward_id' => $request['inward_id'],
-            'user_id' => $request['user_id'],
-            'action' => $request['action'],
+            'officer' => $request['officer'],
+            'user_id' =>  Auth()->user()->id,
+            'action' => rtrim($actionString,","),
             'department' => $request['department'],
             'role' => $role
         ]);
         $application_remark->save();
         Application::where('inward_no', $request['inward_id'])->update(['status' => $role.' UPDATED']);
         Session::flash('success','Application remark submitted Successfully.');
-        return redirect()->action('ApplicationController@index');
+        return redirect()->back();
     }
-
+    public function remarkMultiple(Request $request)
+    {
+        //dd($request->all());
+        $role = Auth()->user()->role;
+        if($role == 'SUPERUSER'){
+            $role = 'PA_USER';
+        }
+        $appIds = $request['appIds'];
+        $str_arr = preg_split ("/\,/", $appIds[0]);
+        $actionString = "";
+        if(count($request['actions']) > 0){
+            foreach ($request['actions'] as $action) {
+                $actionString =  $action."," .  $actionString;
+            }
+        }
+        foreach ($str_arr as $id) {
+            $applications = DB::table('applications')
+                ->where('id', $id)
+                ->get();
+            $application_remark = Application_Remark::create([
+                'remark' => $request['remark'],
+                'inward_id' => $applications[0]->inward_no,
+                'officer' => $request['officer'],
+                'user_id' =>  Auth()->user()->id,
+                'action' => rtrim($actionString,","),
+                'department' => $request['department'],
+                'role' => $role
+            ]);
+            $application_remark->save();
+            Application::where('inward_no', $application_remark['inward_id'])->update(['status' => $role.' UPDATED']);
+        }
+        Session::flash('success','Application remark submitted Successfully.');
+        return redirect()->back();
+    }
     /**
      * Display the specified resource.
      *

@@ -27,10 +27,19 @@ class HomeController extends Controller
     public function index()
     {
         $role = Auth()->user()->role;
+        $applications =[];
+        if($role=='PA_USER'){
+            $applications = Application::where('status', 'CREATED')->get();
+        } elseif ($role=='CLERK'){
+            $applications = Application::where('status', 'PA_USER UPDATED')->get();
+        } elseif ($role=='DEPARTMENT_USER'){
+            $applications = Application::where('status', 'CLERK UPDATED')->get();
+        } elseif ($role =='SUPERUSER'){
+            $applications = Application::all();
+        }
         if($role =='SUPERUSER'){
             $role='PA_USER';
         }
-        $applications = Application::all();
         foreach ($applications as $application):
             $application['selected'] = true;
             $application->myField = 'true';
