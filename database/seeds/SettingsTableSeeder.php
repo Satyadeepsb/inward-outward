@@ -13,11 +13,11 @@ class SettingsTableSeeder extends Seeder
     {
         App\Setting::create([
             'name' => 'email',
-            'enable' => false
+            'enable' => true
         ]);
         App\Setting::create([
             'name' => 'sms',
-            'enable' => false
+            'enable' => true
         ]);
     }
 }
