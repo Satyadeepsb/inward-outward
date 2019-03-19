@@ -36,7 +36,7 @@ class RegisterMail extends Mailable
     public function build()
     {
         return $this->
-            from('tonybaba7000@gmail.com')->
+            from('test@technosoft-solution.com')->
             view('mail.register');
     }
 }

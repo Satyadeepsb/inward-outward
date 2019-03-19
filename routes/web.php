@@ -34,6 +34,14 @@ Route::post('/application/remark', [
 ]);
 Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware\SuperUserMiddleware']],
     function (){
+        Route::get('/settings', [
+            'uses'=>'SettingsController@index',
+            'as'=>'settings.index'
+        ]);
+        Route::post('/settings/update', [
+            'uses'=>'SettingsController@update',
+            'as'=>'settings.update'
+        ]);
     Route::post('/user/save-or-update', 'UserDetailsController@create');
     Route::resource('/users', 'UsersController');
     Route::resource('/user/{id}', 'UserDetailsController');

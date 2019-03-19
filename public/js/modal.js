@@ -54,8 +54,6 @@ form.addEventListener('submit', function (e) {
     request.send(formData);
 });*/
 $('.bulk-action').on('click', function (e) {
-
-
     var allVals = [];
     $(".sub_chk:checked").each(function () {
         allVals.push($(this).attr('data-id'));
@@ -68,6 +66,26 @@ $('.bulk-action').on('click', function (e) {
         myModal.modal('show');
         myModal.find('.modal-body #appIds').val(allVals);
     }
+});
+
+$('.save-setting').on('click', function (e) {
+    var allVals = [];
+    $(".setting_chk:checked").each(function () {
+        allVals.push($(this).attr('data-name'));
+    });
+    console.log(allVals);
+    var form = document.getElementById('settingsForm');
+    var request = new XMLHttpRequest();
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var formData = new FormData(form);
+        formData.append('email', 1);
+        formData.append('sms', 0);
+        console.log(formData);
+        request.open('post', '/super/settings/update');
+        // request.addEventListener('load', transferComplete);
+        request.send(formData);
+    });
 });
 
 $('#select-all').on('click', function(e) {

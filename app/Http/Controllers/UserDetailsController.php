@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Setting;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Mail\Mailer;
@@ -18,7 +19,6 @@ class UserDetailsController extends Controller
         if($id == 0) {
             return view('user_details');
         }else{
-            print($id);
             $user = User::find($id);
             return view('user_details')->with('user',$user);
         }
@@ -51,26 +51,45 @@ class UserDetailsController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,$id, Mailer $mailer)
+    public function store(Request $request, Mailer $mailer)
     {
         $user = $request->all();
-        $newUser = User::create([
-            'name' => $user['name'],
-            'email' => $user['email'],
-            'mobile' => $user['mobile'],
-            'role' => $user['role'],
-            'location' => $user['location'],
-            'address' => $user['address'],
-            'designation' => $user['designation'],
-            'password' => bcrypt($user['password'])
-        ]);
-        $newUser->save();
-        $mailer->
-        to($newUser->email)->
-        send(new \App\Mail\RegisterMail($newUser->email,$user['password'],'http://localhost:8000/login',$newUser->name));
-        Session::flash('success','User created Successfully.');
-        return redirect()->action('UsersController@index');
-
+        $oldUser = User::where('email', trim($user['email']))->first();
+        if(is_null($oldUser) || empty($oldUser)) {
+            $userMobile = $user['mobile'];
+            $userEmail = $user['email'];
+            $userPass = $user['password'];
+            $newUser = User::create([
+                'name' => $user['name'],
+                'email' => trim($user['email']),
+                'mobile' => $user['mobile'],
+                'role' => $user['role'],
+                'location' => $user['location'],
+                'address' => $user['address'],
+                'designation' => $user['designation'],
+                'password' => bcrypt($user['password'])
+            ]);
+            $newUser->save();
+            $smsSetting = Setting::where('name', 'sms')->first();
+            if(!is_null($smsSetting) &&  $smsSetting['enable'] == 1){
+                $client = new \GuzzleHttp\Client();
+                $messageText = 'Hello ' .  $newUser->name . ' Your credential for Inward-Outward Management are Username ' . $userEmail . ' Password ' .$userPass;
+                $smsUrl = 'http://www.smsjust.com/sms/user/urlsms.php?username=techuser&pass=tech@12345&senderid=257147&dest_mobileno=' . $userMobile .'&message='. $messageText.'&response=Y';
+                $smsRequest = $client->get($smsUrl);
+                $smsResponse = $smsRequest->getBody()->getContents();
+            }
+            $mailSetting = Setting::where('name', 'email')->first();
+            if(!is_null($mailSetting) &&  $mailSetting['enable'] == 1){
+                $mailer->
+                to($userEmail)->
+                send(new \App\Mail\RegisterMail($userEmail,$userPass,'http://localhost:8000/login',$newUser->name));
+            }
+            Session::flash('success','User created Successfully.');
+            return redirect()->action('UsersController@index');
+        } else{
+            Session::flash('error','Email already Exist.');
+            return redirect()->action('UserDetailsController@index', 0);
+        }
     }
 
     /**

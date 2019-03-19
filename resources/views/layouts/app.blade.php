@@ -96,8 +96,9 @@
                             <a href="/applications"
                                class="{{ (str_contains(Request::path(), 'application') || str_contains(Request::path(), 'home')) ? 'list-group-item active' : 'list-group-item' }}">Applications</a>
                             <a href="{{route('users.index')}}"
-                               class="{{ (str_contains(Request::path(), 'super') || str_contains(Request::path(), 'user')) ? 'list-group-item active' : 'list-group-item' }}">Users</a>
-                            <a href="/super/settings" class="list-group-item">Settings</a>
+                               class="{{ (str_contains(Request::path(), 'super') || str_contains(Request::path(), 'user')) && !str_contains(Request::path(), 'settings') ? 'list-group-item active' : 'list-group-item' }}">Users</a>
+                            <a href="{{route('settings.index')}}"
+                               class="{{ (str_contains(Request::path(), 'settings')) ? 'list-group-item active' : 'list-group-item' }}">Settings</a>
 
                             {{-- <a href="#" class="list-group-item">Designation</a>
                              <a href="#" class="list-group-item">Document </a>
