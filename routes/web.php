@@ -37,6 +37,10 @@ Route::post('/application/remark-multiple', [
     'uses'=>'ApplicationController@remarkMultiple',
     'as'=>'application.remarkMultiple'
 ]);
+Route::get('/application/{id}', [
+    'uses'=>'ApplicationController@get',
+    'as'=>'application.get'
+]);
 Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware\SuperUserMiddleware']],
     function (){
         Route::get('/settings', [

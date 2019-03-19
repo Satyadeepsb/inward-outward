@@ -46,7 +46,11 @@ class ApplicationController extends Controller
             ->get();
         $departments = Department::all();
         $users= User::all();
-        return view('user_applications')->with('applications', $applications)->with('actions', $actions)->with('departments', $departments)->with('users', $users);
+        return view('user_applications')
+            ->with('applications', $applications)
+            ->with('actions', $actions)
+            ->with('departments', $departments)
+            ->with('users', $users);
     }
 
     /**
@@ -87,32 +91,32 @@ class ApplicationController extends Controller
                // Storage::put($fileName, file_get_contents($file));
             endforeach;
         }*/
-           $docString = "";
-           if(count($requestObj['documents']) > 0){
-               foreach ($requestObj['documents'] as $doc) {
-                   $docString =  $doc."," .  $docString;
-               }
-           }
-           $requestDate = $requestObj['date'];
-           if(empty($requestDate)){
-               $requestDate = date("Y-m-d");
-           }
-           $application = Application::create([
-               'name' => $requestObj['name'],
-               'inward_no' => $requestObj['inward_no'],
-               'reference_no' => $requestObj['reference_no'],
-               'mobile' => $requestObj['mobile'],
-               'address' => $requestObj['address'],
-               'district' => $requestObj['district'],
-               'taluka' => $requestObj['taluka'],
-               'status' => 'CREATED',
-               'documents' => rtrim($docString,",") ,
-               'date' =>$todayDate = $requestDate,
-               'user_id' => Auth()->user()->id,
-           ]);
-           $application->save();
-           Session::flash('success','Application created Successfully.');
-           return redirect()->back();
+        $docString = "";
+        if(count($requestObj['documents']) > 0){
+            foreach ($requestObj['documents'] as $doc) {
+                $docString =  $doc."," .  $docString;
+            }
+        }
+        $requestDate = $requestObj['date'];
+        if(empty($requestDate)){
+            $requestDate = date("Y-m-d");
+        }
+        $application = Application::create([
+            'name' => $requestObj['name'],
+            'inward_no' => $requestObj['inward_no'],
+            'reference_no' => $requestObj['reference_no'],
+            'mobile' => $requestObj['mobile'],
+            'address' => $requestObj['address'],
+            'district' => $requestObj['district'],
+            'taluka' => $requestObj['taluka'],
+            'status' => 'CREATED',
+            'documents' => rtrim($docString,",") ,
+            'date' =>$todayDate = $requestDate,
+            'user_id' => Auth()->user()->id,
+        ]);
+        $application->save();
+        Session::flash('success','Application created Successfully.');
+        return redirect()->back();
     }
     /**
      * Store a newly created resource in storage.
@@ -208,7 +212,28 @@ class ApplicationController extends Controller
     {
         //
     }
-
+    public static function getUserName($id) {
+        $user_arr = User::where('id', $id)->get();
+        if(!is_null($user_arr) && count($user_arr)> 0) {
+            $user = $user_arr[0];
+            return $user->name;
+        }
+        return "";
+    }
+    public function get($id)
+    {
+        $application_arr = Application::where('inward_no', $id)->get();
+        if(!is_null($application_arr) && count($application_arr)> 0) {
+            $application = $application_arr[0];
+            $application_remarks = Application_Remark::where('inward_id', $id)->get();
+            return view('application_details')
+                ->with('application',$application)
+                ->with('application_remarks',$application_remarks);
+        } else{
+            Session::flash('error','No Application Found');
+            return redirect()->back();
+        }
+    }
     /**
      * Update the specified resource in storage.
      *

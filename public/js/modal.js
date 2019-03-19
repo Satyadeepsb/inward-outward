@@ -7,7 +7,7 @@ $('#deleteUser').on('show.bs.modal', function (event) {
     modal.find('.modal-body #user_id').val(user_id);
 });
 
-$('#editModal').on('show.bs.modal', function (event) {
+$('#paEditModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var application = button.data('application');
     var modal = $(this);

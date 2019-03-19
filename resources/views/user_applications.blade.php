@@ -7,12 +7,14 @@
             <div class="{{(((Auth::user()->hasRole('PA_USER')) && count($actions) > 0))? 'col-md-10':'col-md-11' }}">
                 <p style="color: white;font-size: 20px">Applications</p>
             </div>
-            <div class="col-md-1">
-                <a href="{{route('application.create')}}"
-                   class="btn btn-default btn-sm pull-right"
-                   style="margin-top: 5px;">
-                    <b>Create</b>&nbsp;<i class="fa fa-plus-circle" aria-hidden="true"></i></a>
-            </div>
+            @if(Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('USER'))
+                <div class="col-md-1">
+                    <a href="{{route('application.create')}}"
+                       class="btn btn-default btn-sm pull-right"
+                       style="margin-top: 5px;">
+                        <b>Create</b>&nbsp;<i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                </div>
+            @endif
             @if((Auth::user()->hasRole('PA_USER')) && count($actions) > 0)
                 <div class="col-md-1">
                     <button class="btn btn-warning btn-sm pull-right bulk-action"
@@ -34,9 +36,8 @@
                 <th>Date</th>
                 <th>Documents</th>
                 <th>Reference No</th>
-                @if(Auth::user()->hasRole('PA_USER'))
-                    <th></th>
-                @endif
+                <th></th>
+
             </tr>
             </thead>
             @if(count($applications) > 0)
@@ -57,11 +58,27 @@
                         <td>{{$application->reference_no }}</td>
                         @if(Auth::user()->hasRole('PA_USER'))
                             <td>
-                                <button data-toggle="modal" data-target="#editModal"
+                                <button data-toggle="modal" data-target="#paEditModal"
                                         data-application="{{$application}}" style="cursor: pointer"
                                         class="btn btn-warning btn-sm pull-right">
                                     <b>Action</b>
                                 </button>
+                            </td>
+                        @endif
+                        @if(Auth::user()->hasRole('CLERK'))
+                            <td>
+                                <a href="{{route('application.get',['id'=>$application->inward_no])}}" style="cursor: pointer"
+                                   class="btn btn-warning btn-sm pull-right">
+                                    <b>Action</b>
+                                </a>
+                            </td>
+                        @endif
+                        @if(Auth::user()->hasRole('DEPARTMENT_USER'))
+                            <td>
+                                <a href="{{route('application.get',['id'=>$application->inward_no])}}" style="cursor: pointer"
+                                   class="btn btn-warning btn-sm pull-right">
+                                    <b>Action</b>
+                                </a>
                             </td>
                         @endif
                     </tr>
@@ -77,7 +94,7 @@
         </table>
     </div>
 
-    <div class="modal fade" tabindex="-1" role="dialog" id="editModal">
+    <div class="modal fade" tabindex="-1" role="dialog" id="paEditModal">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -167,8 +184,8 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="text-align: center !important;">
-                            <button type="button" class="btn btn-md btn-warning" data-dismiss="modal" style="margin-top: 10px">Cancel</button>
-                            <button type="submit" class="btn btn-md btn-success" style="margin-top: 10px"> Save</button>
+                        <button type="button" class="btn btn-md btn-warning" data-dismiss="modal" style="margin-top: 10px">Cancel</button>
+                        <button type="submit" class="btn btn-md btn-success" style="margin-top: 10px"> Save</button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->
@@ -239,8 +256,8 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="text-align: center !important;">
-                            <button type="button" class="btn btn-md btn-warning" data-dismiss="modal" style="margin-top: 10px">Cancel</button>
-                            <button type="submit" class="btn btn-md btn-success" style="margin-top: 10px">Save</button>
+                        <button type="button" class="btn btn-md btn-warning" data-dismiss="modal" style="margin-top: 10px">Cancel</button>
+                        <button type="submit" class="btn btn-md btn-success" style="margin-top: 10px">Save</button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->
