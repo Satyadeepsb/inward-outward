@@ -9,15 +9,14 @@
             </div>
             <div class="col-md-1">
                 <a href="{{route('application.create')}}"
-                   class="btn btn-default btn-sm pull-right"
-                   style="margin-top: 5px">
+                   class="btn btn-default btn-sm"
+                   style="margin-top: 5px;padding-left: 5px">
                     <b>Create</b>&nbsp;<i class="fa fa-plus-circle" aria-hidden="true"></i></a>
             </div>
             @if((Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER')) && count($actions) > 0)
                 <div class="col-md-1">
-                    <button
-                            class="btn btn-warning btn-sm pull-right bulk-action"
-                            style="margin-top: 5px">
+                    <button class="btn btn-warning btn-sm bulk-action"
+                            style="margin-top: 5px;margin-right: 10px">
                         <b>Bulk Action</b>
                     </button>
                 </div>
@@ -95,18 +94,20 @@
                                 <div class="form-group">
                                     <label for="name" class="col-md-4 control-label"> Inward Number</label>
                                     <div class="col-md-6">
-                                        <label for="name" class="col-md-8 control-label" id="inward_id_display"> </label>
+                                        <label for="name" class="col-md-8 control-label"
+                                               id="inward_id_display"> </label>
                                         <input type="text" name="inward_id" id="inward_id"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="name" class="col-md-4 control-label">Application Name</label>
                                     <div class="col-md-6">
-                                        <label for="name" class="col-md-8 control-label" id="application_name_display"></label>
+                                        <label for="name" class="col-md-8 control-label"
+                                               id="application_name_display"></label>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="name" class="col-md-4 control-label" >Status</label>
+                                    <label for="name" class="col-md-4 control-label">Status</label>
                                     <div class="col-md-6">
                                         <label for="name" id="status_display" class="col-md-8 control-label"></label>
                                     </div>
@@ -180,18 +181,58 @@
                                 aria-hidden="true">&times;</span></button>
                     <h3 class="modal-title text-center">Bulk Action</h3>
                 </div>
-                <form action="{{route('users.destroy','test')}}" method="post">
-                    {{method_field('delete')}}
+                <form action="{{route('application.remark')}}" method="post">
                     {{csrf_field()}}
                     <div class="modal-body">
                         <div class="col-md-12">
                             <div class="col-md-offset-2">
-                                <form class="form-horizontal" role="form" method="POST"
-                                      action="{{route('application.createNew')}}">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="action" id="action" value="">
-                                    <input name="appIds[]" type="text" id="appIds" />
-                                </form>
+                                {{ csrf_field() }}
+                                {{--<input name="appIds[]" type="text" id="appIds"/>--}}
+                                <div class="form-group">
+                                    <label for="application_ids" class="col-md-4 control-label"> Selected Applications</label>
+                                    <div class="col-md-6">
+                                        <label for="name" class="control-label"
+                                               id="inward_ids_display"> </label>
+                                        <input name="appIds[]" type="text" id="appIds"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="action" class="col-md-4 control-label"> Action</label>
+                                    <div class="col-md-6">
+                                        <select multiple class="form-control" id="action" name="action" required>
+                                            @foreach($actions as $action)
+                                                <option value="{{$action->action}}">{{$action->action}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="department" class="col-md-4 control-label"> Department</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" id="department" name="department" required>
+                                            @foreach($departments as $department)
+                                                <option value="{{$department->name}}">{{$department->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name" class="col-md-4 control-label"> Remark</label>
+                                    <div class="col-md-6">
+                                        <input type="text" name="remark" id="remark" class="form-control"
+                                               placeholder="Enter Remark"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="user_id" class="col-md-4 control-label"> User</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" id="user_id" name="user_id">
+                                            @foreach($users as $user)
+                                                <option value="{{$user->id}}">{{$user->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

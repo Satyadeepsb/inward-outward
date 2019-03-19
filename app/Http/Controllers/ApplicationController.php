@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Session;
 use Storage;
 use DB;
+use App\User;
 class ApplicationController extends Controller
 {
     /**
@@ -35,8 +36,8 @@ class ApplicationController extends Controller
             ->where('user_type', $role)
             ->get();
         $departments = Department::all();
-        print_r($departments);
-        return view('user_applications')->with('applications', $applications)->with('actions', $actions)->with('departments', $departments);
+        $users= User::all();
+        return view('user_applications')->with('applications', $applications)->with('actions', $actions)->with('departments', $departments)->with('users', $users);
     }
 
     /**
