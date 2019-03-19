@@ -14,6 +14,8 @@ use Session;
 use Storage;
 use DB;
 use App\User;
+
+
 class ApplicationController extends Controller
 {
     /**
@@ -60,18 +62,52 @@ class ApplicationController extends Controller
      */
     public function create()
     {
-        $lastId = Application::orderBy('id', 'desc')->first()->id;
+        $app = Application::orderBy('id', 'desc')->first();
+        $lastId = 0;
+        if(!is_null($app)){
+            $lastId = $app->id;
+        }
         $lastId = $lastId + 1001;
         $todayDate = date("Y-m-d");
         $districts = District::all();
         $documents = Document::all();
         $talukas = Taluka::all();
-        $data = ['districts'=>$districts,
+        //$talukas1 = DB::table('talukas')->where('district_id',2)->pluck("name","id")->all();
+        //dd($talukas1);
+        $data = [
+            'districts'=>$districts,
             'talukas'=>$talukas,
             'documents'=>$documents,
             'inward_id'=>$lastId,
             'todayDate'=>$todayDate];
         return view('create_application')->with('data', $data);
+    }
+
+    public  function districtChange(Request $request){
+        if($request->ajax()){
+
+            // $talukas = DB::table('talukas')->where('district_id',$request->district_id)->pluck("name","id")->all();
+            // print_r($talukas);
+            $talukas = [2 => "Karad", 7 => "Limb"];
+            $data = view('create_application',compact('talukas'))->render();
+            var_dump($data);
+            return response()->json(['options'=>$data]);
+        }
+    }
+    function fetch(Request $request)
+    {
+        // $select = $request->get('select');
+        $value = $request->get('value');
+         $dependent = $request->get('dependent');
+        $data = DB::table('talukas')
+            ->where('district_id', $value)
+            ->get();
+        $output = '<option value="">Select '.ucfirst($dependent).'</option>';
+        foreach($data as $row)
+        {
+            $output .= '<option value="'.$row->id.'">'.$row->name.'</option>';
+        }
+        echo $output;
     }
 
     public function createNew(Request $request)

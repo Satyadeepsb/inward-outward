@@ -29,6 +29,12 @@ Route::post('/application/createNew', [
     'as'=>'application.createNew'
 ]);
 
+Route::post('/application/district', [
+    'uses'=>'ApplicationController@districtChange',
+    'as'=>'application.district'
+]);
+Route::post('application/fetch', 'ApplicationController@fetch')->name('application.fetch');
+
 Route::post('/application/remark', [
     'uses'=>'ApplicationController@remark',
     'as'=>'application.remark'

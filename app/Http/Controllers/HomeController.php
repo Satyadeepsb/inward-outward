@@ -49,7 +49,11 @@ class HomeController extends Controller
             ->get();
         $departments = Department::all();
         $users= User::all();
-        return view('user_applications')->with('applications', $applications)->with('actions', $actions)->with('departments', $departments)->with('users', $users);
+        return view('user_applications')
+            ->with('applications', $applications)
+            ->with('actions', $actions)
+            ->with('departments', $departments)
+            ->with('users', $users);
         /*if($role == 'SUPERUSER'){
             return view('home');
         } else {

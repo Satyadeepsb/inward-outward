@@ -97,4 +97,27 @@ $('#select-all').on('click', function(e) {
     }
 });
 
+$('.dynamic').change(function(){
+    if($(this).val() != '')
+    {
+        var select = $(this).attr("id");
+        var value = $(this).val();
+        var dependent = $(this).data('dependent');
+        var _token = $('input[name="_token"]').val();
+        $.ajax({
+            url:"/application/fetch",
+            method:"POST",
+            data:{select:select, value:value, _token:_token, dependent:dependent},
+            success:function(result)
+            {
+                console.log(dependent);
+                $('#taluka').html(result);
+            }
 
+        })
+    }
+});
+
+$('#district').change(function(){
+    $('#taluka').val('');
+});
