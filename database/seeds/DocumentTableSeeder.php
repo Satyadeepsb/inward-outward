@@ -11,9 +11,9 @@ class DocumentTableSeeder extends Seeder
      */
     public function run()
     {
-        App\Document::create(['name' => 'Aadhar Card']);
+       /* App\Document::create(['name' => 'Aadhar Card']);
         App\Document::create(['name' => 'Pan Card']);
         App\Document::create(['name' => 'Reshan Card']);
-        App\Document::create(['name' => '7/12 Utara']);
+        App\Document::create(['name' => '7/12 Utara']);*/
     }
 }
