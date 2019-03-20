@@ -37,7 +37,6 @@
                 <th>Documents</th>
                 <th>Reference No</th>
                 <th></th>
-
             </tr>
             </thead>
             @if(count($applications) > 0)
