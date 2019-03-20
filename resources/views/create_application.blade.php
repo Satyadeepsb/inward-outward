@@ -109,7 +109,7 @@
                     <div class="form-group">
                         <label for="taluka" class="col-md-4 control-label">Taluka</label>
                         <div class="col-md-6">
-                            <select name="taluka" id="taluka" class="form-control dynamic"
+                            <select name="taluka" id="taluka" class="form-control"
                                     data-dependent="taluka">
                                 <option value="">Select Taluka</option>
                             </select>

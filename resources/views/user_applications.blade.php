@@ -106,42 +106,66 @@
                     {{csrf_field()}}
                     <div class="modal-body">
                         <div class="col-md-12">
+                            <div class="panel panel-default fadeInDown">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="col-md-5">Inward Number</label>
+                                            <div class="col-md-7">
+                                                <label for="name" class="col-md-8 control-label"
+                                                       id="inward_id_display"> </label>
+                                                <input type="text" name="inward_id" id="inward_id" hidden/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="col-md-5"> Reference Number</label>
+                                            <div class="col-md-7">
+                                                <label for="name" class="col-md-8 control-label"
+                                                       id="reference_no_display"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="col-md-5">Application Name</label>
+                                            <div class="col-md-7">
+                                                <label for="name" class="col-md-8 control-label"
+                                                       id="application_name_display"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="col-md-5"> Date</label>
+                                            <div class="col-md-7">
+                                                <label for="name" id="date_display" class="col-md-8 control-label"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="col-md-5">Status</label>
+                                            <div class="col-md-7">
+                                                <label for="name" class="col-md-8 control-label"
+                                                       id="status_display" ></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="col-md-2">Documents</label>
+                                            <div class="col-md-7">
+                                                <label for="name" class="col-md-8 control-label"
+                                                       id="documents_display"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-offset-2">
                                 <input type="hidden" name="action" id="action" value="">
-                                <div class="form-group">
-                                    <label for="name" class="col-md-4 control-label"> Inward Number</label>
-                                    <div class="col-md-6">
-                                        <label for="name" class="col-md-8 control-label"
-                                               id="inward_id_display"> </label>
-                                        <input type="text" name="inward_id" id="inward_id" hidden/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name" class="col-md-4 control-label">Application Name</label>
-                                    <div class="col-md-6">
-                                        <label for="name" class="col-md-8 control-label"
-                                               id="application_name_display"></label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name" class="col-md-4 control-label">Status</label>
-                                    <div class="col-md-6">
-                                        <label for="name" id="status_display" class="col-md-8 control-label"></label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name" class="col-md-4 control-label"> Date</label>
-                                    <div class="col-md-6">
-                                        <label for="name" class="col-md-8 control-label" id="date_display"></label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name" class="col-md-4 control-label"> Documents</label>
-                                    <div class="col-md-6">
-                                        <label for="name"
-                                               class="col-md-8 control-label" id="documents_display"></label>
-                                    </div>
-                                </div>
+
                                 <div class="form-group">
                                     <label for="actions" class="col-md-4 control-label"> Action</label>
                                     <div class="col-md-6">
@@ -184,8 +208,14 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="text-align: center !important;">
-                        <button type="button" class="btn btn-md btn-warning" data-dismiss="modal" style="margin-top: 10px">Cancel</button>
-                        <button type="submit" class="btn btn-md btn-success" style="margin-top: 10px"> Save</button>
+                        <button type="button" class="btn btn-md btn-warning" data-dismiss="modal" style="margin-top: 10px">
+                            Cancel
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                        <button type="submit" class="btn btn-md btn-success" style="margin-top: 10px">
+                            Save
+                            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                        </button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->
@@ -256,8 +286,12 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="text-align: center !important;">
-                        <button type="button" class="btn btn-md btn-warning" data-dismiss="modal" style="margin-top: 10px">Cancel</button>
-                        <button type="submit" class="btn btn-md btn-success" style="margin-top: 10px">Save</button>
+                        <button type="button" class="btn btn-md btn-warning" data-dismiss="modal" style="margin-top: 10px">Cancel
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                        <button type="submit" class="btn btn-md btn-success" style="margin-top: 10px">Save
+                            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                        </button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->

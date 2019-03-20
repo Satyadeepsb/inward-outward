@@ -21,8 +21,8 @@ class CreateApplicationRemarksTable extends Migration
             $table->string('action');
             $table->string('department');
             $table->integer('officer');
-            $table->integer('role');
-            $table->date('deleted');
+            $table->string('role');
+            $table->date('deleted')->nullable();
             $table->timestamps();
         });
     }

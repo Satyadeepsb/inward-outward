@@ -13,6 +13,7 @@ $('#paEditModal').on('show.bs.modal', function (event) {
     var modal = $(this);
     modal.find('.modal-body #inward_id').val(application.inward_no);
     modal.find('.modal-body #inward_id_display')[0].innerHTML = application.inward_no;
+    modal.find('.modal-body #reference_no_display')[0].innerHTML = application.reference_no;
     modal.find('.modal-body #application_name_display')[0].innerHTML = application.name;
     modal.find('.modal-body #status_display')[0].innerHTML = application.status;
     modal.find('.modal-body #date_display')[0].innerHTML = application.date;

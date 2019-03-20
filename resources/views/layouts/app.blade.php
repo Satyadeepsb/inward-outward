@@ -94,11 +94,20 @@
                     <div class="col-md-2" style="padding: 0">
                         <div class="list-group">
                             <a href="/applications"
-                               class="{{ (str_contains(Request::path(), 'application') || str_contains(Request::path(), 'home')) ? 'list-group-item active' : 'list-group-item' }}">Applications</a>
+                               class="{{ (str_contains(Request::path(), 'application') || str_contains(Request::path(), 'home')) ? 'list-group-item active' : 'list-group-item' }}">
+                                <i class="fa fa-file-text-o" aria-hidden="true"></i> &nbsp;
+                                Applications
+                            </a>
                             <a href="{{route('users.index')}}"
-                               class="{{ (str_contains(Request::path(), 'super') || str_contains(Request::path(), 'user')) && !str_contains(Request::path(), 'settings') ? 'list-group-item active' : 'list-group-item' }}">Users</a>
+                               class="{{ (str_contains(Request::path(), 'super') || str_contains(Request::path(), 'user')) && !str_contains(Request::path(), 'settings') ? 'list-group-item active' : 'list-group-item' }}">
+                                <i class="fa fa-users" aria-hidden="true"></i> &nbsp;
+                                Users
+                            </a>
                             <a href="{{route('settings.index')}}"
-                               class="{{ (str_contains(Request::path(), 'settings')) ? 'list-group-item active' : 'list-group-item' }}">Settings</a>
+                               class="{{ (str_contains(Request::path(), 'settings')) ? 'list-group-item active' : 'list-group-item' }}">
+                                <i class="fa fa-cog" aria-hidden="true"></i> &nbsp;
+                                Settings
+                            </a>
 
                             {{-- <a href="#" class="list-group-item">Designation</a>
                              <a href="#" class="list-group-item">Document </a>
