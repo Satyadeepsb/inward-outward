@@ -101,7 +101,7 @@
                             <select name="district" id="district" class="form-control dynamic">
                                 <option value="">Select District</option>
                                 @foreach($data['districts'] as $district)
-                                    <option value="{{$district->name}}">{{$district->name}}</option>
+                                    <option value="{{$district->id}}">{{$district->name}}</option>
                                 @endforeach
                             </select>
                         </div>

@@ -160,13 +160,15 @@ class ApplicationController extends Controller
         if(empty($requestDate)){
             $requestDate = date("Y-m-d");
         }
+        $district_id = $requestObj['district'];
+        $district = District::where('id',$district_id)->get()[0];
         $application = Application::create([
             'name' => $requestObj['name'],
             'inward_no' => $requestObj['inward_no'],
             'reference_no' => $requestObj['reference_no'],
             'mobile' => $requestObj['mobile'],
             'address' => $requestObj['address'],
-            'district' => $requestObj['district'],
+            'district' => $district->name,
             'taluka' => $requestObj['taluka'],
             'status' => 'CREATED',
             'documents' => rtrim($docString,",") ,
