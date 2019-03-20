@@ -4,7 +4,7 @@
     <div class="{{Auth::user()->hasRole('SUPERUSER') ? 'col-md-12':'col-md-10 col-md-offset-1' }}"
          style="margin-top: 0px;padding-top: 0px">
         <div class="col-md-12 tile-highlight text-center" style="margin-bottom: 5px">
-            <div class="{{(((Auth::user()->hasRole('PA_USER')) && count($actions) > 0))? 'col-md-10':'col-md-11' }}">
+            <div class="{{(((Auth::user()->hasRole('PA_USER')) && count($applications) > 0))? 'col-md-10':'col-md-11' }}">
                 <p style="color: white;font-size: 20px">Applications</p>
             </div>
             @if(Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('USER'))
@@ -15,7 +15,7 @@
                         <b>Create</b>&nbsp;<i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                 </div>
             @endif
-            @if((Auth::user()->hasRole('PA_USER')) && count($actions) > 0)
+            @if((Auth::user()->hasRole('PA_USER')) && count($applications) > 0)
                 <div class="col-md-1">
                     <button class="btn btn-warning btn-sm pull-right bulk-action"
                             style="margin-top: 5px;">
@@ -44,7 +44,7 @@
                 <tbody>
                 @foreach($applications as $application)
                     <tr>
-                        @if(Auth::user()->hasRole('PA_USER'))
+                        @if(Auth::user()->hasRole('PA_USER') && count($applications) > 0)
                             <td style="text-align: center;">
                                 <input type="checkbox" name="{{$application->id}}" class="sub_chk"
                                        data-id="{{$application->id}}">
@@ -87,7 +87,7 @@
             @else
                 <tbody>
                 <tr>
-                    <td colspan="8" style="text-align: center"><b style="color: red">No Records Found.</b></td>
+                    <td colspan="7" style="text-align: center"><b style="color: red">No Records Found.</b></td>
                 </tr>
                 </tbody>
             @endif
