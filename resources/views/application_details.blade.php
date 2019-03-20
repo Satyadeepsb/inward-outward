@@ -162,6 +162,9 @@
                         </form>
                     </div>
                 @endif
+                <div class="col-md-12 text-center">
+                    <a href="{{route('applications.index')}}" class="btn btn-warning">Back</a>
+                </div>
             </div>
         </div>
     </div>

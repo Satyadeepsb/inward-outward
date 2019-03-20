@@ -42,6 +42,7 @@ function openDatePicker() {
 
 function transferComplete(data) {
     console.log(data.currentTarget.response);
+    location.reload();
 }
 
 var form = document.getElementById('uploadForm');
@@ -51,6 +52,7 @@ if(form){
         console.log('submitted');
         e.preventDefault();
         var formData = new FormData(form);
+        console.log(formData);
         request.open('post', '/application/save-remark');
         request.addEventListener('load', transferComplete);
         request.send(formData);

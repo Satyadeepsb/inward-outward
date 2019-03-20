@@ -302,46 +302,69 @@ class ApplicationController extends Controller
     }
     public function saveRemark(Request $request)
     {
-        $files = $request->file('file');
-        if(!empty($files)) {
-            foreach ($files as $file) :
-                $fileName = time() . '-' . $file->getClientOriginalName();
-                // To Save File In Public/Uploaded Folder
-                $file->move(public_path('/uploaded'), $fileName);
-                // To Save File In Storage/App Folder
-                //Storage::put($fileName, file_get_contents($file));
-                DB::table('uploaded__documents')->insert([
-                    [   'name' => $fileName,
-                        'stored_path' => '/uploaded/'.$fileName,
-                        'application_id' => $request['inward_id'],
-                        'user_id' =>  Auth()->user()->id
-                    ]]);
-            endforeach;
-        }
-        $role = Auth()->user()->role;
-        $actionString = "";
-        if(count($request['actions']) > 0){
-            foreach ($request['actions'] as $action) {
-                $actionString =  $action."," .  $actionString;
+       // echo $request->all();
+       // print_r($request->all());
+        try{
+            $files = $request->file('file');
+            if(!empty($files) || !is_null($files)) {
+                foreach ($files as $file):
+                    $fileName = time() . '-' . $file->getClientOriginalName();
+                    // To Save File In Public/Uploaded Folder
+                    $file->move(public_path('/uploaded'), $fileName);
+                    // To Save File In Storage/App Folder
+                    //Storage::put($fileName, file_get_contents($file));
+                    DB::table('uploaded__documents')->insert([
+                        [   'name' => $fileName,
+                            'stored_path' => '/uploaded/'.$fileName,
+                            'application_id' => $request['inward_id'],
+                            'user_id' =>  Auth()->user()->id
+                        ]]);
+                endforeach;
             }
+            $role = Auth()->user()->role;
+            $actionString = "";
+            if(count($request['actions']) > 0){
+                foreach ($request['actions'] as $action) {
+                    $actionString =  $action."," .  $actionString;
+                }
+            }
+            $application_remark = Application_Remark::create([
+                'remark' => $request['remark'],
+                'comment' => $request['comment'],
+                'inward_id' => $request['inward_id'],
+                'department' => $request['department2'],
+                'user_id' =>  Auth()->user()->id,
+                'role' =>  $role,
+                'officer' =>  $request['officer'],
+                'action' => rtrim($actionString,",")
+            ]);
+            $application_remark->save();
+            if ($role=='DEPARTMENT_USER') {
+                Application::where('inward_no', $application_remark['inward_id'])->update(['status' => 'COMPLETED']);
+            } else {
+                Application::where('inward_no', $application_remark['inward_id'])->update(['status' => $role . ' UPDATED']);
+            }
+            if ($role=='DEPARTMENT_USER'){
+                $applications = Application::where('status', 'CLERK UPDATED')->get();
+            } else{
+                $applications = Application::all();
+            }
+
+            if($role =='SUPERUSER'){
+                $role='PA_USER';
+            }
+            $actions = DB::table('actions')
+                ->where('user_type', $role)
+                ->get();
+            $departments = Department::all();
+            $users= User::where('role','DEPARTMENT_USER')->get();
+            Session::flash('success','Saved Successfully');
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            Session::flash('error','Something went wrong');
+            return response()->json(['success' => false]);
         }
-        $application_remark = Application_Remark::create([
-            'remark' => $request['remark'],
-            'comment' => $request['comment'],
-            'inward_id' => $request['inward_id'],
-            'department' => $request['department2'],
-            'user_id' =>  Auth()->user()->id,
-            'role' =>  $role,
-            'officer' =>  $request['officer'],
-            'action' => rtrim($actionString,",")
-        ]);
-        $application_remark->save();
-        if ($role=='DEPARTMENT_USER') {
-            Application::where('inward_no', $application_remark['inward_id'])->update(['status' => 'COMPLETED']);
-        } else {
-            Application::where('inward_no', $application_remark['inward_id'])->update(['status' => $role . ' UPDATED']);
-        }
-        return redirect()->back();
+
     }
     /**
      * Update the specified resource in storage.
