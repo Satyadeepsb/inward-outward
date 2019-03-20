@@ -11,11 +11,11 @@ class ActionTableSeeder extends Seeder
      */
     public function run()
     {
-        App\Document::create(['user_type' => 'PA_USER','action' => 'Verify']);
-        App\Document::create(['user_type' => 'PA_USER','action' => 'Check']);
-        App\Document::create(['user_type' => 'CLERK','action' => 'Upload']);
-        App\Document::create(['user_type' => 'CLERK','action' => 'Submit']);
-        App\Document::create(['user_type' => 'DEPARTMENT_USER','action' => 'Reject']);
-        App\Document::create(['user_type' => 'DEPARTMENT_USER','action' => 'Complete']);
+        App\Action::create(['user_type' => 'PA_USER','action' => 'Verify']);
+        App\Action::create(['user_type' => 'PA_USER','action' => 'Check']);
+        App\Action::create(['user_type' => 'CLERK','action' => 'Upload']);
+        App\Action::create(['user_type' => 'CLERK','action' => 'Submit']);
+        App\Action::create(['user_type' => 'DEPARTMENT_USER','action' => 'Reject']);
+        App\Action::create(['user_type' => 'DEPARTMENT_USER','action' => 'Complete']);
     }
 }
