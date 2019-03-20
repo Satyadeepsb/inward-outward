@@ -47,6 +47,14 @@ Route::get('/application/{id}', [
     'uses'=>'ApplicationController@get',
     'as'=>'application.get'
 ]);
+Route::post('/application/save-remark', [
+    'uses'=>'ApplicationController@saveRemark',
+    'as'=>'application.saveRemark'
+]);
+Route::post('/application/byDepartment', [
+    'uses'=>'ApplicationController@getByDepartment',
+    'as'=>'application.getByDepartment'
+]);
 Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware\SuperUserMiddleware']],
     function (){
         Route::get('/settings', [

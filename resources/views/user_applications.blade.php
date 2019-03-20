@@ -24,6 +24,22 @@
                 </div>
             @endif
         </div>
+        {{--<div class="col-md-12" style="margin-bottom: 10px">
+            <form>
+                {{ csrf_field() }}
+                <div class="form-group col-md-offset-3">
+                    <label for="dept" class="col-md-3 control-label" style="font-weight: bold"> Select Department</label>
+                    <div class="col-md-6">
+                        <select class="form-control" name="dept" id="dept">
+                            @foreach($departments as $department)
+                            <option value="{{$department->name}}">{{$department->name}}</option>
+                                @endforeach
+                        </select>
+
+                    </div>
+                </div>
+            </form>
+        </div>--}}
         <table class="table table-striped table-hover " style="border: 1px solid lightgray;">
             <thead>
             <tr style="text-align: center;">
@@ -36,6 +52,7 @@
                 <th>Date</th>
                 <th>Documents</th>
                 <th>Reference No</th>
+                <th></th>
                 <th></th>
             </tr>
             </thead>
@@ -55,7 +72,13 @@
                         <td>{{$application->date }}</td>
                         <td>{{$application->documents }}</td>
                         <td>{{$application->reference_no }}</td>
-                        @if(Auth::user()->hasRole('PA_USER'))
+                        <td>
+                            <a href="{{route('application.get',['id'=>$application->inward_no])}}" style="cursor: pointer"
+                               class="btn btn-group btn-sm pull-right">
+                                <b>View <i class="fa fa-eye" aria-hidden="true"></i></b>
+                            </a>
+                        </td>
+                        @if(Auth::user()->hasRole('PA_USER') && $application->status == 'CREATED')
                             <td>
                                 <button data-toggle="modal" data-target="#paEditModal"
                                         data-application="{{$application}}" style="cursor: pointer"
@@ -64,7 +87,7 @@
                                 </button>
                             </td>
                         @endif
-                        @if(Auth::user()->hasRole('CLERK'))
+                        @if(Auth::user()->hasRole('CLERK') && $application->status == 'PA_USER UPDATED')
                             <td>
                                 <a href="{{route('application.get',['id'=>$application->inward_no])}}" style="cursor: pointer"
                                    class="btn btn-warning btn-sm pull-right">
@@ -86,7 +109,7 @@
             @else
                 <tbody>
                 <tr>
-                    <td colspan="7" style="text-align: center"><b style="color: red">No Records Found.</b></td>
+                    <td colspan="8" style="text-align: center"><b style="color: red">No Records Found.</b></td>
                 </tr>
                 </tbody>
             @endif

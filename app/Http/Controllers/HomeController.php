@@ -28,13 +28,18 @@ class HomeController extends Controller
     {
         $role = Auth()->user()->role;
         $applications =[];
-        if($role=='PA_USER'){
+       /* if($role=='PA_USER'){
             $applications = Application::where('status', 'CREATED')->get();
         } elseif ($role=='CLERK'){
             $applications = Application::where('status', 'PA_USER UPDATED')->get();
         } elseif ($role=='DEPARTMENT_USER'){
             $applications = Application::where('status', 'CLERK UPDATED')->get();
         } elseif ($role =='SUPERUSER'){
+            $applications = Application::all();
+        }*/
+        if ($role=='DEPARTMENT_USER'){
+            $applications = Application::where('status', 'CLERK UPDATED')->get();
+        } else{
             $applications = Application::all();
         }
         if($role =='SUPERUSER'){
@@ -48,7 +53,7 @@ class HomeController extends Controller
             ->where('user_type', $role)
             ->get();
         $departments = Department::all();
-        $users= User::all();
+        $users= User::where('role','DEPARTMENT_USER')->get();
         return view('user_applications')
             ->with('applications', $applications)
             ->with('actions', $actions)

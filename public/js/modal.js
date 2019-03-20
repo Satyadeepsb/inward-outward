@@ -44,16 +44,19 @@ function transferComplete(data) {
     console.log(data.currentTarget.response);
 }
 
-/*
 var form = document.getElementById('uploadForm');
 var request = new XMLHttpRequest();
-form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var formData = new FormData(form);
-    request.open('post', '/application/createNew');
-    request.addEventListener('load', transferComplete);
-    request.send(formData);
-});*/
+if(form){
+    form.addEventListener('submit', function (e) {
+        console.log('submitted');
+        e.preventDefault();
+        var formData = new FormData(form);
+        request.open('post', '/application/save-remark');
+        request.addEventListener('load', transferComplete);
+        request.send(formData);
+    });
+}
+
 $('.bulk-action').on('click', function (e) {
     var allVals = [];
     $(".sub_chk:checked").each(function () {
@@ -111,10 +114,25 @@ $('.dynamic').change(function(){
             data:{select:select, value:value, _token:_token, dependent:dependent},
             success:function(result)
             {
-                console.log(dependent);
                 $('#taluka').html(result);
             }
+        })
+    }
+});
+$('#dept').change(function(){
+    if($(this).val() != '')
+    {
+        var select = $(this).attr("id");
+        var value = $(this).val();
+        var _token = $('input[name="_token"]').val();
+        $.ajax({
+            url:"/application/byDepartment",
+            method:"POST",
+            data:{ value:value, _token:_token},
+            success:function(result)
+            {
 
+            }
         })
     }
 });

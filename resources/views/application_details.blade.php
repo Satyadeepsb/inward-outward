@@ -5,24 +5,6 @@
         <div class="panel panel-default">
             <div class="panel-heading">Application Details</div>
             <div class="panel-body">
-                {{--<form class="form-horizontal"
-                      role="form" method="POST"
-                      action="{{route('application.createNew')}}"
-                      id="uploadForm"
-                      enctype="multipart/form-data"
-                >
-                {{ csrf_field() }}
-                    <div class="form-group">
-                        <label for="upload" class="col-md-4 control-label"> Inward Number</label>
-                        <div class="col-md-6">
-                            <input type="file" name="file[]" multiple id="upload">
-                            <input type="submit" class="btn btn-info">
-                        </div>
-                    </div>
-                </form>--}}
-
-
-
                 <div class="panel panel-default fadeInDown">
                     <div class="panel-body">
                         <div class="row">
@@ -66,16 +48,16 @@
                             </div>
                         </div>
                         @if(count($application_remarks) > 0)
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="col-md-5">Department</label>
-                                <div class="col-md-7">{{$application_remarks[0]->department}} </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-md-5">Department</label>
+                                    <div class="col-md-7">{{$application_remarks[0]->department}} </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-5"> Officer</label>
+                                    <div class="col-md-7">{{\App\Http\Controllers\ApplicationController::getUserName($application_remarks[0]->officer)}} </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="col-md-5"> Officer</label>
-                                <div class="col-md-7">{{\App\Http\Controllers\ApplicationController::getUserName($application_remarks[0]->user_id)}} </div>
-                            </div>
-                        </div>
                         @endif
                         <div class="row">
                             <div class="col-md-6">
@@ -96,7 +78,7 @@
                             <hr>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h4>{{$application_remark->role}}</h4>
+                                    <p style="font-size: 18px;font-weight: bold">{{$application_remark->role}}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -118,42 +100,68 @@
                                 </div>
                             </div>
                         @endforeach
+                        <hr>
+                        @if(count($documents) > 0)
+                            <p style="font-size: 18px;font-weight: bold">Uploaded Documents</p>
+                            @foreach($documents as $document)
+                                <a href="{{$document->stored_path}}" target="_blank"> {{$document->name}}</a>
+                                <br>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
-                <div class="row well">
-                    <form class="form-horizontal" role="form" method="POST" action="{{route('application.createNew')}}">
-                        {{ csrf_field() }}
-                        <div class="form-group">
-                            <label for="name" class="col-md-4 control-label"> Inward Number</label>
-                            <div class="col-md-6">
-                                <label class="control-label">{{$application->inward_no}}</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="reference_no" class="col-md-4 control-label"> Reference Number</label>
-                            <div class="col-md-6">
-                                <label class="control-label">{{$application->reference_no}}</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="name" class="col-md-4 control-label">Application Name</label>
+                @if(($application->status == 'PA_USER UPDATED' && Auth::user()->role == 'CLERK') ||
+                $application->status == 'CLERK UPDATED' && Auth::user()->role == 'DEPARTMENT_USER')
+                    <div class="row well">
 
-                            <div class="col-md-6">
-                                <label class="control-label">{{$application->name}}</label>
+                        <form class="form-horizontal" role="form" method="POST" action="{{route('application.saveRemark')}}"
+                              enctype="multipart/form-data" id="uploadForm">
+                            {{ csrf_field() }}
+                            <input type="text" name="inward_id" id="inward" value="{{$application->inward_no}}" hidden/>
+                            <input type="text" name="department2" id="department2"
+                                   value="{{$application_remarks[0]->department}}" hidden/>
+                            <input type="text" name="officer" id="officer" value="{{$application_remarks[0]->officer}}"
+                                   hidden/>
+                            <div class="form-group">
+                                <label for="actions" class="col-md-4 control-label"> Action</label>
+
+                                <div class="col-md-6">
+                                    <select multiple class="form-control" id="actions" name="actions[]" required>
+                                        @foreach($actions as $action)
+                                            <option value="{{$action->action}}">{{$action->action}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <a class="btn btn-warning" href="{{route('applications.index')}}">
-                                    Cancel
-                                </a>
-                                <button type="submit" class="btn btn-primary">
-                                    Create
-                                </button>
+                            <div class="form-group">
+                                <label for="actions" class="col-md-4 control-label">Remark</label>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="remark" name="remark" required/>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
+                            @if(Auth::user()->hasRole('DEPARTMENT_USER'))
+                                <div class="form-group">
+                                    <label for="comment" class="col-md-4 control-label"> Comment</label>
+                                    <div class="col-md-6">
+                                        <textarea class="form-control" name="comment" id="comment"></textarea>
+                                    </div>
+                                </div>
+                            @endif
+                            <div class="form-group">
+                                <label for="upload" class="col-md-4 control-label"> Upload Documents</label>
+                                <div class="col-md-6">
+                                    <input type="file" name="file[]" multiple id="upload">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-4">
+                                    <a class="btn btn-warning" href="{{route('applications.index')}}">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

@@ -17,10 +17,11 @@ class CreateApplicationRemarksTable extends Migration
             $table->increments('id');
             $table->integer('inward_id');
             $table->integer('user_id');
-            $table->string('remark');
+            $table->string('remark')->nullable();
             $table->string('action');
+            $table->string('comment')->nullable();
             $table->string('department');
-            $table->integer('officer');
+            $table->integer('officer')->nullable();
             $table->string('role');
             $table->date('deleted')->nullable();
             $table->timestamps();

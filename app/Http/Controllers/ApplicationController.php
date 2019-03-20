@@ -8,6 +8,7 @@ use App\Department;
 use App\District;
 use App\Document;
 use App\Taluka;
+use App\Uploaded_Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
@@ -27,7 +28,7 @@ class ApplicationController extends Controller
     {
         $role = Auth()->user()->role;
         $applications =[];
-        if($role=='PA_USER'){
+       /* if($role=='PA_USER'){
             $applications = Application::where('status', 'CREATED')->get();
         } elseif ($role=='CLERK'){
             $applications = Application::where('status', 'PA_USER UPDATED')->get();
@@ -35,7 +36,13 @@ class ApplicationController extends Controller
             $applications = Application::where('status', 'CLERK UPDATED')->get();
         } elseif ($role =='SUPERUSER'){
             $applications = Application::all();
+        }*/
+        if ($role=='DEPARTMENT_USER'){
+            $applications = Application::where('status', 'CLERK UPDATED')->get();
+        } else{
+            $applications = Application::all();
         }
+
         if($role =='SUPERUSER'){
             $role='PA_USER';
         }
@@ -47,7 +54,7 @@ class ApplicationController extends Controller
             ->where('user_type', $role)
             ->get();
         $departments = Department::all();
-        $users= User::all();
+        $users= User::where('role','DEPARTMENT_USER')->get();
         return view('user_applications')
             ->with('applications', $applications)
             ->with('actions', $actions)
@@ -98,35 +105,51 @@ class ApplicationController extends Controller
     {
         // $select = $request->get('select');
         $value = $request->get('value');
-         $dependent = $request->get('dependent');
+        $dependent = $request->get('dependent');
         $data = DB::table('talukas')
             ->where('district_id', $value)
             ->get();
         $output = '<option value="">Select '.ucfirst($dependent).'</option>';
         foreach($data as $row)
         {
-            $output .= '<option value="'.$row->id.'">'.$row->name.'</option>';
+            $output .= '<option value="'.$row->name.'">'.$row->name.'</option>';
         }
         echo $output;
     }
 
+    function getByDepartment(Request $request)
+    {
+        // $select = $request->get('select');
+        $value = $request->get('value');
+        $application_remarks = Application_Remark::where('department', $value)->get();
+        $applications2 = DB::table('application__remarks')
+            ->leftJoin('applications', 'application__remarks.inward_id', '=', 'applications.inward_no')
+            ->where('application__remarks.department', 'Electricity')
+            ->get();
+        $unique_data = $applications2->unique('inward_id')->values()->all();
+        $applications = $unique_data;
+        $role = Auth()->user()->role;
+        if($role =='SUPERUSER'){
+            $role='PA_USER';
+        }
+        $actions = DB::table('actions')
+            ->where('user_type', $role)
+            ->get();
+        $departments = Department::all();
+        $users= User::where('role','DEPARTMENT_USER')->get();
+        echo 'in asdsa';
+        return view('user_applications')
+            ->with('applications', $applications)
+            ->with('actions', $actions)
+            ->with('departments', $departments)
+            ->with('users', $users);
+    }
+
+
     public function createNew(Request $request)
     {
         $requestObj = $request->all();
-        /*print_r($requestObj);
-        $files = $request->file('file');
-        print_r($files);
-        if(!empty($files)) {
-            foreach ($files as $file) :
-                $fileName = time() . $file->getClientOriginalName();
-                print_r('File Name ');
-                print_r($fileName);
-                // To Save File In Public/Uploaded Folder
-               $file->move(public_path('/uploaded'), $fileName);
-                // To Save File In Storage/App Folder
-               // Storage::put($fileName, file_get_contents($file));
-            endforeach;
-        }*/
+
         $docString = "";
         if(count($requestObj['documents']) > 0){
             foreach ($requestObj['documents'] as $doc) {
@@ -259,16 +282,66 @@ class ApplicationController extends Controller
     public function get($id)
     {
         $application_arr = Application::where('inward_no', $id)->get();
+        $role = Auth()->user()->role;
+        $actions = DB::table('actions')
+            ->where('user_type', $role)
+            ->get();
+        $documents = Uploaded_Document::where('application_id',$id)->get();
         if(!is_null($application_arr) && count($application_arr)> 0) {
             $application = $application_arr[0];
             $application_remarks = Application_Remark::where('inward_id', $id)->get();
             return view('application_details')
                 ->with('application',$application)
-                ->with('application_remarks',$application_remarks);
+                ->with('application_remarks',$application_remarks)
+                ->with('actions',$actions)
+                ->with('documents',$documents);
         } else{
             Session::flash('error','No Application Found');
             return redirect()->back();
         }
+    }
+    public function saveRemark(Request $request)
+    {
+        $files = $request->file('file');
+        if(!empty($files)) {
+            foreach ($files as $file) :
+                $fileName = time() . '-' . $file->getClientOriginalName();
+                // To Save File In Public/Uploaded Folder
+                $file->move(public_path('/uploaded'), $fileName);
+                // To Save File In Storage/App Folder
+                //Storage::put($fileName, file_get_contents($file));
+                DB::table('uploaded__documents')->insert([
+                    [   'name' => $fileName,
+                        'stored_path' => '/uploaded/'.$fileName,
+                        'application_id' => $request['inward_id'],
+                        'user_id' =>  Auth()->user()->id
+                    ]]);
+            endforeach;
+        }
+        $role = Auth()->user()->role;
+        $actionString = "";
+        if(count($request['actions']) > 0){
+            foreach ($request['actions'] as $action) {
+                $actionString =  $action."," .  $actionString;
+            }
+        }
+        $application_remark = Application_Remark::create([
+            'remark' => $request['remark'],
+            'comment' => $request['comment'],
+            'inward_id' => $request['inward_id'],
+            'department' => $request['department2'],
+            'user_id' =>  Auth()->user()->id,
+            'role' =>  $role,
+            'officer' =>  $request['officer'],
+            'action' => rtrim($actionString,",")
+        ]);
+        $application_remark->save();
+        if ($role=='DEPARTMENT_USER') {
+            Application::where('inward_no', $application_remark['inward_id'])->update(['status' => 'COMPLETED']);
+        } else {
+            Application::where('inward_no', $application_remark['inward_id'])->update(['status' => $role . ' UPDATED']);
+        }
+        return redirect()->back();
     }
     /**
      * Update the specified resource in storage.
