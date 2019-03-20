@@ -17,5 +17,8 @@ class DepartmentsTableSeeder extends Seeder
         App\Department::create([
             'name'=>'Electricity'
         ]);
+        App\Department::create([
+            'name'=>'House'
+        ]);
     }
 }
