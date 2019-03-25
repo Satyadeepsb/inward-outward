@@ -17,6 +17,7 @@ class CreateApplicationsTable extends Migration
             $table->increments('id');
             $table->string('inward_no');
             $table->string('name');
+            $table->string('subject');
             $table->string('address');
             $table->string('district');
             $table->string('taluka');

@@ -41,17 +41,29 @@
                         </div>
                     </div>
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} required">
-                        <label for="name" class="col-md-4 control-label">Application Name</label>
-
+                        <label for="name" class="col-md-4 control-label">Applicant Name</label>
                         <div class="col-md-6">
                             <input id="name" type="text"
                                    class="form-control" name="name"
                                    placeholder="Enter Name"
                                    required autofocus>
-
                             @if ($errors->has('name'))
                                 <span class="help-block">
                                          <strong>{{ $errors->first('name') }}</strong>
+                                     </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group{{ $errors->has('subject') ? ' has-error' : '' }} required">
+                        <label for="subject" class="col-md-4 control-label">Subject</label>
+                        <div class="col-md-6">
+                            <input id="subject" type="text"
+                                   class="form-control" name="subject"
+                                   placeholder="Enter Subject"
+                                   required autofocus>
+                            @if ($errors->has('subject'))
+                                <span class="help-block">
+                                         <strong>{{ $errors->first('subject') }}</strong>
                                      </span>
                             @endif
                         </div>

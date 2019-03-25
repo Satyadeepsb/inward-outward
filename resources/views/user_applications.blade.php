@@ -4,55 +4,39 @@
     <div class="{{Auth::user()->hasRole('SUPERUSER') ? 'col-md-12':'col-md-10 col-md-offset-1' }}"
          style="margin-top: 0px;padding-top: 0px">
         <div class="col-md-12 tile-highlight text-center" style="margin-bottom: 5px">
-            <div class="{{(((Auth::user()->hasRole('PA_USER')) && count($applications) > 0))? 'col-md-10':'col-md-11' }}">
+            <div class="{{(((Auth::user()->hasRole('PA_USER')) && count($applications) > 0))? 'col-md-11':'col-md-12' }}">
                 <p style="color: white;font-size: 20px">Applications</p>
             </div>
-            @if(Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('USER'))
-                <div class="col-md-1">
+            <div class="col-md-1">
+                @if(Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('USER'))
                     <a href="{{route('application.create')}}"
                        class="btn btn-default btn-sm pull-right"
                        style="margin-top: 5px;">
                         <b>Create</b>&nbsp;<i class="fa fa-plus-circle" aria-hidden="true"></i></a>
-                </div>
-            @endif
-            @if((Auth::user()->hasRole('PA_USER')) && count($applications) > 0)
-                <div class="col-md-1">
+                @endif
+                @if((Auth::user()->hasRole('PA_USER')) && count($applications) > 0)
                     <button class="btn btn-warning btn-sm pull-right bulk-action"
                             style="margin-top: 5px;">
                         <b>Bulk Action</b>
                     </button>
-                </div>
-            @endif
+                @endif
+            </div>
         </div>
-        {{--<div class="col-md-12" style="margin-bottom: 10px">
-            <form>
-                {{ csrf_field() }}
-                <div class="form-group col-md-offset-3">
-                    <label for="dept" class="col-md-3 control-label" style="font-weight: bold"> Select Department</label>
-                    <div class="col-md-6">
-                        <select class="form-control" name="dept" id="dept">
-                            @foreach($departments as $department)
-                            <option value="{{$department->name}}">{{$department->name}}</option>
-                                @endforeach
-                        </select>
-
-                    </div>
-                </div>
-            </form>
-        </div>--}}
         <table class="table table-striped table-hover " style="border: 1px solid lightgray;">
             <thead>
             <tr style="text-align: center;">
-                @if((Auth::user()->hasRole('PA_USER')  && count($applications) > 0))
-                    <th style="text-align: center;"><input type="checkbox" id="select-all"></th>
-                @endif
+                <th style="text-align: center;">
+                    @if((Auth::user()->hasRole('PA_USER')  && count($applications) > 0))
+                        <input type="checkbox" id="select-all">
+                    @endif
+                </th>
                 <th>Inward No</th>
-                <th>Application Name</th>
+                <th>Applicant Name</th>
+                <th>Subject</th>
                 <th>Status</th>
+                <th>Reference No</th>
                 <th>Date</th>
                 <th>Documents</th>
-                <th>Reference No</th>
-                <th></th>
                 <th></th>
             </tr>
             </thead>
@@ -60,49 +44,44 @@
                 <tbody>
                 @foreach($applications as $application)
                     <tr>
-                        @if(Auth::user()->hasRole('PA_USER') && count($applications) > 0)
-                            <td style="text-align: center;">
+                        <td style="text-align: center;">
+                            @if(Auth::user()->hasRole('PA_USER') && count($applications) > 0)
                                 <input type="checkbox" name="{{$application->id}}" class="sub_chk"
                                        data-id="{{$application->id}}">
-                            </td>
-                        @endif
+                            @endif
+                        </td>
                         <td>{{$application->inward_no }}</td>
                         <td>{{$application->name }}</td>
+                        <td>{{$application->subject }}</td>
                         <td>{{$application->status }}</td>
+                        <td>{{$application->reference_no }}</td>
                         <td>{{$application->date }}</td>
                         <td>{{$application->documents }}</td>
-                        <td>{{$application->reference_no }}</td>
                         <td>
-                            <a href="{{route('application.get',['id'=>$application->inward_no])}}" style="cursor: pointer"
+                            <a href="{{route('application.get',['id'=>$application->inward_no])}}" style="cursor: pointer;margin-left: 5px"
                                class="btn btn-group btn-sm pull-right">
                                 <b>View <i class="fa fa-eye" aria-hidden="true"></i></b>
                             </a>
-                        </td>
-                        @if(Auth::user()->hasRole('PA_USER') && $application->status == 'CREATED')
-                            <td>
+                            @if(Auth::user()->hasRole('PA_USER') && $application->status == 'CREATED')
                                 <button data-toggle="modal" data-target="#paEditModal"
                                         data-application="{{$application}}" style="cursor: pointer"
                                         class="btn btn-warning btn-sm pull-right">
                                     <b>Action</b>
                                 </button>
-                            </td>
-                        @endif
-                        @if(Auth::user()->hasRole('CLERK') && $application->status == 'PA_USER UPDATED')
-                            <td>
+                            @endif
+                            @if(Auth::user()->hasRole('CLERK') && $application->status == 'PA_USER UPDATED')
                                 <a href="{{route('application.get',['id'=>$application->inward_no])}}" style="cursor: pointer"
                                    class="btn btn-warning btn-sm pull-right">
                                     <b>Action</b>
                                 </a>
-                            </td>
-                        @endif
-                        @if(Auth::user()->hasRole('DEPARTMENT_USER'))
-                            <td>
+                            @endif
+                            @if(Auth::user()->hasRole('DEPARTMENT_USER'))
                                 <a href="{{route('application.get',['id'=>$application->inward_no])}}" style="cursor: pointer"
                                    class="btn btn-warning btn-sm pull-right">
                                     <b>Action</b>
                                 </a>
-                            </td>
-                        @endif
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

@@ -137,7 +137,6 @@ class ApplicationController extends Controller
             ->get();
         $departments = Department::all();
         $users= User::where('role','DEPARTMENT_USER')->get();
-        echo 'in asdsa';
         return view('user_applications')
             ->with('applications', $applications)
             ->with('actions', $actions)
@@ -164,6 +163,7 @@ class ApplicationController extends Controller
         $district = District::where('id',$district_id)->get()[0];
         $application = Application::create([
             'name' => $requestObj['name'],
+            'subject' => $requestObj['subject'],
             'inward_no' => $requestObj['inward_no'],
             'reference_no' => $requestObj['reference_no'],
             'mobile' => $requestObj['mobile'],
