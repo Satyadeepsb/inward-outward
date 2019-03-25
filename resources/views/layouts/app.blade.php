@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>BrilliantFIT</title>
+    <title>Inward-Outward</title>
     <meta name="author" content="Stark Technologies"/>
     <meta name="description" content="Inward Outward Management Software">
     <meta name="author" content="Satyadeep Basugade"/>
