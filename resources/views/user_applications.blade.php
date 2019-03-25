@@ -4,7 +4,7 @@
     <div class="{{Auth::user()->hasRole('SUPERUSER') ? 'col-md-12':'col-md-10 col-md-offset-1' }}"
          style="margin-top: 0px;padding-top: 0px">
         <div class="col-md-12 tile-highlight text-center" style="margin-bottom: 5px">
-            <div class="{{(((Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('USER')) && count($applications) > 0))? 'col-md-11': 'col-md-12'}}">
+            <div class="{{((Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('USER')) && count($applications) > 0)? 'col-md-11': 'col-md-12'}}">
                 <p style="color: white;font-size: 20px">Applications</p>
             </div>
             @if(Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('USER') || Auth::user()->hasRole('PA_USER'))
