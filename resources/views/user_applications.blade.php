@@ -270,9 +270,10 @@
                                 <div class="form-group">
                                     <label for="department" class="col-md-4 control-label"> Department</label>
                                     <div class="col-md-6">
-                                        <select class="form-control" id="department" name="department" required>
+                                        <select class="form-control dynamic-dept-bulk" id="department" name="department" required>
+                                            <option value="" selected>Select Department</option>
                                             @foreach($departments as $department)
-                                                <option value="{{$department->name}}">{{$department->name}}</option>
+                                                <option value="{{$department->id}}">{{$department->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -280,10 +281,8 @@
                                 <div class="form-group">
                                     <label for="officer" class="col-md-4 control-label"> Officer</label>
                                     <div class="col-md-6">
-                                        <select class="form-control" id="officer" name="officer" required>
-                                            @foreach($users as $user)
-                                                <option value="{{$user->id}}">{{$user->name}}</option>
-                                            @endforeach
+                                        <select class="form-control" id="officer-bulk" name="officer" required  data-dependent="officer">
+                                            <option value="">Select Officer</option>
                                         </select>
                                     </div>
                                 </div>

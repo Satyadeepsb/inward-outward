@@ -263,19 +263,24 @@ class ApplicationController extends Controller
             $applications = DB::table('applications')
                 ->where('id', $id)
                 ->get();
-            $application_remark = Application_Remark::create([
-                'remark' => $request['remark'],
-                'inward_id' => $applications[0]->inward_no,
-                'officer' => $request['officer'],
-                'user_id' => Auth()->user()->id,
-                'action' => rtrim($actionString, ","),
-                'department' => $request['department'],
-                'role' => $role
-            ]);
-            $application_remark->save();
-            Application::where('inward_no', $application_remark['inward_id'])->update(['status' => $role . ' UPDATED']);
+            if($applications[0]->status !='PA_USER UPDATED'){
+                Session::flash('error', 'Application remark already submitted.');
+                break;
+            }else {
+                $application_remark = Application_Remark::create([
+                    'remark' => $request['remark'],
+                    'inward_id' => $applications[0]->inward_no,
+                    'officer' => $request['officer'],
+                    'user_id' => Auth()->user()->id,
+                    'action' => rtrim($actionString, ","),
+                    'department' => $request['department'],
+                    'role' => $role
+                ]);
+                $application_remark->save();
+                Application::where('inward_no', $application_remark['inward_id'])->update(['status' => $role . ' UPDATED']);
+            }
+            Session::flash('success', 'Application remark submitted Successfully.');
         }
-        Session::flash('success', 'Application remark submitted Successfully.');
         return redirect()->back();
     }
 
