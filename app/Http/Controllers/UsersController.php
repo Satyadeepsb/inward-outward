@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Department;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -26,7 +27,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('user_details');
+        $departments = Department::all();
+        return view('edit_user')->with('departments',$departments);
     }
 
     /**
@@ -60,7 +62,8 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        return view('edit_user')->with('user',$user);
+        $departments = Department::all();
+        return view('edit_user')->with('user',$user)->with('departments',$departments);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Department;
 use App\Setting;
 use Illuminate\Http\Request;
 use App\User;
@@ -16,11 +17,12 @@ class UserDetailsController extends Controller
      */
     public function index($id)
     {
+        $departments = Department::all();
         if($id == 0) {
-            return view('user_details');
+            return view('user_details')->with('departments',$departments);
         }else{
             $user = User::find($id);
-            return view('user_details')->with('user',$user);
+            return view('user_details')->with('user',$user)->with('departments',$departments);
         }
     }
 
@@ -36,6 +38,7 @@ class UserDetailsController extends Controller
             'email' => $data['email'],
             'mobile' => $data['mobile'],
             'role' => $data['role'],
+            'department' => $data['department'],
             'location' => $data['location'],
             'address' => $data['address'],
             'designation' => $data['designation'],
@@ -64,6 +67,7 @@ class UserDetailsController extends Controller
                 'email' => trim($user['email']),
                 'mobile' => $user['mobile'],
                 'role' => $user['role'],
+                'department' => $user['department'],
                 'location' => $user['location'],
                 'address' => $user['address'],
                 'designation' => $user['designation'],
@@ -129,6 +133,7 @@ class UserDetailsController extends Controller
         $user->email = $newUser['email'];
         $user->mobile = $newUser['mobile'];
         $user->role = $newUser['role'];
+        $user->department = $newUser['department'];
         $user->location = $newUser['location'];
         $user->address = $newUser['address'];
         $user->designation = $newUser['designation'];

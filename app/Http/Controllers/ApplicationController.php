@@ -27,24 +27,29 @@ class ApplicationController extends Controller
     public function index()
     {
         $role = Auth()->user()->role;
-        $applications =[];
-       /* if($role=='PA_USER'){
-            $applications = Application::where('status', 'CREATED')->get();
-        } elseif ($role=='CLERK'){
-            $applications = Application::where('status', 'PA_USER UPDATED')->get();
-        } elseif ($role=='DEPARTMENT_USER'){
-            $applications = Application::where('status', 'CLERK UPDATED')->get();
-        } elseif ($role =='SUPERUSER'){
-            $applications = Application::all();
-        }*/
-        if ($role=='DEPARTMENT_USER'){
-            $applications = Application::where('status', 'CLERK UPDATED')->get();
-        } else{
+        $applications = [];
+        /* if($role=='PA_USER'){
+             $applications = Application::where('status', 'CREATED')->get();
+         } elseif ($role=='CLERK'){
+             $applications = Application::where('status', 'PA_USER UPDATED')->get();
+         } elseif ($role=='DEPARTMENT_USER'){
+             $applications = Application::where('status', 'CLERK UPDATED')->get();
+         } elseif ($role =='SUPERUSER'){
+             $applications = Application::all();
+         }*/
+        if ($role == 'DEPARTMENT_USER') {
+            $completedApplications = DB::table('applications')->where('status','COMPLETED')->where('department', Auth()->user()->department);
+
+            $applications = Application::where('status', '=', 'CLERK UPDATED')
+                ->whereNotNull('department')
+                ->union($completedApplications)
+                ->where('department', Auth()->user()->department)->get();
+        } else {
             $applications = Application::all();
         }
 
-        if($role =='SUPERUSER'){
-            $role='PA_USER';
+        if ($role == 'SUPERUSER') {
+            $role = 'PA_USER';
         }
         foreach ($applications as $application):
             $application['selected'] = true;
@@ -54,7 +59,7 @@ class ApplicationController extends Controller
             ->where('user_type', $role)
             ->get();
         $departments = Department::all();
-        $users= User::where('role','DEPARTMENT_USER')->get();
+        $users = User::where('role', 'DEPARTMENT_USER')->get();
         return view('user_applications')
             ->with('applications', $applications)
             ->with('actions', $actions)
@@ -71,7 +76,7 @@ class ApplicationController extends Controller
     {
         $app = Application::orderBy('id', 'desc')->first();
         $lastId = 0;
-        if(!is_null($app)){
+        if (!is_null($app)) {
             $lastId = $app->id;
         }
         $lastId = $lastId + 1001;
@@ -82,25 +87,27 @@ class ApplicationController extends Controller
         //$talukas1 = DB::table('talukas')->where('district_id',2)->pluck("name","id")->all();
         //dd($talukas1);
         $data = [
-            'districts'=>$districts,
-            'talukas'=>$talukas,
-            'documents'=>$documents,
-            'inward_id'=>$lastId,
-            'todayDate'=>$todayDate];
+            'districts' => $districts,
+            'talukas' => $talukas,
+            'documents' => $documents,
+            'inward_id' => $lastId,
+            'todayDate' => $todayDate];
         return view('create_application')->with('data', $data);
     }
 
-    public  function districtChange(Request $request){
-        if($request->ajax()){
+    public function districtChange(Request $request)
+    {
+        if ($request->ajax()) {
 
             // $talukas = DB::table('talukas')->where('district_id',$request->district_id)->pluck("name","id")->all();
             // print_r($talukas);
             $talukas = [2 => "Karad", 7 => "Limb"];
-            $data = view('create_application',compact('talukas'))->render();
+            $data = view('create_application', compact('talukas'))->render();
             var_dump($data);
-            return response()->json(['options'=>$data]);
+            return response()->json(['options' => $data]);
         }
     }
+
     function fetch(Request $request)
     {
         // $select = $request->get('select');
@@ -109,13 +116,29 @@ class ApplicationController extends Controller
         $data = DB::table('talukas')
             ->where('district_id', $value)
             ->get();
-        $output = '<option value="">Select '.ucfirst($dependent).'</option>';
-        foreach($data as $row)
-        {
-            $output .= '<option value="'.$row->name.'">'.$row->name.'</option>';
+        $output = '<option value="">Select ' . ucfirst($dependent) . '</option>';
+        foreach ($data as $row) {
+            $output .= '<option value="' . $row->name . '">' . $row->name . '</option>';
         }
         echo $output;
     }
+
+    function deptUsers(Request $request)
+    {
+        // $select = $request->get('select');
+        $value = $request->get('value');
+        $dependent = $request->get('dependent');
+        $data = DB::table('users')
+            ->whereNotNull('department')
+            ->where('department', $value)
+            ->get();
+        $output = '<option value="">Select ' . ucfirst($dependent) . '</option>';
+        foreach ($data as $row) {
+            $output .= '<option value="' . $row->id . '">' . $row->name . '</option>';
+        }
+        echo $output;
+    }
+
 
     function getByDepartment(Request $request)
     {
@@ -129,14 +152,14 @@ class ApplicationController extends Controller
         $unique_data = $applications2->unique('inward_id')->values()->all();
         $applications = $unique_data;
         $role = Auth()->user()->role;
-        if($role =='SUPERUSER'){
-            $role='PA_USER';
+        if ($role == 'SUPERUSER') {
+            $role = 'PA_USER';
         }
         $actions = DB::table('actions')
             ->where('user_type', $role)
             ->get();
         $departments = Department::all();
-        $users= User::where('role','DEPARTMENT_USER')->get();
+        $users = User::where('role', 'DEPARTMENT_USER')->get();
         return view('user_applications')
             ->with('applications', $applications)
             ->with('actions', $actions)
@@ -150,17 +173,17 @@ class ApplicationController extends Controller
         $requestObj = $request->all();
 
         $docString = "";
-        if(count($requestObj['documents']) > 0){
+        if (count($requestObj['documents']) > 0) {
             foreach ($requestObj['documents'] as $doc) {
-                $docString =  $doc."," .  $docString;
+                $docString = $doc . "," . $docString;
             }
         }
         $requestDate = $requestObj['date'];
-        if(empty($requestDate)){
+        if (empty($requestDate)) {
             $requestDate = date("Y-m-d");
         }
         $district_id = $requestObj['district'];
-        $district = District::where('id',$district_id)->get()[0];
+        $district = District::where('id', $district_id)->get()[0];
         $application = Application::create([
             'name' => $requestObj['name'],
             'subject' => $requestObj['subject'],
@@ -171,18 +194,19 @@ class ApplicationController extends Controller
             'district' => $district->name,
             'taluka' => $requestObj['taluka'],
             'status' => 'CREATED',
-            'documents' => rtrim($docString,",") ,
-            'date' =>$todayDate = $requestDate,
+            'documents' => rtrim($docString, ","),
+            'date' => $todayDate = $requestDate,
             'user_id' => Auth()->user()->id,
         ]);
         $application->save();
-        Session::flash('success','Application created Successfully.');
+        Session::flash('success', 'Application created Successfully.');
         return redirect()->back();
     }
+
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -190,46 +214,49 @@ class ApplicationController extends Controller
         //
 
     }
+
     public function remark(Request $request)
     {
         //dd($request->all());
         $role = Auth()->user()->role;
-        if($role == 'SUPERUSER'){
+        if ($role == 'SUPERUSER') {
             $role = 'PA_USER';
         }
         $actionString = "";
-        if(count($request['actions']) > 0){
+        if (count($request['actions']) > 0) {
             foreach ($request['actions'] as $action) {
-                $actionString =  $action."," .  $actionString;
+                $actionString = $action . "," . $actionString;
             }
         }
         $application_remark = Application_Remark::create([
             'remark' => $request['remark'],
             'inward_id' => $request['inward_id'],
             'officer' => $request['officer'],
-            'user_id' =>  Auth()->user()->id,
-            'action' => rtrim($actionString,","),
+            'user_id' => Auth()->user()->id,
+            'action' => rtrim($actionString, ","),
             'department' => $request['department'],
             'role' => $role
         ]);
         $application_remark->save();
-        Application::where('inward_no', $request['inward_id'])->update(['status' => $role.' UPDATED']);
-        Session::flash('success','Application remark submitted Successfully.');
+        Application::where('inward_no', $request['inward_id'])->update(['status' => $role . ' UPDATED']);
+        Application::where('inward_no', $request['inward_id'])->update(['department' => $application_remark->department]);
+        Session::flash('success', 'Application remark submitted Successfully.');
         return redirect()->back();
     }
+
     public function remarkMultiple(Request $request)
     {
         //dd($request->all());
         $role = Auth()->user()->role;
-        if($role == 'SUPERUSER'){
+        if ($role == 'SUPERUSER') {
             $role = 'PA_USER';
         }
         $appIds = $request['appIds'];
-        $str_arr = preg_split ("/\,/", $appIds[0]);
+        $str_arr = preg_split("/\,/", $appIds[0]);
         $actionString = "";
-        if(count($request['actions']) > 0){
+        if (count($request['actions']) > 0) {
             foreach ($request['actions'] as $action) {
-                $actionString =  $action."," .  $actionString;
+                $actionString = $action . "," . $actionString;
             }
         }
         foreach ($str_arr as $id) {
@@ -240,21 +267,22 @@ class ApplicationController extends Controller
                 'remark' => $request['remark'],
                 'inward_id' => $applications[0]->inward_no,
                 'officer' => $request['officer'],
-                'user_id' =>  Auth()->user()->id,
-                'action' => rtrim($actionString,","),
+                'user_id' => Auth()->user()->id,
+                'action' => rtrim($actionString, ","),
                 'department' => $request['department'],
                 'role' => $role
             ]);
             $application_remark->save();
-            Application::where('inward_no', $application_remark['inward_id'])->update(['status' => $role.' UPDATED']);
+            Application::where('inward_no', $application_remark['inward_id'])->update(['status' => $role . ' UPDATED']);
         }
-        Session::flash('success','Application remark submitted Successfully.');
+        Session::flash('success', 'Application remark submitted Successfully.');
         return redirect()->back();
     }
+
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request)
@@ -266,21 +294,34 @@ class ApplicationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         //
     }
-    public static function getUserName($id) {
+
+    public static function getUserName($id)
+    {
         $user_arr = User::where('id', $id)->get();
-        if(!is_null($user_arr) && count($user_arr)> 0) {
+        if (!is_null($user_arr) && count($user_arr) > 0) {
             $user = $user_arr[0];
             return $user->name;
         }
         return "";
     }
+
+    public static function getDeptName($id)
+    {
+        $dept_arr = Department::where('id', $id)->get();
+        if (!is_null($dept_arr) && count($dept_arr) > 0) {
+            $dept = $dept_arr[0];
+            return $dept->name;
+        }
+        return "";
+    }
+
     public function get($id)
     {
         $application_arr = Application::where('inward_no', $id)->get();
@@ -288,27 +329,28 @@ class ApplicationController extends Controller
         $actions = DB::table('actions')
             ->where('user_type', $role)
             ->get();
-        $documents = Uploaded_Document::where('application_id',$id)->get();
-        if(!is_null($application_arr) && count($application_arr)> 0) {
+        $documents = Uploaded_Document::where('application_id', $id)->get();
+        if (!is_null($application_arr) && count($application_arr) > 0) {
             $application = $application_arr[0];
             $application_remarks = Application_Remark::where('inward_id', $id)->get();
             return view('application_details')
-                ->with('application',$application)
-                ->with('application_remarks',$application_remarks)
-                ->with('actions',$actions)
-                ->with('documents',$documents);
-        } else{
-            Session::flash('error','No Application Found');
+                ->with('application', $application)
+                ->with('application_remarks', $application_remarks)
+                ->with('actions', $actions)
+                ->with('documents', $documents);
+        } else {
+            Session::flash('error', 'No Application Found');
             return redirect()->back();
         }
     }
+
     public function saveRemark(Request $request)
     {
-       // echo $request->all();
-       // print_r($request->all());
-        try{
+        // echo $request->all();
+        // print_r($request->all());
+        try {
             $files = $request->file('file');
-            if(!empty($files) || !is_null($files)) {
+            if (!empty($files) || !is_null($files)) {
                 foreach ($files as $file):
                     $fileName = time() . '-' . $file->getClientOriginalName();
                     // To Save File In Public/Uploaded Folder
@@ -316,18 +358,18 @@ class ApplicationController extends Controller
                     // To Save File In Storage/App Folder
                     //Storage::put($fileName, file_get_contents($file));
                     DB::table('uploaded__documents')->insert([
-                        [   'name' => $fileName,
-                            'stored_path' => '/uploaded/'.$fileName,
+                        ['name' => $fileName,
+                            'stored_path' => '/uploaded/' . $fileName,
                             'application_id' => $request['inward_id'],
-                            'user_id' =>  Auth()->user()->id
+                            'user_id' => Auth()->user()->id
                         ]]);
                 endforeach;
             }
             $role = Auth()->user()->role;
             $actionString = "";
-            if(count($request['actions']) > 0){
+            if (count($request['actions']) > 0) {
                 foreach ($request['actions'] as $action) {
-                    $actionString =  $action."," .  $actionString;
+                    $actionString = $action . "," . $actionString;
                 }
             }
             $application_remark = Application_Remark::create([
@@ -335,44 +377,45 @@ class ApplicationController extends Controller
                 'comment' => $request['comment'],
                 'inward_id' => $request['inward_id'],
                 'department' => $request['department2'],
-                'user_id' =>  Auth()->user()->id,
-                'role' =>  $role,
-                'officer' =>  $request['officer'],
-                'action' => rtrim($actionString,",")
+                'user_id' => Auth()->user()->id,
+                'role' => $role,
+                'officer' => $request['officer'],
+                'action' => rtrim($actionString, ",")
             ]);
             $application_remark->save();
-            if ($role=='DEPARTMENT_USER') {
+            if ($role == 'DEPARTMENT_USER') {
                 Application::where('inward_no', $application_remark['inward_id'])->update(['status' => 'COMPLETED']);
             } else {
                 Application::where('inward_no', $application_remark['inward_id'])->update(['status' => $role . ' UPDATED']);
             }
-            if ($role=='DEPARTMENT_USER'){
+            if ($role == 'DEPARTMENT_USER') {
                 $applications = Application::where('status', 'CLERK UPDATED')->get();
-            } else{
+            } else {
                 $applications = Application::all();
             }
 
-            if($role =='SUPERUSER'){
-                $role='PA_USER';
+            if ($role == 'SUPERUSER') {
+                $role = 'PA_USER';
             }
             $actions = DB::table('actions')
                 ->where('user_type', $role)
                 ->get();
             $departments = Department::all();
-            $users= User::where('role','DEPARTMENT_USER')->get();
-            Session::flash('success','Saved Successfully');
+            $users = User::where('role', 'DEPARTMENT_USER')->get();
+            Session::flash('success', 'Saved Successfully');
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
-            Session::flash('error','Something went wrong');
+            Session::flash('error', 'Something went wrong');
             return response()->json(['success' => false]);
         }
 
     }
+
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -383,7 +426,7 @@ class ApplicationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

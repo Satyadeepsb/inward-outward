@@ -20,7 +20,7 @@ class CreateApplicationRemarksTable extends Migration
             $table->string('remark')->nullable();
             $table->string('action');
             $table->string('comment')->nullable();
-            $table->string('department');
+            $table->integer('department');
             $table->integer('officer')->nullable();
             $table->string('role');
             $table->date('deleted')->nullable();

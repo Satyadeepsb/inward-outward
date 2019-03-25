@@ -18,15 +18,16 @@ class CreateApplicationsTable extends Migration
             $table->string('inward_no');
             $table->string('name');
             $table->string('subject');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->string('district');
             $table->string('taluka');
             $table->string('mobile');
             $table->string('documents');
             $table->string('status');
+            $table->integer('department')->nullable();
             $table->date('date');
             $table->bigInteger('user_id');
-            $table->string('reference_no');
+            $table->string('reference_no')->nullable();
             $table->timestamps();
         });
     }

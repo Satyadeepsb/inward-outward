@@ -51,7 +51,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label class="col-md-5">Department</label>
-                                    <div class="col-md-7">{{$application_remarks[0]->department}} </div>
+                                    <div class="col-md-7">{{\App\Http\Controllers\ApplicationController::getDeptName($application_remarks[0]->department)}} </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="col-md-5"> Officer</label>

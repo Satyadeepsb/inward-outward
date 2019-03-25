@@ -72,6 +72,17 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="department" class="col-md-4 control-label">Department</label>
+                        <div class="col-md-6">
+                            <select class="form-control" id="department" name="department" required>
+                                <option value="">Select Department</option>
+                                @foreach($departments as $department)
+                                    <option value="{{$department->id}}">{{$department->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
 
                    {{-- <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                         <label for="password" class="col-md-4 control-label">Password</label>

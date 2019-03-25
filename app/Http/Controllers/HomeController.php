@@ -37,8 +37,14 @@ class HomeController extends Controller
         } elseif ($role =='SUPERUSER'){
             $applications = Application::all();
         }*/
+//dd(Auth()->user()->department);
         if ($role=='DEPARTMENT_USER'){
-            $applications = Application::where('status', 'CLERK UPDATED')->get();
+            $completedApplications = DB::table('applications')->where('status','COMPLETED')->where('department', Auth()->user()->department);
+
+            $applications = Application::where('status', '=', 'CLERK UPDATED')
+                ->whereNotNull('department')
+                ->union($completedApplications)
+                ->where('department', Auth()->user()->department)->get();
         } else{
             $applications = Application::all();
         }

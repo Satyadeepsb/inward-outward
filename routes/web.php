@@ -34,6 +34,7 @@ Route::post('/application/district', [
     'as'=>'application.district'
 ]);
 Route::post('application/fetch', 'ApplicationController@fetch')->name('application.fetch');
+Route::post('application/deptUsers', 'ApplicationController@deptUsers')->name('application.deptUsers');
 
 Route::post('/application/remark', [
     'uses'=>'ApplicationController@remark',
