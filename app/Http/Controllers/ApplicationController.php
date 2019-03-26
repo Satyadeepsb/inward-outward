@@ -170,8 +170,9 @@ class ApplicationController extends Controller
 
     public function createNew(Request $request)
     {
-        $requestObj = $request->all();
 
+        $requestObj = $request->all();
+      //  dd($requestObj);
         $docString = "";
         if (count($requestObj['documents']) > 0) {
             foreach ($requestObj['documents'] as $doc) {

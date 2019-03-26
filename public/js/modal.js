@@ -178,3 +178,30 @@ $('#dept').change(function(){
 $('#district').change(function(){
     $('#taluka').val('');
 });
+
+$('#documents').multiselect({
+    nonSelectedText: 'Select Documents',
+    enableFiltering: false,
+    enableCaseInsensitiveFiltering: false,
+    buttonWidth:'500px'
+});
+
+$('#application_form').on('submit', function(event){
+    event.preventDefault();
+    var form_data = $(this).serialize();
+    $.ajax({
+        url:"/application/createNew",
+        method:"POST",
+        data:form_data,
+        success:function(data)
+        {
+            toastr.success("Application Created Successfully");
+            $('#documents option:selected').each(function(){
+                $(this).prop('selected', false);
+            });
+            $('#documents').multiselect('refresh');
+           // alert(data);
+            window.location.href = '/applications';
+        }
+    });
+});

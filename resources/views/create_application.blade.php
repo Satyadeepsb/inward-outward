@@ -20,7 +20,7 @@
                         </div>
                     </div>
                 </form>--}}
-                <form class="form-horizontal" role="form" method="POST" action="{{route('application.createNew')}}">
+                <form class="form-horizontal" role="form" method="POST" action="{{route('application.createNew')}}" id="application_form">
                     {{ csrf_field() }}
                     <div class="form-group required">
                         <label for="name" class="col-md-4 control-label"> Inward Number</label>

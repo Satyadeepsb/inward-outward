@@ -43,3 +43,9 @@ table, td,. table{
         width: 900px;
     }
 }
+.multiselect-container>li>a>label>input[type=checkbox] {
+      margin-bottom: -5px !important;
+ }
+.multiselect-container{
+    width: 500px;
+}

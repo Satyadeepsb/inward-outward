@@ -19,6 +19,8 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/bootstrap-datepicker.css" rel="stylesheet"/>
+    <link href="/css/toastr.min.css" rel="stylesheet"/>
+    <link href="/css/bootstrap-multiselect.css" rel="stylesheet" />
     <link href="/css/style.css" rel="stylesheet">
     <!-- Scripts -->
     <script>
@@ -136,14 +138,11 @@
 
 <!-- Scripts -->
 <script src="/js/app.js"></script>
-
 <!-- Bootstrap datepicker JS and CSS -->
 <script src="/js/bootstrap-datepicker.js"></script>
-
-
-{{--Another way of includeing JS/CSS files--}}
-<link rel="stylesheet" href="/css/toastr.min.css"/>
 <script src="/js/toastr.min.js"></script>
+<script src="/js/bootstrap3-typeahead.min.js"></script>
+<script src="/js/bootstrap-multiselect.js"></script>
 <script>
     toastr.options = {
         "closeButton": true,
