@@ -363,7 +363,6 @@ class ApplicationController extends Controller
     public function saveRemark(Request $request,Mailer $mailer)
     {
         try {
-            debug($request->all());
             $inward_id = $request['inward_id'];
             $dbApplication = Application::where('inward_no', $inward_id)->first();
             $docArray = explode(',', $dbApplication->documents);
@@ -385,7 +384,6 @@ class ApplicationController extends Controller
                             'application_id' => $request['inward_id'],
                             'user_id' => Auth()->user()->id
                         ]]);
-                    debug($file);
                 }
             endforeach;
             $role = Auth()->user()->role;
