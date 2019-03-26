@@ -205,3 +205,52 @@ $('#application_form').on('submit', function(event){
         }
     });
 });
+
+$('#actions').multiselect({
+    nonSelectedText: 'Select Actions',
+    enableFiltering: false,
+    enableCaseInsensitiveFiltering: false,
+    buttonWidth:'400px'
+});
+
+$('#application_remark').on('submit', function(event){
+    event.preventDefault();
+    var form_data = $(this).serialize();
+    $.ajax({
+        url:"/application/remark",
+        method:"POST",
+        data:form_data,
+        success:function(data)
+        {
+            toastr.success("Application Created Successfully");
+            $('#actions option:selected').each(function(){
+                $(this).prop('selected', false);
+            });
+            $('#actions').multiselect('refresh');
+            // alert(data);
+            $("#paEditModal").modal("hide");
+            window.location.href = '/applications';
+        }
+    });
+});
+
+$('#application_remark_multi').on('submit', function(event){
+    event.preventDefault();
+    var form_data = $(this).serialize();
+    $.ajax({
+        url:"/application/remark-multiple",
+        method:"POST",
+        data:form_data,
+        success:function(data)
+        {
+            toastr.success("Application Created Successfully");
+            $('#actions option:selected').each(function(){
+                $(this).prop('selected', false);
+            });
+            $('#actions').multiselect('refresh');
+            // alert(data);
+            $("#bulkModal").modal("hide");
+            window.location.href = '/applications';
+        }
+    });
+});

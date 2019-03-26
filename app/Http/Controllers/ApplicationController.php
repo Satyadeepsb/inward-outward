@@ -355,10 +355,11 @@ class ApplicationController extends Controller
         // echo $request->all();
         // print_r($request->all());
         try {
+            $inward_id = $request['inward_id'];
             $files = $request->file('file');
             if (!empty($files) || !is_null($files)) {
                 foreach ($files as $file):
-                    $fileName = time() . '-' . $file->getClientOriginalName();
+                    $fileName = $inward_id . '_' . $file->getClientOriginalName();
                     // To Save File In Public/Uploaded Folder
                     $file->move(public_path('/uploaded'), $fileName);
                     // To Save File In Storage/App Folder

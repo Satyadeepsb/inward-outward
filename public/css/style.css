@@ -49,3 +49,6 @@ table, td,. table{
 .multiselect-container{
     width: 500px;
 }
+.my-actions .multiselect-container{
+    width: 400px;
+}

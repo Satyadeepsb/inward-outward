@@ -108,7 +108,7 @@
                                 aria-hidden="true">&times;</span></button>
                     <h3 class="modal-title text-center">Application Information</h3>
                 </div>
-                <form action="{{route('application.remark')}}" method="post">
+                <form action="{{route('application.remark')}}" method="post" id="application_remark">
                     {{csrf_field()}}
                     <div class="modal-body">
                         <div class="col-md-12">
@@ -184,7 +184,7 @@
 
                                 <div class="form-group">
                                     <label for="actions" class="col-md-4 control-label"> Action</label>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 my-actions">
                                         <select multiple class="form-control" id="actions" name="actions[]" required>
                                             @foreach($actions as $action)
                                                 <option value="{{$action->action}}">{{$action->action}}</option>
@@ -244,7 +244,7 @@
                                 aria-hidden="true">&times;</span></button>
                     <h3 class="modal-title text-center">Bulk Action</h3>
                 </div>
-                <form action="{{route('application.remarkMultiple')}}" method="post">
+                <form action="{{route('application.remarkMultiple')}}" method="post" id="application_remark_multi">
                     {{csrf_field()}}
                     <div class="modal-body">
                         <div class="col-md-12">
