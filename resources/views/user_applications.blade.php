@@ -55,7 +55,7 @@
                         <td>{{$application->inward_no }}</td>
                         <td>{{$application->name }}</td>
                         <td>{{$application->subject }}</td>
-                        <td>{{$application->status }}</td>
+                        <td>{{\App\Http\Controllers\ApplicationController::removeUnderscore($application->status )}}</td>
                         <td>{{$application->reference_no }}</td>
                         <td>{{$application->date }}</td>
                         <td>{{$application->documents }}</td>

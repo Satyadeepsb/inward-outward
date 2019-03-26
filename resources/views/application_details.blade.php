@@ -62,7 +62,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="col-md-5"><b>Status</b></label>
-                                <div class="col-md-7">{{$application->status}} </div>
+                                <div class="col-md-7">{{\App\Http\Controllers\ApplicationController::removeUnderscore($application->status)}} </div>
                             </div>
                             <div class="col-md-6">
 
@@ -86,7 +86,7 @@
                             <hr>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <p style="font-size: 18px;font-weight: bold">{{$application_remark->role}}</p>
+                                    <p style="font-size: 18px;font-weight: bold">{{\App\Http\Controllers\ApplicationController::removeUnderscore($application_remark->role)}}</p>
                                 </div>
                             </div>
                             <div class="row">
