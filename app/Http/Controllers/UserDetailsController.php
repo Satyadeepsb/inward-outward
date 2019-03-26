@@ -87,20 +87,20 @@ class UserDetailsController extends Controller
                 'password' => bcrypt($user['password'])
             ]);
             $newUser->save();
-            $smsSetting = Setting::where('name', 'sms')->first();
+           /* $smsSetting = Setting::where('name', 'sms')->first();
             if(!is_null($smsSetting) &&  $smsSetting['enable'] == 1){
                 $client = new \GuzzleHttp\Client();
                 $messageText = 'Hello ' .  $newUser->name . ' Your credential for Inward-Outward Management are Username ' . $userEmail . ' Password ' .$userPass;
                 $smsUrl = 'http://www.smsjust.com/sms/user/urlsms.php?username=techuser&pass=tech@12345&senderid=TNSOFT&dest_mobileno=' . $userMobile .'&message='. $messageText.'&response=Y';
                 $smsRequest = $client->get($smsUrl);
                 $smsResponse = $smsRequest->getBody()->getContents();
-            }
-            $mailSetting = Setting::where('name', 'email')->first();
+            }*/
+            /*$mailSetting = Setting::where('name', 'email')->first();
             if(!is_null($mailSetting) &&  $mailSetting['enable'] == 1){
                 $mailer->
                 to($userEmail)->
                 send(new \App\Mail\RegisterMail($userEmail,$userPass,'http://localhost:8000/login',$newUser->name));
-            }
+            }*/
             Session::flash('success','User created Successfully.');
             return redirect()->action('UsersController@index');
         } else{
