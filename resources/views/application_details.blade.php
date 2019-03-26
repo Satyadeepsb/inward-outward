@@ -9,71 +9,79 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="col-md-5">Inward Number</label>
+                                <label class="col-md-5"><b>Inward Number</b></label>
                                 <div class="col-md-7">{{$application->inward_no}} </div>
                             </div>
                             <div class="col-md-6">
-                                <label class="col-md-5"> Reference Number</label>
+                                <label class="col-md-5"><b> Reference Number</b></label>
                                 <div class="col-md-7">{{$application->reference_no}}</div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="col-md-5">Application Name</label>
+                                <label class="col-md-5"><b>Application Name</b></label>
                                 <div class="col-md-7">{{$application->name}} </div>
                             </div>
                             <div class="col-md-6">
-                                <label class="col-md-5"> Date</label>
+                                <label class="col-md-5"> <b>Date</b></label>
                                 <div class="col-md-7">{{$application->date}}</div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="col-md-5">Mobile</label>
+                                <label class="col-md-5"><b>Mobile</b></label>
                                 <div class="col-md-7">{{$application->mobile}} </div>
                             </div>
                             <div class="col-md-6">
-                                <label class="col-md-5"> Address</label>
+                                <label class="col-md-5"> <b>Address</b></label>
                                 <div class="col-md-7">{{$application->address}}</div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="col-md-5">District</label>
+                                <label class="col-md-5"><b>District</b></label>
                                 <div class="col-md-7">{{$application->district}} </div>
                             </div>
                             <div class="col-md-6">
-                                <label class="col-md-5"> Taluka</label>
+                                <label class="col-md-5"> <b>Taluka</b></label>
                                 <div class="col-md-7">{{$application->taluka}}</div>
                             </div>
                         </div>
                         @if(count($application_remarks) > 0)
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label class="col-md-5">Department</label>
+                                    <label class="col-md-5"><b>Department</b></label>
                                     <div class="col-md-7">{{\App\Http\Controllers\ApplicationController::getDeptName($application_remarks[0]->department)}} </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-md-5"> Officer</label>
+                                    <label class="col-md-5"> <b>Officer</b></label>
                                     <div class="col-md-7">{{\App\Http\Controllers\ApplicationController::getUserName($application_remarks[0]->officer)}} </div>
                                 </div>
                             </div>
                         @endif
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="col-md-5">Status</label>
+                                <label class="col-md-5"><b>Status</b></label>
                                 <div class="col-md-7">{{$application->status}} </div>
                             </div>
                             <div class="col-md-6">
 
                             </div>
                         </div>
+                        <hr>
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="col-md-2">Documents</label>
+                                <label class="col-md-2"><b>Subject</b></label>
+                                <div class="col-md-10">{{$application->subject}}</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="col-md-2"><b>Documents</b></label>
                                 <div class="col-md-10">{{$application->documents}}</div>
                             </div>
                         </div>
+
                         @foreach ($application_remarks as $key => $application_remark)
                             <hr>
                             <div class="row">

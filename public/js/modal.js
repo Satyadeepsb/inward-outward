@@ -18,6 +18,7 @@ $('#paEditModal').on('show.bs.modal', function (event) {
     modal.find('.modal-body #status_display')[0].innerHTML = application.status;
     modal.find('.modal-body #date_display')[0].innerHTML = application.date;
     modal.find('.modal-body #documents_display')[0].innerHTML = application.documents;
+    modal.find('.modal-body #subject_display')[0].innerHTML = application.subject;
 });
 
 

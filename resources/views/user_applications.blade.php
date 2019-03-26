@@ -116,7 +116,7 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label class="col-md-5">Inward Number</label>
+                                            <label class="col-md-5"><b>Inward Number</b></label>
                                             <div class="col-md-7">
                                                 <label for="name" class="col-md-8 control-label"
                                                        id="inward_id_display"> </label>
@@ -124,7 +124,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="col-md-5"> Reference Number</label>
+                                            <label class="col-md-5"> <b>Reference Number</b></label>
                                             <div class="col-md-7">
                                                 <label for="name" class="col-md-8 control-label"
                                                        id="reference_no_display"></label>
@@ -133,14 +133,14 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label class="col-md-5">Application Name</label>
+                                            <label class="col-md-5"><b>Application Name</b></label>
                                             <div class="col-md-7">
                                                 <label for="name" class="col-md-8 control-label"
                                                        id="application_name_display"></label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="col-md-5"> Date</label>
+                                            <label class="col-md-5"> <b>Date</b></label>
                                             <div class="col-md-7">
                                                 <label for="name" id="date_display" class="col-md-8 control-label"></label>
                                             </div>
@@ -148,7 +148,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label class="col-md-5">Status</label>
+                                            <label class="col-md-5"><b>Status</b></label>
                                             <div class="col-md-7">
                                                 <label for="name" class="col-md-8 control-label"
                                                        id="status_display" ></label>
@@ -160,13 +160,23 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label class="col-md-2">Documents</label>
+                                            <label class="col-md-2"><b>Subject</b></label>
+                                            <div class="col-md-7">
+                                                <label for="name" class="col-md-8 control-label"
+                                                       id="subject_display"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="col-md-2"><b>Documents</b></label>
                                             <div class="col-md-7">
                                                 <label for="name" class="col-md-8 control-label"
                                                        id="documents_display"></label>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                             <div class="col-md-offset-2">
