@@ -112,7 +112,7 @@
                         @if(count($documents) > 0)
                             <p style="font-size: 18px;font-weight: bold">Uploaded Documents</p>
                             @foreach($documents as $document)
-                                <a href="{{$document->stored_path}}" target="_blank"> {{$document->name}}</a>
+                                <b>{{$document->document_name}} : </b>   <a href="{{$document->stored_path}}" target="_blank">{{$document->original_name}}</a>
                                 <br>
                             @endforeach
                         @endif
@@ -131,10 +131,9 @@
                             <input type="text" name="officer" id="officer" value="{{$application_remarks[0]->officer}}"
                                    hidden/>
                             <div class="form-group">
-                                <label for="actions" class="col-md-4 control-label"> Action</label>
-
+                                <label for="user-actions" class="col-md-4 control-label"> Action</label>
                                 <div class="col-md-6">
-                                    <select multiple class="form-control" id="actions" name="actions[]" required>
+                                    <select multiple class="form-control" id="user-actions" name="actions[]" required>
                                         @foreach($actions as $action)
                                             <option value="{{$action->action}}">{{$action->action}}</option>
                                         @endforeach
@@ -155,12 +154,15 @@
                                     </div>
                                 </div>
                             @endif
-                            <div class="form-group">
-                                <label for="upload" class="col-md-4 control-label"> Upload Documents</label>
-                                <div class="col-md-6">
-                                    <input type="file" name="file[]" multiple id="upload">
+                            @foreach($docArray as $document)
+                                <div class="form-group">
+                                    <label for="{{\App\Http\Controllers\ApplicationController::removeSpace($document)}}" class="col-md-4 control-label"> Upload {{$document}}</label>
+                                    <div class="col-md-6">
+                                        <input type="file" name="{{\App\Http\Controllers\ApplicationController::removeSpace($document)}}" id="{{\App\Http\Controllers\ApplicationController::removeSpace($document)}}">
+                                    </div>
                                 </div>
-                            </div>
+                            @endforeach
+
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <a class="btn btn-warning" href="{{route('applications.index')}}">Cancel</a>
@@ -171,7 +173,7 @@
                     </div>
                 @endif
                 <div class="col-md-12 text-center">
-                    <a href="{{route('applications.index')}}" class="btn btn-warning">Back</a>
+                    <a href="{{route('applications.index')}}" class="btn btn-warning"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                 </div>
             </div>
         </div>

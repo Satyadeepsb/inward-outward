@@ -91,7 +91,7 @@ class UserDetailsController extends Controller
             if(!is_null($smsSetting) &&  $smsSetting['enable'] == 1){
                 $client = new \GuzzleHttp\Client();
                 $messageText = 'Hello ' .  $newUser->name . ' Your credential for Inward-Outward Management are Username ' . $userEmail . ' Password ' .$userPass;
-                $smsUrl = 'http://www.smsjust.com/sms/user/urlsms.php?username=techuser&pass=tech@12345&senderid=257147&dest_mobileno=' . $userMobile .'&message='. $messageText.'&response=Y';
+                $smsUrl = 'http://www.smsjust.com/sms/user/urlsms.php?username=techuser&pass=tech@12345&senderid=TNSOFT&dest_mobileno=' . $userMobile .'&message='. $messageText.'&response=Y';
                 $smsRequest = $client->get($smsUrl);
                 $smsResponse = $smsRequest->getBody()->getContents();
             }

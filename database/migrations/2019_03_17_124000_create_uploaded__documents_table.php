@@ -16,6 +16,8 @@ class CreateUploadedDocumentsTable extends Migration
         Schema::create('uploaded__documents', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('original_name');
+            $table->string('document_name');
             $table->integer('application_id');
             $table->integer('user_id');
             $table->string('stored_path');

@@ -42,23 +42,10 @@ function openDatePicker() {
 }
 
 function transferComplete(data) {
-    console.log(data.currentTarget.response);
     location.reload();
 }
 
-var form = document.getElementById('uploadForm');
-var request = new XMLHttpRequest();
-if(form){
-    form.addEventListener('submit', function (e) {
-        console.log('submitted');
-        e.preventDefault();
-        var formData = new FormData(form);
-        console.log(formData);
-        request.open('post', '/application/save-remark');
-        request.addEventListener('load', transferComplete);
-        request.send(formData);
-    });
-}
+
 
 $('.bulk-action').on('click', function (e) {
     var allVals = [];
@@ -75,25 +62,25 @@ $('.bulk-action').on('click', function (e) {
     }
 });
 
-$('.save-setting').on('click', function (e) {
-    var allVals = [];
-    $(".setting_chk:checked").each(function () {
-        allVals.push($(this).attr('data-name'));
-    });
-    console.log(allVals);
-    var form = document.getElementById('settingsForm');
-    var request = new XMLHttpRequest();
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var formData = new FormData(form);
-        formData.append('email', 1);
-        formData.append('sms', 0);
-        console.log(formData);
-        request.open('post', '/super/settings/update');
-        // request.addEventListener('load', transferComplete);
-        request.send(formData);
-    });
-});
+// $('.save-setting').on('click', function (e) {
+//     var allVals = [];
+//     $(".setting_chk:checked").each(function () {
+//         allVals.push($(this).attr('data-name'));
+//     });
+//     console.log(allVals);
+//     var form = document.getElementById('settingsForm');
+//     var request = new XMLHttpRequest();
+//     form.addEventListener('submit', function (e) {
+//         e.preventDefault();
+//         var formData = new FormData(form);
+//         formData.append('email', 1);
+//         formData.append('sms', 0);
+//         console.log(formData);
+//         request.open('post', '/super/settings/update');
+//         // request.addEventListener('load', transferComplete);
+//         request.send(formData);
+//     });
+// });
 
 $('#select-all').on('click', function(e) {
     if($(this).is(':checked',true))
@@ -186,6 +173,24 @@ $('#documents').multiselect({
     buttonWidth:'500px'
 });
 
+function emailCheck() {
+    var checkBox = document.getElementById("email");
+    if (checkBox.checked == true){
+        checkBox.value = "1";
+    } else {
+        checkBox.value = "0";
+    }
+}
+
+function smsCheck() {
+    var checkBox = document.getElementById("sms");
+    if (checkBox.checked == true){
+        checkBox.value = "1";
+    } else {
+        checkBox.value = "0";
+    }
+}
+
 $('#application_form').on('submit', function(event){
     event.preventDefault();
     var form_data = $(this).serialize();
@@ -200,7 +205,7 @@ $('#application_form').on('submit', function(event){
                 $(this).prop('selected', false);
             });
             $('#documents').multiselect('refresh');
-           // alert(data);
+            // alert(data);
             window.location.href = '/applications';
         }
     });
@@ -212,12 +217,7 @@ $('#actions').multiselect({
     enableCaseInsensitiveFiltering: false,
     buttonWidth:'400px'
 });
-$('#actions-bulk').multiselect({
-    nonSelectedText: 'Select Actions',
-    enableFiltering: false,
-    enableCaseInsensitiveFiltering: false,
-    buttonWidth:'400px'
-});
+
 $('#application_remark').on('submit', function(event){
     event.preventDefault();
     var form_data = $(this).serialize();
@@ -238,7 +238,12 @@ $('#application_remark').on('submit', function(event){
         }
     });
 });
-
+$('#actions-bulk').multiselect({
+    nonSelectedText: 'Select Actions',
+    enableFiltering: false,
+    enableCaseInsensitiveFiltering: false,
+    buttonWidth:'400px'
+});
 $('#application_remark_multi').on('submit', function(event){
     event.preventDefault();
     var form_data = $(this).serialize();
@@ -272,3 +277,39 @@ $( "#role" ).change(function() {
     updateDurationDivs();
 });
 updateDurationDivs();
+
+$('#settingsForm').on('submit', function(event){
+    event.preventDefault();
+    var form_data = $(this).serialize();
+    console.log(form_data);
+    $.ajax({
+        url:"/super/settings/update",
+        method:"POST",
+        data:form_data,
+        success:function(data)
+        {
+            toastr.success("Saved Successfully");
+            window.location.href = '/applications';
+        }
+    });
+});
+
+$('#user-actions').multiselect({
+    nonSelectedText: 'Select Actions',
+    enableFiltering: false,
+    enableCaseInsensitiveFiltering: false,
+    buttonWidth:'400px'
+});
+
+var form = document.getElementById('uploadForm');
+var request = new XMLHttpRequest();
+if(form){
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var formData = new FormData(form);
+        request.open('post', '/application/save-remark');
+        request.addEventListener('load', transferComplete);
+        request.send(formData);
+    });
+}
+

@@ -7,6 +7,7 @@ use App\Application_Remark;
 use App\Department;
 use App\District;
 use App\Document;
+use App\Setting;
 use App\Taluka;
 use App\Uploaded_Document;
 use Illuminate\Http\Request;
@@ -170,7 +171,7 @@ class ApplicationController extends Controller
     {
 
         $requestObj = $request->all();
-      //  dd($requestObj);
+        //  dd($requestObj);
         $docString = "";
         if (count($requestObj['documents']) > 0) {
             foreach ($requestObj['documents'] as $doc) {
@@ -334,43 +335,59 @@ class ApplicationController extends Controller
         $actions = DB::table('actions')
             ->where('user_type', $role)
             ->get();
+
         $documents = Uploaded_Document::where('application_id', $id)->get();
         if (!is_null($application_arr) && count($application_arr) > 0) {
             $application = $application_arr[0];
             $application_remarks = Application_Remark::where('inward_id', $id)->get();
+            $docArray = explode(',', $application->documents );
+
             return view('application_details')
                 ->with('application', $application)
                 ->with('application_remarks', $application_remarks)
                 ->with('actions', $actions)
-                ->with('documents', $documents);
+                ->with('documents', $documents)
+                ->with('docArray', $docArray);
         } else {
             Session::flash('error', 'No Application Found');
             return redirect()->back();
         }
     }
+    public static function removeSpace($docName){
+        return str_replace(' ', '_', $docName);
+    }
+    public static function removeUnderscore($docName){
+        return str_replace('_', ' ', $docName);
+    }
 
     public function saveRemark(Request $request,Mailer $mailer)
     {
-        // echo $request->all();
-        // print_r($request->all());
         try {
+            debug($request->all());
             $inward_id = $request['inward_id'];
-            $files = $request->file('file');
-            if (!empty($files) || !is_null($files)) {
-                foreach ($files as $file):
+            $dbApplication = Application::where('inward_no', $inward_id)->first();
+            $docArray = explode(',', $dbApplication->documents);
+            foreach ($docArray as $doc):
+                // $files = array_push($files,$request->file($doc));
+                $file = $request->file(self::removeSpace($doc));
+                if (!empty($file) || !is_null($file)) {
                     $fileName = $inward_id . '_' . $file->getClientOriginalName();
                     // To Save File In Public/Uploaded Folder
                     $file->move(public_path('/uploaded'), $fileName);
                     // To Save File In Storage/App Folder
                     //Storage::put($fileName, file_get_contents($file));
                     DB::table('uploaded__documents')->insert([
-                        ['name' => $fileName,
+                        [
+                            'name' => $fileName,
+                            'original_name' => $file->getClientOriginalName(),
+                            'document_name' => $doc,
                             'stored_path' => '/uploaded/' . $fileName,
                             'application_id' => $request['inward_id'],
                             'user_id' => Auth()->user()->id
                         ]]);
-                endforeach;
-            }
+                    debug($file);
+                }
+            endforeach;
             $role = Auth()->user()->role;
             $actionString = "";
             if (count($request['actions']) > 0) {
@@ -400,21 +417,15 @@ class ApplicationController extends Controller
                 $applications = Application::all();
             }
             if($role == 'CLERK'){
-                $userApplication =   where('inward_no', $application_remark['inward_id'])->first();
                 $smsSetting = Setting::where('name', 'sms')->first();
-                if(!is_null($smsSetting) &&  $smsSetting['enable'] == 1){
+                if(!is_null($smsSetting) &&  $smsSetting['enable'] == 1) {
+                    $userApplication = Application::where('inward_no', $application_remark['inward_id'])->first();
                     $client = new \GuzzleHttp\Client();
-                    $messageText = 'Dear Applicant, Your Application No' . $inward_id . ', forwarded to Department ' . self::getDeptName($application_remark);
-                    $smsUrl = 'http://www.smsjust.com/sms/user/urlsms.php?username=techuser&pass=tech@12345&senderid=257147&dest_mobileno=' . $userApplication->mobile .'&message='. $messageText.'&response=Y';
+                    $messageText = 'Dear Applicant, Your Application No - ' . $inward_id . ', forwarded to Department - ' . self::getDeptName($application_remark['department']);
+                    $smsUrl = 'http://www.smsjust.com/sms/user/urlsms.php?username=techuser&pass=tech@12345&senderid=TNSOFT&dest_mobileno=' . $userApplication->mobile . '&message=' . $messageText . '&response=Y';
                     $smsRequest = $client->get($smsUrl);
                     $smsResponse = $smsRequest->getBody()->getContents();
                 }
-                /*$mailSetting = Setting::where('name', 'email')->first();
-                if(!is_null($mailSetting) &&  $mailSetting['enable'] == 1){
-                    $mailer->
-                    to($userEmail)->
-                    send(new \App\Mail\RegisterMail($userEmail,$userPass,'http://localhost:8000/login',$newUser->name));
-                }*/
             }
             if ($role == 'SUPERUSER') {
                 $role = 'PA_USER';
@@ -425,8 +436,8 @@ class ApplicationController extends Controller
             $departments = Department::all();
             $users = User::where('role', 'DEPARTMENT_USER')->get();
             Session::flash('success', 'Saved Successfully');
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
+            return response()->json(['success' => $request->all()]);
+        }catch (\Exception $e) {
             Session::flash('error', 'Something went wrong');
             return response()->json(['success' => false]);
         }
