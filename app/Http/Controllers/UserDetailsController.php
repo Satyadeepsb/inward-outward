@@ -70,7 +70,8 @@ class UserDetailsController extends Controller
     {
         $user = $request->all();
         $oldUser = User::where('email', trim($user['email']))->first();
-        if(is_null($oldUser) || empty($oldUser)) {
+        $oldUserName = User::where('username', trim($user['username']))->first();
+        if((is_null($oldUser) || empty($oldUser)) && (is_null($oldUserName) || empty($oldUserName))) {
             $userMobile = $user['mobile'];
             $userEmail = $user['email'];
             $userPass = $user['password'];
@@ -104,7 +105,7 @@ class UserDetailsController extends Controller
             Session::flash('success','User created Successfully.');
             return redirect()->action('UsersController@index');
         } else{
-            Session::flash('error','Email already Exist.');
+            Session::flash('error','Email / Username already Exist.');
             return redirect()->action('UserDetailsController@index', 0);
         }
     }
