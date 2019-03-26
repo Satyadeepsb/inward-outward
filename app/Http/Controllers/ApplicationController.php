@@ -10,7 +10,7 @@ use App\Document;
 use App\Taluka;
 use App\Uploaded_Document;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Mail\Mailer;
 use Session;
 use Storage;
 use DB;
@@ -349,7 +349,7 @@ class ApplicationController extends Controller
         }
     }
 
-    public function saveRemark(Request $request)
+    public function saveRemark(Request $request,Mailer $mailer)
     {
         // echo $request->all();
         // print_r($request->all());
@@ -399,7 +399,23 @@ class ApplicationController extends Controller
             } else {
                 $applications = Application::all();
             }
-
+            if($role == 'CLERK'){
+                $userApplication =   where('inward_no', $application_remark['inward_id'])->first();
+                $smsSetting = Setting::where('name', 'sms')->first();
+                if(!is_null($smsSetting) &&  $smsSetting['enable'] == 1){
+                    $client = new \GuzzleHttp\Client();
+                    $messageText = 'Dear Applicant, Your Application No' . $inward_id . ', forwarded to Department ' . self::getDeptName($application_remark);
+                    $smsUrl = 'http://www.smsjust.com/sms/user/urlsms.php?username=techuser&pass=tech@12345&senderid=257147&dest_mobileno=' . $userApplication->mobile .'&message='. $messageText.'&response=Y';
+                    $smsRequest = $client->get($smsUrl);
+                    $smsResponse = $smsRequest->getBody()->getContents();
+                }
+                /*$mailSetting = Setting::where('name', 'email')->first();
+                if(!is_null($mailSetting) &&  $mailSetting['enable'] == 1){
+                    $mailer->
+                    to($userEmail)->
+                    send(new \App\Mail\RegisterMail($userEmail,$userPass,'http://localhost:8000/login',$newUser->name));
+                }*/
+            }
             if ($role == 'SUPERUSER') {
                 $role = 'PA_USER';
             }
