@@ -112,7 +112,8 @@
                         @if(count($documents) > 0)
                             <p style="font-size: 18px;font-weight: bold">Uploaded Documents</p>
                             @foreach($documents as $document)
-                                <b>{{$document->document_name}} : </b>   <a href="{{$document->stored_path}}" target="_blank">{{$document->original_name}}</a>
+                                <b>{{$document->document_name}} : </b>   <a href="{{$document->stored_path}}"
+                                                                            target="_blank">{{$document->original_name}}</a>
                                 <br>
                             @endforeach
                         @endif
@@ -122,7 +123,8 @@
                 $application->status == 'CLERK UPDATED' && Auth::user()->role == 'DEPARTMENT_USER')
                     <div class="row well">
 
-                        <form class="form-horizontal" role="form" method="POST" action="{{route('application.saveRemark')}}"
+                        <form class="form-horizontal" role="form" method="POST"
+                              action="{{route('application.saveRemark')}}"
                               enctype="multipart/form-data" id="uploadForm">
                             {{ csrf_field() }}
                             <input type="text" name="inward_id" id="inward" value="{{$application->inward_no}}" hidden/>
@@ -154,15 +156,30 @@
                                     </div>
                                 </div>
                             @endif
-                            @foreach($docArray as $document)
+                            @if(Auth::user()->role == 'CLERK')
+                                <div>
+                                    @foreach($docArray as $document)
+                                        <div class="form-group">
+                                            <label for="{{\App\Http\Controllers\ApplicationController::removeSpace($document)}}"
+                                                   class="col-md-4 control-label"> Upload {{$document}}</label>
+                                            <div class="col-md-6">
+                                                <input type="file"
+                                                       name="{{\App\Http\Controllers\ApplicationController::removeSpace($document)}}"
+                                                       id="{{\App\Http\Controllers\ApplicationController::removeSpace($document)}}">
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            @if(Auth::user()->role == 'DEPARTMENT_USER')
                                 <div class="form-group">
-                                    <label for="{{\App\Http\Controllers\ApplicationController::removeSpace($document)}}" class="col-md-4 control-label"> Upload {{$document}}</label>
+                                    <label for="upload" class="col-md-4 control-label"> Upload Documents</label>
                                     <div class="col-md-6">
-                                        <input type="file" name="{{\App\Http\Controllers\ApplicationController::removeSpace($document)}}" id="{{\App\Http\Controllers\ApplicationController::removeSpace($document)}}">
+                                        <input type="file" name="file[]" multiple id="upload">
                                     </div>
                                 </div>
-                            @endforeach
-
+                            @endif
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <a class="btn btn-warning" href="{{route('applications.index')}}">Cancel</a>
@@ -173,7 +190,8 @@
                     </div>
                 @endif
                 <div class="col-md-12 text-center">
-                    <a href="{{route('applications.index')}}" class="btn btn-warning"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
+                    <a href="{{route('applications.index')}}" class="btn btn-warning">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
                 </div>
             </div>
         </div>

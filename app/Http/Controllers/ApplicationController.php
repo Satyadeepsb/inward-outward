@@ -39,13 +39,13 @@ class ApplicationController extends Controller
              $applications = Application::all();
          }*/
         if ($role == 'DEPARTMENT_USER') {
-            $completedApplications = DB::table('applications')->where('status','COMPLETED')->where('department', Auth()->user()->department);
+            $completedApplications = DB::table('applications')->where('status', 'COMPLETED')->where('department', Auth()->user()->department);
 
             $applications = Application::where('status', '=', 'CLERK UPDATED')
                 ->whereNotNull('department')
                 ->union($completedApplications)
                 ->where('department', Auth()->user()->department)->get();
-        }elseif ($role == 'INWARD') {
+        } elseif ($role == 'INWARD') {
             $applications = Application::where('user_id', Auth()->user()->id)->get();
         } else {
             $applications = Application::all();
@@ -264,10 +264,10 @@ class ApplicationController extends Controller
                 ->where('id', $id)
                 ->get();
             //dd($applications[0]->status);
-            if($applications[0]->status !='CREATED'){
+            if ($applications[0]->status != 'CREATED') {
                 Session::flash('error', 'Application remark already submitted.');
                 break;
-            }else {
+            } else {
                 $application_remark = Application_Remark::create([
                     'remark' => $request['remark'],
                     'inward_id' => $applications[0]->inward_no,
@@ -340,7 +340,7 @@ class ApplicationController extends Controller
         if (!is_null($application_arr) && count($application_arr) > 0) {
             $application = $application_arr[0];
             $application_remarks = Application_Remark::where('inward_id', $id)->get();
-            $docArray = explode(',', $application->documents );
+            $docArray = explode(',', $application->documents);
 
             return view('application_details')
                 ->with('application', $application)
@@ -353,40 +353,67 @@ class ApplicationController extends Controller
             return redirect()->back();
         }
     }
-    public static function removeSpace($docName){
+
+    public static function removeSpace($docName)
+    {
         return str_replace(' ', '_', $docName);
     }
-    public static function removeUnderscore($docName){
+
+    public static function removeUnderscore($docName)
+    {
         return str_replace('_', ' ', $docName);
     }
 
-    public function saveRemark(Request $request,Mailer $mailer)
+    public function saveRemark(Request $request, Mailer $mailer)
     {
         try {
-            $inward_id = $request['inward_id'];
-            $dbApplication = Application::where('inward_no', $inward_id)->first();
-            $docArray = explode(',', $dbApplication->documents);
-            foreach ($docArray as $doc):
-                // $files = array_push($files,$request->file($doc));
-                $file = $request->file(self::removeSpace($doc));
-                if (!empty($file) || !is_null($file)) {
-                    $fileName = $inward_id . '_' . $file->getClientOriginalName();
-                    // To Save File In Public/Uploaded Folder
-                    $file->move(public_path('/uploaded'), $fileName);
-                    // To Save File In Storage/App Folder
-                    //Storage::put($fileName, file_get_contents($file));
-                    DB::table('uploaded__documents')->insert([
-                        [
-                            'name' => $fileName,
-                            'original_name' => $file->getClientOriginalName(),
-                            'document_name' => $doc,
-                            'stored_path' => '/uploaded/' . $fileName,
-                            'application_id' => $request['inward_id'],
-                            'user_id' => Auth()->user()->id
-                        ]]);
-                }
-            endforeach;
             $role = Auth()->user()->role;
+            $inward_id = $request['inward_id'];
+            if ($role == 'CLERK') {
+                $dbApplication = Application::where('inward_no', $inward_id)->first();
+                $docArray = explode(',', $dbApplication->documents);
+                foreach ($docArray as $doc):
+                    // $files = array_push($files,$request->file($doc));
+                    $file = $request->file(self::removeSpace($doc));
+                    if (!empty($file) || !is_null($file)) {
+                        $fileName = $inward_id . '_' . $file->getClientOriginalName();
+                        // To Save File In Public/Uploaded Folder
+                        $file->move(public_path('/uploaded'), $fileName);
+                        // To Save File In Storage/App Folder
+                        //Storage::put($fileName, file_get_contents($file));
+                        DB::table('uploaded__documents')->insert([
+                            [
+                                'name' => $fileName,
+                                'original_name' => $file->getClientOriginalName(),
+                                'document_name' => $doc,
+                                'stored_path' => '/uploaded/' . $fileName,
+                                'application_id' => $request['inward_id'],
+                                'user_id' => Auth()->user()->id
+                            ]]);
+                    }
+                endforeach;
+            } elseif ($role == 'DEPARTMENT_USER') {
+                $files = $request->file('file');
+                if (!empty($files) || !is_null($files)) {
+                    foreach ($files as $file1):
+                        $fileName = $inward_id . '_' . $file1->getClientOriginalName();
+                        // To Save File In Public/Uploaded Folder
+                        $file1->move(public_path('/uploaded'), $fileName);
+                        // To Save File In Storage/App Folder
+                        //Storage::put($fileName, file_get_contents($file));
+                        DB::table('uploaded__documents')->insert([
+                            [
+                                'name' => $fileName,
+                                'original_name' => $file1->getClientOriginalName(),
+                                'document_name' => 'Document',
+                                'stored_path' => '/uploaded/' . $fileName,
+                                'application_id' => $request['inward_id'],
+                                'user_id' => Auth()->user()->id
+                            ]]);
+                    endforeach;
+                }
+            }
+
             $actionString = "";
             if (count($request['actions']) > 0) {
                 foreach ($request['actions'] as $action) {
@@ -414,9 +441,9 @@ class ApplicationController extends Controller
             } else {
                 $applications = Application::all();
             }
-            if($role == 'CLERK'){
+            if ($role == 'CLERK') {
                 $smsSetting = Setting::where('name', 'sms')->first();
-                if(!is_null($smsSetting) &&  $smsSetting['enable'] == 1) {
+                if (!is_null($smsSetting) && $smsSetting['enable'] == 1) {
                     $userApplication = Application::where('inward_no', $application_remark['inward_id'])->first();
                     $client = new \GuzzleHttp\Client();
                     $messageText = 'Dear Applicant, Your Application No - ' . $inward_id . ', forwarded to Department - ' . self::getDeptName($application_remark['department']);
@@ -435,7 +462,8 @@ class ApplicationController extends Controller
             $users = User::where('role', 'DEPARTMENT_USER')->get();
             Session::flash('success', 'Saved Successfully');
             return response()->json(['success' => $request->all()]);
-        }catch (\Exception $e) {
+        } catch
+        (\Exception $e) {
             Session::flash('error', 'Something went wrong');
             return response()->json(['success' => false]);
         }
