@@ -33,7 +33,7 @@
                 <td>{{$user->name }}</td>
                 <td>{{$user->email }}</td>
                 <td>{{$user->username }}</td>
-                <td>{{$user->role }}</td>
+                <td>{{\App\Http\Controllers\ApplicationController::removeUnderscore($user->role)}}</td>
                 <td>
                     <a href="{{route('users.edit',['id'=>$user->id])}}" class="btn btn-primary btn-sm pull-right">
                         Edit
