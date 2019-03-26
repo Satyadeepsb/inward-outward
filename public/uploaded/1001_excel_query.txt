@@ -1,0 +1,1 @@
+=" insert into swift.cal_role_attributes(code,attribute,uperlimit,lowerlimit,description,comments) values ('"&A3&"','"&B3&"',"&C3&","&D3&",'"&E3&"','"&F3&"');"
