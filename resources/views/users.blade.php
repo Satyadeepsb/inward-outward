@@ -19,6 +19,7 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Username</th>
                 <th>Role</th>
                 <th></th>
                 <th></th>
@@ -31,6 +32,7 @@
                 <td style="font-family : 'Century-Gothic'">{{$user->id }}</td>
                 <td>{{$user->name }}</td>
                 <td>{{$user->email }}</td>
+                <td>{{$user->username }}</td>
                 <td>{{$user->role }}</td>
                 <td>
                     <a href="{{route('users.edit',['id'=>$user->id])}}" class="btn btn-primary btn-sm pull-right">

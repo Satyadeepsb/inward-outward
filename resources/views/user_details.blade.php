@@ -61,18 +61,19 @@
                         </div>
                     </div>
                     <div class="form-group required">
-                        <label for="role" class="col-md-4 control-label">Role</label>
+                        <label for="role" class="col-md-4 control-label">Role </label>
                         <div class="col-md-6">
                             <select class="form-control" id="role" name="role" required>
                                 <option value="">Select User Role</option>
-                                <option value="USER">User</option>
+                                <option value="INWARD">Inward</option>
                                 <option value="PA_USER">PA User</option>
                                 <option value="CLERK">Clerk</option>
                                 <option value="DEPARTMENT_USER">Department User</option>
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+
+                    <div class="form-group department-div" >
                         <label for="department" class="col-md-4 control-label">Department</label>
                         <div class="col-md-6">
                             <select class="form-control" id="department" name="department">
@@ -81,6 +82,14 @@
                                     <option value="{{$department->id}}">{{$department->name}}</option>
                                 @endforeach
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group  required">
+                        <label for="username" class="col-md-4 control-label">Username</label>
+                        <div class="col-md-6">
+                            <input id="username" type="text"
+                                   class="form-control" name="username"
+                                   placeholder="Enter Username" required>
                         </div>
                     </div>
                     <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }} required">
@@ -101,11 +110,12 @@
                     <div class="form-group">
                         <label for="location" class="col-md-4 control-label">Location</label>
                         <div class="col-md-6">
-                            <input id="location" type="text"
-                                   class="form-control"
-                                   name="location"
-                                   value="{{ old('location') }}"
-                                   placeholder="Enter Location">
+                            <select class="form-control" id="location" name="location">
+                                <option value="0">Select Location</option>
+                                @foreach($locations as $location)
+                                    <option value="{{$location->name}}">{{$location->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -122,11 +132,12 @@
                     <div class="form-group">
                         <label for="designation" class="col-md-4 control-label">Designation</label>
                         <div class="col-md-6">
-                            <input id="designation" type="text"
-                                   class="form-control"
-                                   name="designation"
-                                   value="{{ old('designation') }}"
-                                   placeholder="Enter Designation">
+                            <select class="form-control" id="designation" name="designation">
+                                <option value="0">Select Location</option>
+                                @foreach($designations as $designation)
+                                    <option value="{{$designation->name}}">{{$designation->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     {{--<div class="form-group">

@@ -63,7 +63,13 @@ class UsersController extends Controller
     {
         $user = User::find($id);
         $departments = Department::all();
-        return view('edit_user')->with('user',$user)->with('departments',$departments);
+        $locations = Location::all();
+        $designations = Designation::all();
+        return view('edit_user')
+            ->with('user',$user)
+            ->with('departments',$departments)
+            ->with('locations',$locations)
+            ->with('designations',$designations);
     }
 
     /**

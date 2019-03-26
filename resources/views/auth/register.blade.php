@@ -82,7 +82,7 @@
                                 <div class="col-md-6">
                                     <select class="form-control" id="role" name="role">
                                         <option value="">Select User Role</option>
-                                        <option value="USER">User</option>
+                                        <option value="INWARD">Inward</option>
                                         <option value="PA_USER">PA User</option>
                                         <option value="CLERK">Clerk</option>
                                         <option value="DEPARTMENT_USER">Department User</option>

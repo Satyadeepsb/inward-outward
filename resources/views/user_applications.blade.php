@@ -4,12 +4,12 @@
     <div class="{{Auth::user()->hasRole('SUPERUSER') ? 'col-md-12':'col-md-10 col-md-offset-1' }}"
          style="margin-top: 0px;padding-top: 0px">
         <div class="col-md-12 tile-highlight text-center" style="margin-bottom: 5px">
-            <div class="{{((Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('USER')))? 'col-md-11': 'col-md-12'}}">
+            <div class="{{((Auth::user()->hasRole('PA_USER') || Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('INWARD')))? 'col-md-11': 'col-md-12'}}">
                 <p style="color: white;font-size: 20px">Applications</p>
             </div>
-            @if(Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('USER') || Auth::user()->hasRole('PA_USER'))
+            @if(Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('INWARD') || Auth::user()->hasRole('PA_USER'))
             <div class="col-md-1">
-                @if(Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('USER'))
+                @if(Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('INWARD'))
                     <a href="{{route('application.create')}}"
                        class="btn btn-default btn-sm pull-right"
                        style="margin-top: 5px;">
@@ -61,7 +61,7 @@
                         <td>{{$application->documents }}</td>
                         <td>
 
-                            @if(!Auth::user()->hasRole('USER'))
+                            @if(!Auth::user()->hasRole('INWARD'))
                             <a href="{{route('application.get',['id'=>$application->inward_no])}}" style="cursor: pointer;margin-left: 5px"
                                class="btn btn-group btn-sm pull-right">
                                 <b>View <i class="fa fa-eye" aria-hidden="true"></i></b>
@@ -260,9 +260,9 @@
                                     </div>
                                 </div>--}}
                                 <div class="form-group">
-                                    <label for="actions" class="col-md-4 control-label"> Action</label>
+                                    <label for="actions-bulk" class="col-md-4 control-label"> Action</label>
                                     <div class="col-md-6">
-                                        <select multiple class="form-control" id="actions" name="actions[]" required>
+                                        <select multiple class="form-control" id="actions-bulk" name="actions[]" required>
                                             @foreach($actions as $action)
                                                 <option value="{{$action->action}}">{{$action->action}}</option>
                                             @endforeach

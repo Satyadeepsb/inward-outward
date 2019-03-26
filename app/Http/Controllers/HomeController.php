@@ -45,16 +45,15 @@ class HomeController extends Controller
                 ->whereNotNull('department')
                 ->union($completedApplications)
                 ->where('department', Auth()->user()->department)->get();
-        } else{
+        } elseif ($role == 'INWARD') {
+            $applications = Application::where('user_id', Auth()->user()->id)->get();
+        } else {
             $applications = Application::all();
         }
         if($role =='SUPERUSER'){
             $role='PA_USER';
         }
-        foreach ($applications as $application):
-            $application['selected'] = true;
-            $application->myField = 'true';
-        endforeach;
+
         $actions = DB::table('actions')
             ->where('user_type', $role)
             ->get();

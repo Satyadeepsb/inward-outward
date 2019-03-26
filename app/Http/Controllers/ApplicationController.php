@@ -44,6 +44,8 @@ class ApplicationController extends Controller
                 ->whereNotNull('department')
                 ->union($completedApplications)
                 ->where('department', Auth()->user()->department)->get();
+        }elseif ($role == 'INWARD') {
+            $applications = Application::where('user_id', Auth()->user()->id)->get();
         } else {
             $applications = Application::all();
         }
@@ -51,10 +53,6 @@ class ApplicationController extends Controller
         if ($role == 'SUPERUSER') {
             $role = 'PA_USER';
         }
-        foreach ($applications as $application):
-            $application['selected'] = true;
-            $application->myField = 'true';
-        endforeach;
         $actions = DB::table('actions')
             ->where('user_type', $role)
             ->get();
@@ -264,7 +262,8 @@ class ApplicationController extends Controller
             $applications = DB::table('applications')
                 ->where('id', $id)
                 ->get();
-            if($applications[0]->status !='PA_USER UPDATED'){
+            //dd($applications[0]->status);
+            if($applications[0]->status !='CREATED'){
                 Session::flash('error', 'Application remark already submitted.');
                 break;
             }else {

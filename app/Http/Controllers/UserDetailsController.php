@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Department;
+use App\Designation;
+use App\Location;
 use App\Setting;
 use Illuminate\Http\Request;
 use App\User;
@@ -18,11 +20,20 @@ class UserDetailsController extends Controller
     public function index($id)
     {
         $departments = Department::all();
+        $locations = Location::all();
+        $designations = Designation::all();
         if($id == 0) {
-            return view('user_details')->with('departments',$departments);
+            return view('user_details')
+                ->with('departments',$departments)
+                ->with('locations',$locations)
+                ->with('designations',$designations);
         }else{
             $user = User::find($id);
-            return view('user_details')->with('user',$user)->with('departments',$departments);
+            return view('user_details')
+                ->with('user',$user)
+                ->with('departments',$departments)
+                ->with('locations',$locations)
+                ->with('designations',$designations);
         }
     }
 
@@ -42,6 +53,7 @@ class UserDetailsController extends Controller
             'location' => $data['location'],
             'address' => $data['address'],
             'designation' => $data['designation'],
+            'username' => $data['username'],
             'password' => bcrypt($data['password']),
         ]);
 
@@ -71,6 +83,7 @@ class UserDetailsController extends Controller
                 'location' => $user['location'],
                 'address' => $user['address'],
                 'designation' => $user['designation'],
+                'username' =>$user['username'],
                 'password' => bcrypt($user['password'])
             ]);
             $newUser->save();
@@ -137,6 +150,7 @@ class UserDetailsController extends Controller
         $user->location = $newUser['location'];
         $user->address = $newUser['address'];
         $user->designation = $newUser['designation'];
+        $user->username = $newUser['username'];
         $user->update();
         Session::flash('success','User Updated Successfully.');
         return redirect()->action('UsersController@index');

@@ -18,5 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DistrictsTableSeeder::class); // Prod done
         $this->call(TalukasTableSeeder::class); // Prod done
         $this->call(ActionTableSeeder::class);
+        $this->call(LocationTableSeeder::class);
+        $this->call(DesignationTableSeeder::class);
     }
 }

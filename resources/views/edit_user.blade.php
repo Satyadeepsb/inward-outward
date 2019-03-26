@@ -65,7 +65,7 @@
                         <div class="col-md-6">
                             <select class="form-control" id="role" name="role" value="{{ $user->role }}" required>
                                 <option value="">Select User Role</option>
-                                <option value="USER" {{ ($user->role == 'USER') ? 'selected="selected"' : '' }}>User</option>
+                                <option value="USER" {{ ($user->role == 'INWARD') ? 'selected="selected"' : '' }}>User</option>
                                 <option value="PA_USER"  {{ ($user->role == 'PA_USER') ? 'selected="selected"' : '' }}>PA User</option>
                                 <option value="CLERK"  {{ ($user->role == 'CLERK') ? 'selected="selected"' : '' }}>Clerk</option>
                                 <option value="DEPARTMENT_USER"  {{ ($user->role == 'DEPARTMENT_USER') ? 'selected="selected"' : '' }}>Department User</option>
