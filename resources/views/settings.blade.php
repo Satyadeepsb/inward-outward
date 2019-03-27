@@ -47,17 +47,47 @@
         </div>
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">SMS URL</div>
+                <div class="panel-heading">SMS Setting</div>
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{route('settings.url')}}" method="POST">
                         {{ csrf_field() }}
                         <div class="form-group required">
-                            <label for="url" class="col-md-1 control-label"><i class="fa fa-link" aria-hidden="true"></i> URL</label>
-                            <div class="col-md-11">
+                            <label for="url" class="col-md-2 control-label"> URL</label>
+                            <div class="col-md-10">
                                 <input id="url" type="text"
                                        class="form-control" name="url"
-                                       value="{{ $configs[0]->url }}"
+                                       value="{{ $smsConfigUrl->param_value}}"
                                        placeholder="Enter URL"
+                                       required autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label for="username" class="col-md-2 control-label">User Name</label>
+                            <div class="col-md-10">
+                                <input id="username" type="text"
+                                       class="form-control" name="username"
+                                       value="{{ $smsConfigUsername->param_value }}"
+                                       placeholder="Enter username"
+                                       required autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label for="pass" class="col-md-2 control-label"> Password</label>
+                            <div class="col-md-10">
+                                <input id="pass" type="text"
+                                       class="form-control" name="pass"
+                                       value="{{ $smsConfigPass->param_value }}"
+                                       placeholder="Enter Password"
+                                       required autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label for="senderid" class="col-md-2 control-label"> Sender ID</label>
+                            <div class="col-md-10">
+                                <input id="senderid" type="text"
+                                       class="form-control" name="senderid"
+                                       value="{{ $smsConfigSenderId->param_value }}"
+                                       placeholder="Enter Sender"
                                        required autofocus>
                             </div>
                         </div>

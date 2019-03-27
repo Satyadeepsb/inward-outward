@@ -11,8 +11,16 @@ class SettingsController extends Controller
     public function index()
     {
         $settings = Setting::all();
-        $configs = Config::all();
-       return view('settings')->with('settings',$settings)->with('configs', $configs);
+        $smsConfigUrl = Config::where('param_name','url')->first();
+        $smsConfigUsername = Config::where('param_name','username')->first();
+        $smsConfigPass = Config::where('param_name','pass')->first();
+        $smsConfigSenderId = Config::where('param_name','senderid')->first();
+        return view('settings')
+            ->with('settings',$settings)
+            ->with('smsConfigUrl', $smsConfigUrl)
+            ->with('smsConfigUsername', $smsConfigUsername)
+            ->with('smsConfigPass', $smsConfigPass)
+            ->with('smsConfigSenderId', $smsConfigSenderId);
     }
     public function update(Request $request)
     {
@@ -22,7 +30,10 @@ class SettingsController extends Controller
     }
     public function url(Request $request)
     {
-        Config::where('id', 1)->update(['url' => $request['url']]);
+        Config::where('param_name','url')->update(['param_value' => trim($request['url'])]);
+        Config::where('param_name','username')->update(['param_value' => trim($request['username'])]);
+        Config::where('param_name','pass')->update(['param_value' => trim($request['pass'])]);
+        Config::where('param_name','senderid')->update(['param_value' => trim($request['senderid'])]);
         Session::flash('success', 'Saved Successfully');
         return redirect()->back();
     }

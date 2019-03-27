@@ -12,7 +12,21 @@ class ConfigTableSeeder extends Seeder
     public function run()
     {
         App\Config::create([
-            'url' => 'http://www.smsjust.com/sms/user/urlsms.php?username=techuser&pass=tech@12345&senderid=TNSOFT'
+            'param_name' => 'url',
+            'param_value' => 'http://www.smsjust.com/sms/user/urlsms.php'
         ]);
+        App\Config::create([
+            'param_name' => 'username',
+            'param_value' => 'techuser'
+        ]);
+        App\Config::create([
+            'param_name' => 'pass',
+            'param_value' => 'tech@12345'
+        ]);
+        App\Config::create([
+            'param_name' => 'senderid',
+            'param_value' => 'TNSOFT'
+        ]);
+
     }
 }

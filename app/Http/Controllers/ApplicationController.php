@@ -448,9 +448,15 @@ class ApplicationController extends Controller
                     $userApplication = Application::where('inward_no', $application_remark['inward_id'])->first();
                     $client = new \GuzzleHttp\Client();
                     $messageText = 'Dear Applicant, Your Application No - ' . $inward_id . ', forwarded to Department - ' . self::getDeptName($application_remark['department']);
-                    $smsConfig = Config::where('id',1)->first();
-                    if(!is_null($smsConfig) && !is_null($smsConfig->url)){
-                        $smsUrl = $smsConfig->url . '&dest_mobileno=' . $userApplication->mobile . '&message=' . $messageText . '&response=Y';
+                    $smsConfigUrl = Config::where('param_name','url')->first();
+                    $smsConfigUsername = Config::where('param_name','username')->first();
+                    $smsConfigPass = Config::where('param_name','pass')->first();
+                    $smsConfigSenderId = Config::where('param_name','senderid')->first();
+                    // http://www.smsjust.com/sms/user/urlsms.php?username=techuser&pass=tech@12345&senderid=TNSOFT
+                    if(!is_null($smsConfigUrl) && !is_null($smsConfigUsername) && !is_null($smsConfigPass) && !is_null($smsConfigSenderId)){
+                        $smsUrl = $smsConfigUrl->param_value.'?username='. $smsConfigUsername->param_value . '&pass='.  $smsConfigPass->param_value
+                            . '&senderid=' . $smsConfigSenderId->param_value. '&dest_mobileno=' . $userApplication->mobile .
+                            '&message=' . $messageText . '&response=Y';
                         $smsRequest = $client->get($smsUrl);
                         $smsResponse = $smsRequest->getBody()->getContents();
                     }
