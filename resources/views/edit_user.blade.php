@@ -72,7 +72,7 @@
                             </select>
                         </div>
                     </div>
-                    <div  class="{{($user->role == 'DEPARTMENT_USER') ? 'form-group': 'form-group  hide-div' }}">
+                    <div  class="{{(!is_null($user->role ) && $user->role == 'DEPARTMENT_USER') ? 'form-group': 'form-group hide-div' }}">
                         <label for="department" class="col-md-4 control-label">Department</label>
                         <div class="col-md-6">
                             <select class="form-control" id="department" name="department">
@@ -164,4 +164,9 @@
             </div>
         </div>
     </div>
+    <style>
+        .hide-div{
+            display: none !important;
+        }
+    </style>
 @endsection
