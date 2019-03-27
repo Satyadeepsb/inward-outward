@@ -28,6 +28,7 @@ class ApplicationController extends Controller
      */
     public function index()
     {
+
         $role = Auth()->user()->role;
         $applications = [];
         /* if($role=='PA_USER'){
@@ -355,6 +356,11 @@ class ApplicationController extends Controller
         }
     }
 
+    public static function replaceConstant($constant, $replacedBy, $originalString)
+    {
+        return str_replace($constant, $replacedBy, $originalString);
+    }
+
     public static function removeSpace($docName)
     {
         return str_replace(' ', '_', $docName);
@@ -452,11 +458,14 @@ class ApplicationController extends Controller
                     $smsConfigUsername = Config::where('param_name','username')->first();
                     $smsConfigPass = Config::where('param_name','pass')->first();
                     $smsConfigSenderId = Config::where('param_name','senderid')->first();
-                    // http://www.smsjust.com/sms/user/urlsms.php?username=techuser&pass=tech@12345&senderid=TNSOFT
                     if(!is_null($smsConfigUrl) && !is_null($smsConfigUsername) && !is_null($smsConfigPass) && !is_null($smsConfigSenderId)){
-                        $smsUrl = $smsConfigUrl->param_value.'?username='. $smsConfigUsername->param_value . '&pass='.  $smsConfigPass->param_value
-                            . '&senderid=' . $smsConfigSenderId->param_value. '&dest_mobileno=' . $userApplication->mobile .
-                            '&message=' . $messageText . '&response=Y';
+                        $apiString = $smsConfigUrl->param_value;
+                        $apiString = self::replaceConstant('<api_u_name>',$smsConfigUsername->param_value,$apiString);
+                        $apiString = self::replaceConstant('<api_password>',$smsConfigPass->param_value,$apiString);
+                        $apiString =  self::replaceConstant('<sender_id>',$smsConfigSenderId->param_value,$apiString);
+                        $apiString =  self::replaceConstant('<mobile_no>',$userApplication->mobile,$apiString);
+                        $apiString =  self::replaceConstant('<api_msg>',$messageText,$apiString);
+                        $smsUrl = $apiString;
                         $smsRequest = $client->get($smsUrl);
                         $smsResponse = $smsRequest->getBody()->getContents();
                     }

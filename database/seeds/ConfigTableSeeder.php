@@ -13,7 +13,7 @@ class ConfigTableSeeder extends Seeder
     {
         App\Config::create([
             'param_name' => 'url',
-            'param_value' => 'http://www.smsjust.com/sms/user/urlsms.php'
+            'param_value' => 'http://www.smsjust.com/sms/user/urlsms.php?username=<api_u_name>&pass=<api_password>&senderid=<sender_id>&dest_mobileno=<mobile_no>&message=<api_msg>&response=Y'
         ]);
         App\Config::create([
             'param_name' => 'username',
