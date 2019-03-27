@@ -133,7 +133,7 @@
                         <label for="designation" class="col-md-4 control-label">Designation</label>
                         <div class="col-md-6">
                             <select class="form-control" id="designation" name="designation">
-                                <option value="0">Select Location</option>
+                                <option value="0">Select Designation</option>
                                 @foreach($designations as $designation)
                                     <option value="{{$designation->name}}">{{$designation->name}}</option>
                                 @endforeach
@@ -153,10 +153,10 @@
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             <a href="{{route('users.index')}}" class="btn btn-warning">
-                                Cancel
+                                Cancel <i class="fa fa-times" aria-hidden="true"></i>
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                Create User
+                                Create User  <i class="fa fa-floppy-o" aria-hidden="true"></i>
                             </button>
                         </div>
                     </div>

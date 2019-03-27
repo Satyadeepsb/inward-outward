@@ -66,6 +66,10 @@ Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware
             'uses'=>'SettingsController@update',
             'as'=>'settings.update'
         ]);
+        Route::post('/settings/url', [
+            'uses'=>'SettingsController@url',
+            'as'=>'settings.url'
+        ]);
     Route::post('/user/save-or-update', 'UserDetailsController@create');
     Route::resource('/users', 'UsersController');
     Route::resource('/user/{id}', 'UserDetailsController');

@@ -6,7 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
-    protected $fillable = [
-        'email', 'sms'
-    ];
+    protected $fillable = [ 'email', 'sms'];
 }

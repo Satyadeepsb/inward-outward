@@ -52,3 +52,7 @@ table, td,. table{
 .my-actions .multiselect-container{
     width: 400px;
 }
+
+.hide-div{
+    display: none !important;
+}

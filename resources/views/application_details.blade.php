@@ -182,8 +182,10 @@
                             @endif
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
-                                    <a class="btn btn-warning" href="{{route('applications.index')}}">Cancel</a>
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <a class="btn btn-warning" href="{{route('applications.index')}}">Cancel <i class="fa fa-times" aria-hidden="true"></i>
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">Save  <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                                    </button>
                                 </div>
                             </div>
                         </form>

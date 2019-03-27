@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Application;
 use App\Application_Remark;
+use App\Config;
 use App\Department;
 use App\District;
 use App\Document;
@@ -447,9 +448,12 @@ class ApplicationController extends Controller
                     $userApplication = Application::where('inward_no', $application_remark['inward_id'])->first();
                     $client = new \GuzzleHttp\Client();
                     $messageText = 'Dear Applicant, Your Application No - ' . $inward_id . ', forwarded to Department - ' . self::getDeptName($application_remark['department']);
-                    $smsUrl = 'http://www.smsjust.com/sms/user/urlsms.php?username=techuser&pass=tech@12345&senderid=TNSOFT&dest_mobileno=' . $userApplication->mobile . '&message=' . $messageText . '&response=Y';
-                    $smsRequest = $client->get($smsUrl);
-                    $smsResponse = $smsRequest->getBody()->getContents();
+                    $smsConfig = Config::where('id',1)->first();
+                    if(!is_null($smsConfig) && !is_null($smsConfig->url)){
+                        $smsUrl = $smsConfig->url . '&dest_mobileno=' . $userApplication->mobile . '&message=' . $messageText . '&response=Y';
+                        $smsRequest = $client->get($smsUrl);
+                        $smsResponse = $smsRequest->getBody()->getContents();
+                    }
                 }
             }
             if ($role == 'SUPERUSER') {

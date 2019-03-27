@@ -72,48 +72,56 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div  class="{{($user->role == 'DEPARTMENT_USER') ? 'form-group': 'form-group  hide-div' }}">
                         <label for="department" class="col-md-4 control-label">Department</label>
                         <div class="col-md-6">
                             <select class="form-control" id="department" name="department">
                                 <option value="0">Select Department</option>
                                 @foreach($departments as $department)
-                                    <option value="{{$department->id}}">{{$department->name}}</option>
+                                    <option value="{{$department->id}}" {{$user->department == $department->id ? 'selected': ''}}>{{$department->name}}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
-
-                   {{-- <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                        <label for="password" class="col-md-4 control-label">Password</label>
-
+                    <div class="form-group  required">
+                        <label for="username" class="col-md-4 control-label">Username</label>
                         <div class="col-md-6">
-                            <input id="password" type="password"
-                                   class="form-control" name="password"
-                                   placeholder="Enter Password"
-                                   value="{{ $user->password }}"
-                                   required>
-
-                            @if ($errors->has('password'))
-                                <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                            @endif
+                            <input id="username" type="text"  value="{{ $user->username }}"
+                                   class="form-control" name="username"
+                                   placeholder="Enter Username" required>
                         </div>
-                    </div>--}}
+                    </div>
+
+                    {{-- <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                         <label for="password" class="col-md-4 control-label">Password</label>
+
+                         <div class="col-md-6">
+                             <input id="password" type="password"
+                                    class="form-control" name="password"
+                                    placeholder="Enter Password"
+                                    value="{{ $user->password }}"
+                                    required>
+
+                             @if ($errors->has('password'))
+                                 <span class="help-block">
+                                         <strong>{{ $errors->first('password') }}</strong>
+                                     </span>
+                             @endif
+                         </div>
+                     </div>--}}
                     <div class="form-group">
                         <label for="location" class="col-md-4 control-label">Location</label>
                         <div class="col-md-6">
-                            <input id="location" type="text"
-                                   class="form-control"
-                                   name="location"
-                                   value="{{ $user->location }}"
-                                   placeholder="Enter Location">
+                            <select class="form-control" id="location" name="location">
+                                <option value="0">Select Location</option>
+                                @foreach($locations as $location)
+                                    <option value="{{$location->name}}"  {{$user->location == $location->name ? 'selected': ''}}>{{$location->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="address" class="col-md-4 control-label">Address</label>
-
                         <div class="col-md-6">
                             <input id="address" type="text"
                                    class="form-control"
@@ -123,13 +131,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="designation" class="col-md-4 control-label">Designation</label>
+                        <label for="designation" class="col-md-4 control-label">Designation </label>
                         <div class="col-md-6">
-                            <input id="designation" type="text"
-                                   class="form-control"
-                                   name="designation"
-                                   value="{{ $user->designation }}"
-                                   placeholder="Enter Designation">
+                            <select class="form-control" id="designation" name="designation">
+                                <option value="0">Select Designation</option>
+                                @foreach($designations as $designation)
+                                    <option value="{{$designation->name}}" {{$user->designation == $designation->name ? 'selected': ''}}>{{$designation->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     {{--<div class="form-group">
@@ -141,14 +150,13 @@
                                    class="form-control" name="password_confirmation" required>
                         </div>
                     </div>--}}
-
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             <a class="btn btn-warning" href="{{route('users.index')}}">
-                                Cancel
+                                Cancel <i class="fa fa-times" aria-hidden="true"></i>
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                Update User
+                                Update User <i class="fa fa-floppy-o" aria-hidden="true"></i>
                             </button>
                         </div>
                     </div>

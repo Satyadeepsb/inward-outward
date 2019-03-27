@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Department;
+use App\Designation;
+use App\Location;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;

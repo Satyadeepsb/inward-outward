@@ -18,7 +18,7 @@
                 @if((Auth::user()->hasRole('PA_USER')) && count($applications) > 0)
                     <button class="btn btn-warning btn-sm pull-right bulk-action"
                             style="margin-top: 5px;">
-                        <b>Bulk Action</b>
+                        <b>Bulk Action </b> <i class="fa fa-bolt" aria-hidden="true"></i>
                     </button>
                 @endif
             </div>
@@ -71,19 +71,19 @@
                                 <button data-toggle="modal" data-target="#paEditModal"
                                         data-application="{{$application}}" style="cursor: pointer"
                                         class="btn btn-warning btn-sm pull-right">
-                                    <b>Action</b>
+                                    <b>Action</b> <i class="fa fa-bolt" aria-hidden="true"></i>
                                 </button>
                             @endif
                             @if(Auth::user()->hasRole('CLERK') && $application->status == 'PA_USER UPDATED')
                                 <a href="{{route('application.get',['id'=>$application->inward_no])}}" style="cursor: pointer"
                                    class="btn btn-warning btn-sm pull-right">
-                                    <b>Action</b>
+                                    <b>Action</b> <i class="fa fa-bolt" aria-hidden="true"></i>
                                 </a>
                             @endif
                             @if(Auth::user()->hasRole('DEPARTMENT_USER') && $application->status != 'COMPLETED')
                                 <a href="{{route('application.get',['id'=>$application->inward_no])}}" style="cursor: pointer"
                                    class="btn btn-warning btn-sm pull-right">
-                                    <b>Action</b>
+                                    <b>Action</b> <i class="fa fa-bolt" aria-hidden="true"></i>
                                 </a>
                             @endif
                         </td>
