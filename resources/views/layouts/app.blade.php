@@ -110,14 +110,13 @@
                                 <i class="fa fa-cog" aria-hidden="true"></i> &nbsp;
                                 Settings
                             </a>
-
-                            {{-- <a href="#" class="list-group-item">Designation</a>
-                             <a href="#" class="list-group-item">Document </a>
-                             <a href="#" class="list-group-item">District</a>
-                             <a href="#" class="list-group-item">Taluka</a>
-                             <a href="#" class="list-group-item">Action</a>
-                             <a href="#" class="list-group-item">Department</a>
-                             <a href="#" class="list-group-item">Location</a>--}}
+                             <a href="#" class="list-group-item"><i class="fa fa-flag-o" aria-hidden="true"></i> Designation</a>
+                             <a href="#" class="list-group-item"><i class="fa fa-file-archive-o" aria-hidden="true"></i> Document </a>
+                             <a href="#" class="list-group-item"><i class="fa fa-globe" aria-hidden="true"></i> District</a>
+                             <a href="#" class="list-group-item"><i class="fa fa-map-marker" aria-hidden="true"></i> Taluka</a>
+                             <a href="#" class="list-group-item"><i class="fa fa-bolt" aria-hidden="true"></i> Action</a>
+                             <a href="#" class="list-group-item"><i class="fa fa-university" aria-hidden="true"></i>   Department</a>
+                             <a href="#" class="list-group-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> Location</a>
                         </div>
                     </div>
                     <div class="col-md-10" style="margin-top:0px;padding: 0">
