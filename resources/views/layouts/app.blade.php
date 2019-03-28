@@ -101,7 +101,7 @@
                                 Applications
                             </a>
                             <a href="{{route('users.index')}}"
-                               class="{{ (str_contains(Request::path(), 'super') || str_contains(Request::path(), 'user')) && !str_contains(Request::path(), 'settings') ? 'list-group-item active' : 'list-group-item' }}">
+                               class="{{ (str_contains(Request::path(), 'user')) ? 'list-group-item active' : 'list-group-item' }}">
                                 <i class="fa fa-users" aria-hidden="true"></i> &nbsp;
                                 Users
                             </a>
@@ -110,13 +110,27 @@
                                 <i class="fa fa-cog" aria-hidden="true"></i> &nbsp;
                                 Settings
                             </a>
-                             <a href="#" class="list-group-item"><i class="fa fa-flag-o" aria-hidden="true"></i> Designation</a>
-                             <a href="#" class="list-group-item"><i class="fa fa-file-archive-o" aria-hidden="true"></i> Document </a>
-                             <a href="#" class="list-group-item"><i class="fa fa-globe" aria-hidden="true"></i> District</a>
-                             <a href="#" class="list-group-item"><i class="fa fa-map-marker" aria-hidden="true"></i> Taluka</a>
-                             <a href="#" class="list-group-item"><i class="fa fa-bolt" aria-hidden="true"></i> Action</a>
-                             <a href="#" class="list-group-item"><i class="fa fa-university" aria-hidden="true"></i>   Department</a>
-                             <a href="#" class="list-group-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> Location</a>
+                             <a href="{{route('master.index',['type'=>'designation'])}}"
+                                class="{{ (str_contains(Request::path(), 'designation')) ? 'list-group-item active' : 'list-group-item' }}">
+                                 <i class="fa fa-flag-o" aria-hidden="true"></i> &nbsp; Designation</a>
+                             <a href="{{route('master.index',['type'=>'document'])}}"
+                                class="{{ (str_contains(Request::path(), 'document')) ? 'list-group-item active' : 'list-group-item' }}"
+                             ><i class="fa fa-file-archive-o" aria-hidden="true"></i> &nbsp;  Document </a>
+                             <a href="{{route('master.index',['type'=>'district'])}}"
+                                class="{{ (str_contains(Request::path(), 'district')) ? 'list-group-item active' : 'list-group-item' }}">
+                                 <i class="fa fa-globe" aria-hidden="true"></i> &nbsp;  District</a>
+                             <a href="{{route('master.index',['type'=>'taluka'])}}"
+                                class="{{ (str_contains(Request::path(), 'taluka')) ? 'list-group-item active' : 'list-group-item' }}">
+                                 <i class="fa fa-map-marker" aria-hidden="true"></i> &nbsp;  Taluka</a>
+                             <a href="{{route('master.index',['type'=>'action'])}}"
+                                class="{{ (str_contains(Request::path(), 'action')) ? 'list-group-item active' : 'list-group-item' }}">
+                                 <i class="fa fa-bolt" aria-hidden="true"></i> &nbsp;  Action</a>
+                             <a href="{{route('master.index',['type'=>'department'])}}"
+                                class="{{ (str_contains(Request::path(), 'department')) ? 'list-group-item active' : 'list-group-item' }}">
+                                 <i class="fa fa-university" aria-hidden="true"></i> &nbsp; Department</a>
+                             <a href="{{route('master.index',['type'=>'location'])}}"
+                                class="{{ (str_contains(Request::path(), 'location')) ? 'list-group-item active' : 'list-group-item' }}">
+                                 <i class="fa fa-location-arrow" aria-hidden="true"></i> &nbsp;  Location</a>
                         </div>
                     </div>
                     <div class="col-md-10" style="margin-top:0px;padding: 0">

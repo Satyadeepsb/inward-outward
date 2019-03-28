@@ -70,6 +70,14 @@ Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware
             'uses'=>'SettingsController@url',
             'as'=>'settings.url'
         ]);
+        Route::get('/master/{type}', [
+            'uses'=>'MasterController@index',
+            'as'=>'master.index'
+        ]);
+        Route::get('/master/{type}/detail/{id}', [
+            'uses'=>'MasterController@getMasterDetails',
+            'as'=>'master.details'
+        ]);
     Route::post('/user/save-or-update', 'UserDetailsController@create');
     Route::resource('/users', 'UsersController');
     Route::resource('/user/{id}', 'UserDetailsController');

@@ -51,4 +51,6 @@ class SettingsController extends Controller
     {
         return str_replace($constant, $replacedBy, $originalString);
     }
+
+
 }
