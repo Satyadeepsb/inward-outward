@@ -123,4 +123,14 @@ class MasterController extends Controller
         }
         return "";
     }
+
+    public function delete(Request $request)
+    {
+        dd($request->all());
+        /*$userId= $request->user_id;
+        $user = User::findOrFail($userId);
+        $user->delete();
+        Session::flash('success','User Deleted Successfully.');
+        return back();*/
+    }
 }

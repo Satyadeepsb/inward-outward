@@ -74,6 +74,10 @@ Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware
             'uses'=>'MasterController@index',
             'as'=>'master.index'
         ]);
+        Route::post('/master/destroy', [
+            'uses'=>'MasterController@destroy',
+            'as'=>'master.destroy'
+        ]);
         Route::get('/master/{type}/detail/{id}', [
             'uses'=>'MasterController@getMasterDetails',
             'as'=>'master.details'
