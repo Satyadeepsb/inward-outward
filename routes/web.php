@@ -56,6 +56,7 @@ Route::post('/application/byDepartment', [
     'uses'=>'ApplicationController@getByDepartment',
     'as'=>'application.getByDepartment'
 ]);
+
 Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware\SuperUserMiddleware']],
     function (){
         Route::get('/settings', [
@@ -74,17 +75,27 @@ Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware
             'uses'=>'MasterController@index',
             'as'=>'master.index'
         ]);
-        Route::post('/master/destroy', [
+
+        Route::delete('/delete/master', [
             'uses'=>'MasterController@destroy',
             'as'=>'master.destroy'
         ]);
+
         Route::get('/master/{type}/detail/{id}', [
             'uses'=>'MasterController@getMasterDetails',
             'as'=>'master.details'
         ]);
+        Route::post('/master/{type}/create', [
+            'uses'=>'MasterController@create',
+            'as'=>'master.create'
+        ]);
+        Route::post('/master/{type}/detail/{id}/update', [
+            'uses'=>'MasterController@update',
+            'as'=>'master.update'
+        ]);
     Route::post('/user/save-or-update', 'UserDetailsController@create');
     Route::resource('/users', 'UsersController');
-    Route::resource('/user/{id}', 'UserDetailsController');
+    Route::get('/user/{id}', 'UserDetailsController@index');
     Route::post('/user/save/{id}', [
             'uses'=> 'UserDetailsController@store',
             'as'=>'user.save'

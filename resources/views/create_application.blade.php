@@ -98,7 +98,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="designation" class="col-md-4 control-label">District</label>
+                        <label for="district" class="col-md-4 control-label">District</label>
                         <div class="col-md-6">
                             <select name="district" id="district" class="form-control dynamic">
                                 <option value="">Select District</option>

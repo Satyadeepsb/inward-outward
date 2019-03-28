@@ -313,3 +313,30 @@ if(form){
     });
 }
 
+$('#deleteMaster').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var master_id = button.data('masterid');
+    var master_type = button.data('typemaster');
+    var modal = $(this);
+    /*    modal.find('.modal-title').text('New message to ' + recipient);
+        modal.find('.modal-body input').val(recipient);*/
+    modal.find('.modal-body #master_id').val(master_id);
+    modal.find('.modal-body #master_type').val(master_type);
+});
+/*
+
+$('#master_delete_form').on('submit', function(event){
+    event.preventDefault();
+    var form_data = $(this).serialize();
+    console.log(form_data);
+    console.log('form_data');
+    $.ajax({
+        url:"/delete/master",
+        method:"POST",
+        data:form_data,
+        success:function(data)
+        {
+            toastr.success("Deleted Successfully");
+        }
+    });
+});*/
