@@ -63,11 +63,14 @@
                         {{--  <li><a href="{{ url('/login') }}">Login</a></li>--}}
                         {{-- <li><a href="{{ url('/register') }}">Register</a></li>--}}
                     @else
+                        <li>
+                            <a href="{{route('change-password.index')}}">
+                                <i class="fa fa-key" aria-hidden="true"></i> Change Password</a>
+                        </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
-
                             <ul class="dropdown-menu" role="menu">
                                 <li>
                                     <a href="{{ url('/logout') }}"
@@ -131,9 +134,9 @@
                              <a href="{{route('master.index',['type'=>'location'])}}"
                                 class="{{ (str_contains(Request::path(), 'location')) ? 'list-group-item active' : 'list-group-item' }}">
                                  <i class="fa fa-location-arrow" aria-hidden="true"></i> &nbsp;  Location</a>
-                            <a href="{{route('change-password.index')}}"
+                            {{--<a href="{{route('change-password.index')}}"
                                class="{{ (str_contains(Request::path(), 'change-password')) ? 'list-group-item active' : 'list-group-item' }}">
-                                <i class="fa fa-key" aria-hidden="true"></i> &nbsp;  Change Password</a>
+                                <i class="fa fa-key" aria-hidden="true"></i> &nbsp;  Change Password</a>--}}
                         </div>
                     </div>
                     <div class="col-md-10" style="margin-top:0px;padding: 0">

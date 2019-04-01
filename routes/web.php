@@ -59,7 +59,14 @@ Route::post('/application/byDepartment', [
     'uses'=>'ApplicationController@getByDepartment',
     'as'=>'application.getByDepartment'
 ]);
+Route::get('/change-password', [
+    'uses'=> 'ChangePasswordController@index',
+    'as'=>'change-password.index']);
 
+Route::post('/change-password/change', [
+    'uses'=> 'ChangePasswordController@change',
+    'as'=>'change-password.change'
+]);
 Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware\SuperUserMiddleware']],
     function (){
         Route::get('/settings', [
@@ -106,12 +113,4 @@ Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware
             'uses'=> 'UserDetailsController@update',
             'as'=>'user.update'
         ]);
-    Route::get('/change-password', [
-        'uses'=> 'ChangePasswordController@index',
-        'as'=>'change-password.index']);
-
-    Route::post('/change-password/change', [
-        'uses'=> 'ChangePasswordController@change',
-        'as'=>'change-password.change'
-    ]);
 });
