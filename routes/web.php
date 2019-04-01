@@ -28,7 +28,10 @@ Route::post('/application/createNew', [
     'uses'=>'ApplicationController@createNew',
     'as'=>'application.createNew'
 ]);
-
+Route::delete('/destroy/application', [
+    'uses'=>'ApplicationController@destroy',
+    'as'=>'app.destroy'
+]);
 Route::post('/application/district', [
     'uses'=>'ApplicationController@districtChange',
     'as'=>'application.district'
@@ -75,7 +78,6 @@ Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware
             'uses'=>'MasterController@index',
             'as'=>'master.index'
         ]);
-
         Route::delete('/delete/master', [
             'uses'=>'MasterController@destroy',
             'as'=>'master.destroy'
@@ -104,4 +106,12 @@ Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware
             'uses'=> 'UserDetailsController@update',
             'as'=>'user.update'
         ]);
+    Route::get('/change-password', [
+        'uses'=> 'ChangePasswordController@index',
+        'as'=>'change-password.index']);
+
+    Route::post('/change-password/change', [
+        'uses'=> 'ChangePasswordController@change',
+        'as'=>'change-password.change'
+    ]);
 });

@@ -507,8 +507,13 @@ class ApplicationController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        //dd($request->all());
+        $id = $request->app_id;
+        $application = Application::findOrFail($id);
+        $application->delete();
+        Session::flash('success','Application Deleted Successfully.');
+        return back();
     }
 }

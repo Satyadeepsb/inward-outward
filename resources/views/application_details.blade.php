@@ -8,6 +8,16 @@
                 <div class="panel panel-default fadeInDown">
                     <div class="panel-body">
                         <div class="row">
+                            <div class="col-md-12">
+                                <label class="col-md-2" style="font-weight: bold"><b>Application Name</b></label>
+                                <div class="col-md-10" style="font-weight: bold">{{$application->name}} </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="col-md-2" style="font-weight: bold"><b>Subject</b></label>
+                                <div class="col-md-10" style="font-weight: bold">{{$application->subject}}</div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
                                 <label class="col-md-5"><b>Inward Number</b></label>
                                 <div class="col-md-7">{{$application->inward_no}} </div>
@@ -19,18 +29,18 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="col-md-5"><b>Application Name</b></label>
-                                <div class="col-md-7">{{$application->name}} </div>
-                            </div>
-                            <div class="col-md-6">
                                 <label class="col-md-5"> <b>Date</b></label>
                                 <div class="col-md-7">{{$application->date}}</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="col-md-5"><b>Mobile</b></label>
+                                <div class="col-md-7">{{$application->mobile}} </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="col-md-5"><b>Mobile</b></label>
-                                <div class="col-md-7">{{$application->mobile}} </div>
+                                <label class="col-md-5"><b>Status</b></label>
+                                <div class="col-md-7">{{\App\Http\Controllers\ApplicationController::removeUnderscore($application->status)}} </div>
                             </div>
                             <div class="col-md-6">
                                 <label class="col-md-5"> <b>Address</b></label>
@@ -59,22 +69,8 @@
                                 </div>
                             </div>
                         @endif
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="col-md-5"><b>Status</b></label>
-                                <div class="col-md-7">{{\App\Http\Controllers\ApplicationController::removeUnderscore($application->status)}} </div>
-                            </div>
-                            <div class="col-md-6">
-
-                            </div>
-                        </div>
                         <hr>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label class="col-md-2"><b>Subject</b></label>
-                                <div class="col-md-10">{{$application->subject}}</div>
-                            </div>
-                        </div>
+
                         <div class="row">
                             <div class="col-md-12">
                                 <label class="col-md-2"><b>Documents</b></label>

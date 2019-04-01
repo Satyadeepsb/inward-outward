@@ -33,12 +33,12 @@
                     @endif
                 </th>
                 <th>Inward No</th>
+                <th>Reference No</th>
                 <th>Applicant Name</th>
                 <th>Subject</th>
-                <th>Status</th>
-                <th>Reference No</th>
-                <th>Date</th>
+                <th>App. Date</th>
                 <th>Documents</th>
+                <th>Status</th>
                 <th></th>
             </tr>
             </thead>
@@ -53,12 +53,12 @@
                             @endif
                         </td>
                         <td>{{$application->inward_no }}</td>
+                        <td>{{$application->reference_no }}</td>
                         <td>{{$application->name }}</td>
                         <td>{{$application->subject }}</td>
-                        <td>{{\App\Http\Controllers\ApplicationController::removeUnderscore($application->status )}}</td>
-                        <td>{{$application->reference_no }}</td>
                         <td>{{$application->date }}</td>
                         <td>{{$application->documents }}</td>
+                        <td>{{\App\Http\Controllers\ApplicationController::removeUnderscore($application->status )}}</td>
                         <td>
 
                             @if(!Auth::user()->hasRole('INWARD'))
@@ -86,6 +86,15 @@
                                     <b>Action</b> <i class="fa fa-bolt" aria-hidden="true"></i>
                                 </a>
                             @endif
+                                {{--<a href="{{route('application.edit',['id'=>$application->inward_no])}}" style="cursor: pointer;margin-left: 5px"
+                                   class="btn  btn-warning btn-sm pull-right">
+                                    <b>Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></b>
+                                </a>--}}
+                                <button type="button"
+                                   data-toggle="modal" data-target="#deleteApplication" data-appid="{{$application->id}}"
+                                   class="btn btn-danger btn-sm pull-right">
+                                    <b>Delete <i class="fa fa-trash" aria-hidden="true"></i></b>
+                                </button>
                         </td>
                     </tr>
                 @endforeach
@@ -311,5 +320,26 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
+    <div class="modal fade" tabindex="-1" role="dialog" id="deleteApplication">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title text-center">Delete confirmation</h3>
+                </div>
+                <form action="{{route('app.destroy')}}" method="post">
+                    {{method_field('delete')}}
+                    {{csrf_field()}}
+                    <div class="modal-body">
+                        <h4 class="text-center">Are you sure do you want to delete?</h4>
+                        <input type="hidden" name="app_id" id="app_id" value="">
+                    </div>
+                    <div class="modal-footer" style="text-align: center !important;">
+                        <button type="button" class="btn btn-md btn-success" data-dismiss="modal">No, Cancel</button>
+                        <button type="submit" class="btn btn-md btn-warning">Yes, Delete</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection

@@ -131,6 +131,9 @@
                              <a href="{{route('master.index',['type'=>'location'])}}"
                                 class="{{ (str_contains(Request::path(), 'location')) ? 'list-group-item active' : 'list-group-item' }}">
                                  <i class="fa fa-location-arrow" aria-hidden="true"></i> &nbsp;  Location</a>
+                            <a href="{{route('change-password.index')}}"
+                               class="{{ (str_contains(Request::path(), 'change-password')) ? 'list-group-item active' : 'list-group-item' }}">
+                                <i class="fa fa-key" aria-hidden="true"></i> &nbsp;  Change Password</a>
                         </div>
                     </div>
                     <div class="col-md-10" style="margin-top:0px;padding: 0">

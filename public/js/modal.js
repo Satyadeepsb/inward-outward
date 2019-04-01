@@ -340,3 +340,11 @@ $('#master_delete_form').on('submit', function(event){
         }
     });
 });*/
+$('#deleteApplication').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var app_id = button.data('appid');
+    var modal = $(this);
+    /*    modal.find('.modal-title').text('New message to ' + recipient);
+        modal.find('.modal-body input').val(recipient);*/
+    modal.find('.modal-body #app_id').val(app_id);
+});
