@@ -108,8 +108,8 @@
                         @if(count($documents) > 0)
                             <p style="font-size: 18px;font-weight: bold">Uploaded Documents</p>
                             @foreach($documents as $document)
-                                <b>{{$document->document_name}} : </b>   <a href="{{$document->stored_path}}"
-                                                                            target="_blank">{{$document->original_name}}</a>
+                                <b>{{$document->document_name}} : </b>
+                                <a href="{{$document->stored_path}}" target="_blank">{{$document->original_name}}</a>
                                 <br>
                             @endforeach
                         @endif

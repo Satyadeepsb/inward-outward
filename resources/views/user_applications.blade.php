@@ -90,11 +90,13 @@
                                    class="btn  btn-warning btn-sm pull-right">
                                     <b>Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></b>
                                 </a>--}}
+                                @if(Auth::user()->hasRole('SUPERUSER'))
                                 <button type="button"
                                    data-toggle="modal" data-target="#deleteApplication" data-appid="{{$application->id}}"
                                    class="btn btn-danger btn-sm pull-right">
                                     <b>Delete <i class="fa fa-trash" aria-hidden="true"></i></b>
                                 </button>
+                                    @endif
                         </td>
                     </tr>
                 @endforeach

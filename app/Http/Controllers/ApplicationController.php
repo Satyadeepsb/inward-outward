@@ -512,6 +512,22 @@ class ApplicationController extends Controller
         //dd($request->all());
         $id = $request->app_id;
         $application = Application::findOrFail($id);
+        $app_remarks = Application_Remark::where('inward_id',$application->inward_no)->get();
+        foreach ($app_remarks as $app_remark):
+            $ak = Application_Remark::where('id', $app_remark->id)->first();
+            if(!is_null($ak)){
+                $ak->delete();
+            }
+        endforeach;
+
+        $app_documents = Uploaded_Document::where('application_id',$application->inward_no)->get();
+        foreach ($app_documents as $app_document):
+            $ak = Uploaded_Document::where('id', $app_document->id)->first();
+            if(!is_null($ak)){
+                $ak->delete();
+            }
+        endforeach;
+
         $application->delete();
         Session::flash('success','Application Deleted Successfully.');
         return back();
