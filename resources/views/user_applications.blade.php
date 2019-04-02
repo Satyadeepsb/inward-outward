@@ -8,21 +8,38 @@
                 <p style="color: white;font-size: 20px">Applications</p>
             </div>
             @if(Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('INWARD') || Auth::user()->hasRole('PA_USER'))
-            <div class="col-md-1">
-                @if(Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('INWARD'))
-                    <a href="{{route('application.create')}}"
-                       class="btn btn-default btn-sm pull-right"
-                       style="margin-top: 5px;">
-                        <b>Create</b>&nbsp;<i class="fa fa-plus-circle" aria-hidden="true"></i></a>
-                @endif
-                @if((Auth::user()->hasRole('PA_USER')) && count($applications) > 0)
-                    <button class="btn btn-warning btn-sm pull-right bulk-action"
-                            style="margin-top: 5px;">
-                        <b>Bulk Action </b> <i class="fa fa-bolt" aria-hidden="true"></i>
-                    </button>
-                @endif
-            </div>
+                <div class="col-md-1">
+                    @if(Auth::user()->hasRole('SUPERUSER') || Auth::user()->hasRole('INWARD'))
+                        <a href="{{route('application.create')}}"
+                           class="btn btn-default btn-sm pull-right"
+                           style="margin-top: 5px;">
+                            <b>Create</b>&nbsp;<i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                    @endif
+                    @if((Auth::user()->hasRole('PA_USER')) && count($applications) > 0)
+                        <button class="btn btn-warning btn-sm pull-right bulk-action"
+                                style="margin-top: 5px;">
+                            <b>Bulk Action </b> <i class="fa fa-bolt" aria-hidden="true"></i>
+                        </button>
+                    @endif
+                </div>
             @endif
+        </div>
+        <div class="col-md-12" style="padding-left:0px;margin-top: 5px;margin-bottom: 5px">
+            <div class="col-md-4" style="padding-left: 0px">
+                <form action="{{route('application.search')}}" method="POST" role="search">
+                    {{ csrf_field() }}
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="q"
+                               placeholder="Search">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-info">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+
         </div>
         <table class="table table-striped table-hover " style="border: 1px solid lightgray;">
             <thead>
@@ -62,10 +79,10 @@
                         <td>
 
                             @if(!Auth::user()->hasRole('INWARD'))
-                            <a href="{{route('application.get',['id'=>$application->inward_no])}}" style="cursor: pointer;margin-left: 5px"
-                               class="btn btn-group btn-sm pull-right">
-                                <b>View <i class="fa fa-eye" aria-hidden="true"></i></b>
-                            </a>
+                                <a href="{{route('application.get',['id'=>$application->inward_no])}}" style="cursor: pointer;margin-left: 5px"
+                                   class="btn btn-group btn-sm pull-right">
+                                    <b>View <i class="fa fa-eye" aria-hidden="true"></i></b>
+                                </a>
                             @endif
                             @if(Auth::user()->hasRole('PA_USER') && $application->status == 'CREATED')
                                 <button data-toggle="modal" data-target="#paEditModal"
@@ -86,17 +103,17 @@
                                     <b>Action</b> <i class="fa fa-bolt" aria-hidden="true"></i>
                                 </a>
                             @endif
-                                {{--<a href="{{route('application.edit',['id'=>$application->inward_no])}}" style="cursor: pointer;margin-left: 5px"
-                                   class="btn  btn-warning btn-sm pull-right">
-                                    <b>Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></b>
-                                </a>--}}
-                                @if(Auth::user()->hasRole('SUPERUSER'))
+                            {{--<a href="{{route('application.edit',['id'=>$application->inward_no])}}" style="cursor: pointer;margin-left: 5px"
+                               class="btn  btn-warning btn-sm pull-right">
+                                <b>Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></b>
+                            </a>--}}
+                            @if(Auth::user()->hasRole('SUPERUSER'))
                                 <button type="button"
-                                   data-toggle="modal" data-target="#deleteApplication" data-appid="{{$application->id}}"
-                                   class="btn btn-danger btn-sm pull-right">
+                                        data-toggle="modal" data-target="#deleteApplication" data-appid="{{$application->id}}"
+                                        class="btn btn-danger btn-sm pull-right">
                                     <b>Delete <i class="fa fa-trash" aria-hidden="true"></i></b>
                                 </button>
-                                    @endif
+                            @endif
                         </td>
                     </tr>
                 @endforeach

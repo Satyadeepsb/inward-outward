@@ -67,6 +67,10 @@ Route::post('/change-password/change', [
     'uses'=> 'ChangePasswordController@change',
     'as'=>'change-password.change'
 ]);
+Route::post('/application/search', [
+    'uses'=> 'ApplicationController@search',
+    'as'=>'application.search'
+]);
 Route::group(['prefix' => 'super', 'middleware' => ['auth', 'App\Http\Middleware\SuperUserMiddleware']],
     function (){
         Route::get('/settings', [

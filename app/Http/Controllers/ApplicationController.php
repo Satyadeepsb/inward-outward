@@ -42,7 +42,6 @@ class ApplicationController extends Controller
          }*/
         if ($role == 'DEPARTMENT_USER') {
             $completedApplications = DB::table('applications')->where('status', 'COMPLETED')->where('department', Auth()->user()->department);
-
             $applications = Application::where('status', '=', 'CLERK UPDATED')
                 ->whereNotNull('department')
                 ->union($completedApplications)
@@ -531,5 +530,28 @@ class ApplicationController extends Controller
         $application->delete();
         Session::flash('success','Application Deleted Successfully.');
         return back();
+    }
+
+    public function search(){
+        $role = Auth()->user()->role;
+        $q = \Illuminate\Support\Facades\Input::get ( 'q' );
+        $applications = Application::where('inward_no','LIKE','%'.$q.'%')
+            ->orWhere('name','LIKE','%'.$q.'%')
+            ->orWhere('subject','LIKE','%'.$q.'%')
+            ->orWhere('reference_no','LIKE','%'.$q.'%')
+            ->get();
+        if ($role == 'SUPERUSER') {
+            $role = 'PA_USER';
+        }
+        $actions = DB::table('actions')
+            ->where('user_type', $role)
+            ->get();
+        $departments = Department::all();
+        $users = User::where('role', 'DEPARTMENT_USER')->get();
+        return view('user_applications')
+            ->with('applications', $applications)
+            ->with('actions', $actions)
+            ->with('departments', $departments)
+            ->with('users', $users);
     }
 }
