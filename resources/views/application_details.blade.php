@@ -93,22 +93,36 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label class="col-md-2">Action</label>
+                                    <label class="col-md-2"><b>Action</b></label>
                                     <div class="col-md-10">{{$application_remark->action}} </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label class="col-md-2">Remark</label>
+                                    <label class="col-md-2"><b>Remark</b></label>
                                     <div class="col-md-10">{{$application_remark->remark}} </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label class="col-md-2">Remark By</label>
+                                    <label class="col-md-2"><b>Remark By</b></label>
                                     <div class="col-md-10">{{\App\Http\Controllers\ApplicationController::getUserName($application_remark->user_id)}} </div>
                                 </div>
                             </div>
+                            @if(count($application_remarks) > 0)
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="col-md-2"><b>Department</b></label>
+                                        <div class="col-md-10">{{\App\Http\Controllers\ApplicationController::getDeptName($application_remarks[0]->department)}}  </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="col-md-2"><b>Officer</b></label>
+                                        <div class="col-md-10">{{\App\Http\Controllers\ApplicationController::getUserName($application_remarks[0]->officer)}}  </div>
+                                    </div>
+                                </div>
+                            @endif
                         @endforeach
                         <hr>
                         @if(count($application_remarks) < 1)
