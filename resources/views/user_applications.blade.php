@@ -51,6 +51,7 @@
                     <input type="checkbox" id="select-all">
                 @endif
             </th>
+            <th>Inward User</th>
             <th>Inward No</th>
             <th>Reference No</th>
             <th>Applicant Name</th>
@@ -71,6 +72,7 @@
                                    data-id="{{$application->id}}">
                         @endif
                     </td>
+                    <td>{{\App\Http\Controllers\ApplicationController::getUserName($application->user_id )}}</td>
                     <td>{{$application->inward_no }}</td>
                     <td>{{$application->reference_no }}</td>
                     <td>{{$application->name }}</td>
