@@ -74,7 +74,13 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <label class="col-md-2"><b>Documents</b></label>
-                                <div class="col-md-10">{{$application->documents}}</div>
+                                <div class="col-md-10">
+                                    <ol>
+                                        @foreach($docArray as $document)
+                                            <li>{{$document}}</li>
+                                            @endforeach
+                                    </ol>
+                                </div>
                             </div>
                         </div>
 
@@ -105,6 +111,30 @@
                             </div>
                         @endforeach
                         <hr>
+                        @if(count($application_remarks) < 1)
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p style="font-size: 18px;font-weight: bold">PA User</p>
+                                <p style="font-size: 14px;font-weight: bold">Remark : Pending</p>
+                            </div>
+                        </div>
+                        @endif
+                        @if(count($application_remarks) < 2)
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p style="font-size: 18px;font-weight: bold">Clerk</p>
+                                    <p style="font-size: 14px;font-weight: bold">Remark : Pending</p>
+                                </div>
+                            </div>
+                        @endif
+                        @if(count($application_remarks) < 3)
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p style="font-size: 18px;font-weight: bold">Department User</p>
+                                    <p style="font-size: 14px;font-weight: bold">Remark : Pending</p>
+                                </div>
+                            </div>
+                        @endif
                         @if(count($documents) > 0)
                             <p style="font-size: 18px;font-weight: bold">Uploaded Documents</p>
                             @foreach($documents as $document)
