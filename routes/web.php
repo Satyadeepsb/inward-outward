@@ -51,6 +51,14 @@ Route::get('/application/{id}', [
     'uses'=>'ApplicationController@get',
     'as'=>'application.get'
 ]);
+Route::get('/application/edit/{id}', [
+    'uses'=>'ApplicationController@edit',
+    'as'=>'application.edit'
+]);
+Route::post('/application/update', [
+    'uses'=>'ApplicationController@update',
+    'as'=>'application.update'
+]);
 Route::post('/application/save-remark', [
     'uses'=>'ApplicationController@saveRemark',
     'as'=>'application.saveRemark'

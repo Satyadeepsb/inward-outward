@@ -31,15 +31,6 @@ class ApplicationController extends Controller
 
         $role = Auth()->user()->role;
         $applications = [];
-        /* if($role=='PA_USER'){
-             $applications = Application::where('status', 'CREATED')->get();
-         } elseif ($role=='CLERK'){
-             $applications = Application::where('status', 'PA_USER UPDATED')->get();
-         } elseif ($role=='DEPARTMENT_USER'){
-             $applications = Application::where('status', 'CLERK UPDATED')->get();
-         } elseif ($role =='SUPERUSER'){
-             $applications = Application::all();
-         }*/
         if ($role == 'DEPARTMENT_USER') {
             $completedApplications = DB::table('applications')->where('status', 'COMPLETED')->where('department', Auth()->user()->department);
             $applications = Application::where('status', '=', 'CLERK UPDATED')
@@ -294,7 +285,7 @@ class ApplicationController extends Controller
      */
     public function show(Request $request)
     {
-        print_r($request->all());
+        //print_r($request->all());
         return view('auth.login');
     }
 
@@ -306,7 +297,8 @@ class ApplicationController extends Controller
      */
     public function edit($id)
     {
-        //
+        $application = Application::findOrFail($id);
+        return view('edit_application')->with('application',$application);
     }
 
     public static function getUserName($id)
@@ -495,9 +487,45 @@ class ApplicationController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $newApplication = $request->all();
+        $application =  Application::find($request['id']);
+        $application->name = $newApplication['name'];
+        $application->reference_no = $newApplication['reference_no'];
+        $application->subject = $newApplication['subject'];
+        $application->mobile = $newApplication['mobile'];
+        $application->address = $newApplication['address'];
+        $application->date = $newApplication['date'];
+        $application->update();
+        Session::flash('success', 'Application Updated Successfully');
+        $role = Auth()->user()->role;
+        if ($role == 'DEPARTMENT_USER') {
+            $completedApplications = DB::table('applications')->where('status', 'COMPLETED')->where('department', Auth()->user()->department);
+
+            $applications = Application::where('status', '=', 'CLERK UPDATED')
+                ->whereNotNull('department')
+                ->union($completedApplications)
+                ->where('department', Auth()->user()->department)->get();
+        } elseif ($role == 'INWARD') {
+            $applications = Application::where('user_id', Auth()->user()->id)->get();
+        } else {
+            $applications = Application::all();
+        }
+
+        if ($role == 'SUPERUSER') {
+            $role = 'PA_USER';
+        }
+        $actions = DB::table('actions')
+            ->where('user_type', $role)
+            ->get();
+        $departments = Department::all();
+        $users = User::where('role', 'DEPARTMENT_USER')->get();
+        return view('user_applications')
+            ->with('applications', $applications)
+            ->with('actions', $actions)
+            ->with('departments', $departments)
+            ->with('users', $users);
     }
 
     /**
