@@ -23,6 +23,16 @@ table, td,. table{
     background: #b9151b;
     color: white !important;
 }*/
+.count-size {
+    font-size: 25px;
+}
+.dashboard-tile {
+    height: 80px;
+    color: white;
+    font-size: 18px;
+    /*text-align: center;*/
+  /*  padding-top: 5px;*/
+}
 .form-group.required .control-label:after {
     content: "*";
     position: absolute;

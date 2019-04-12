@@ -46,6 +46,18 @@ class ApplicationController extends Controller
         if ($role == 'SUPERUSER') {
             $role = 'PA_USER';
         }
+        $application_completed = DB::table('applications')->where('status', 'COMPLETED')->get();
+        $application_completed_count = count($application_completed);
+        $all_application_count = count($applications);
+        $application_pending = DB::table('applications')->where('status', 'CREATED')->get();
+        $application_pending_count =count($application_pending);
+        $application_in_progress =DB::table('applications')->where('status', 'CLERK UPDATED')->orWhere('status', 'PA_USER UPDATED')->get();
+        $application_in_progress_count = count($application_in_progress);
+        $countMap = array(
+            "completed" => $application_completed_count,
+            "pending" => $application_pending_count,
+            "progress" => $application_in_progress_count,
+            "all" => $all_application_count);
         $actions = DB::table('actions')
             ->where('user_type', $role)
             ->get();
@@ -55,6 +67,7 @@ class ApplicationController extends Controller
             ->with('applications', $applications)
             ->with('actions', $actions)
             ->with('departments', $departments)
+            ->with('countMap', $countMap)
             ->with('users', $users);
     }
 
